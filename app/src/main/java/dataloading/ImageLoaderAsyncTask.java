@@ -10,17 +10,11 @@ import java.io.File;
 class ImageLoaderAsyncTask extends AsyncTask<String, Integer, Bitmap> {
 
     private ImageView imageView;
-    private int reqWidth;
-    private int reqHeight;
+    private int reqWidth = 0;
+    private int reqHeight = 0;
 
-    /**
-     * This constructor should only be used if the image view is already displayed.
-     * @param imageView The image view that will display the loaded image.
-     */
     ImageLoaderAsyncTask(ImageView imageView) {
         this.imageView = imageView;
-        reqWidth = imageView.getWidth();
-        reqHeight = imageView.getHeight();
     }
 
     ImageLoaderAsyncTask(ImageView imageView, int targetWidth, int targetHeight) {
@@ -30,6 +24,9 @@ class ImageLoaderAsyncTask extends AsyncTask<String, Integer, Bitmap> {
     }
 
     protected Bitmap doInBackground(String... images) {
+
+        if (images[0] == null)
+            return null;
 
         File imgFile = new File(images[0]);
 
@@ -47,17 +44,21 @@ class ImageLoaderAsyncTask extends AsyncTask<String, Integer, Bitmap> {
 
     private static Bitmap decodeSampledBitmapFromResource(String path, int reqWidth, int reqHeight) {
 
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, options);
+        if (reqWidth != 0 && reqHeight != 0) {
+            // First decode with inJustDecodeBounds=true to check dimensions
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(path, options);
 
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+            // Calculate inSampleSize
+            options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
 
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeFile(path, options);
+            // Decode bitmap with inSampleSize set
+            options.inJustDecodeBounds = false;
+            return BitmapFactory.decodeFile(path, options);
+        } else {
+            return BitmapFactory.decodeFile(path);
+        }
     }
 
     private static int calculateInSampleSize(

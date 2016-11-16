@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -7,7 +8,7 @@ import java.util.Date;
  * Created by Freddy on 11.11.2016.
  */
 
-public class ProjectModel {
+public class ProjectModel implements Serializable {
 
     private ArrayList<String> members;
     private String title;
