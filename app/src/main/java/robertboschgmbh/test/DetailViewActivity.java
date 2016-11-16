@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import dataloading.AsyncImageLoader;
 import models.*;
 
 public class DetailViewActivity extends AppCompatActivity {
@@ -46,7 +47,6 @@ public class DetailViewActivity extends AppCompatActivity {
             }
         });
 
-        //sichtbarkeit der Buttons überprüfen
 
         buttonLeft = (ImageView) findViewById(R.id.imageButtonLeft);
         buttonRight = (ImageView) findViewById(R.id.imageButtonRight);
@@ -98,7 +98,9 @@ public class DetailViewActivity extends AppCompatActivity {
 
             } else {
                 ImageView img1 = new ImageView(this);
-                img1.setImageResource(R.drawable.back1920x1080);
+                AsyncImageLoader.setImageToImageView(
+                        model.getBlocks().get(i).getSubBlock1().getImage(), img1
+                );
 
                 img1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
@@ -124,7 +126,11 @@ public class DetailViewActivity extends AppCompatActivity {
                 subBlock2.addView(text2);
             } else {
                 ImageView img2 = new ImageView(this);
-                img2.setImageResource(R.drawable.logo);
+
+                AsyncImageLoader.setImageToImageView(
+                        model.getBlocks().get(i).getSubBlock2().getImage(), img2
+                );
+
                 img2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
                 subBlock2.addView(img2);
