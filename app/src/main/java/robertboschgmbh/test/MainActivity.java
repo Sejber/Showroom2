@@ -1,6 +1,7 @@
 package robertboschgmbh.test;
 
 import android.Manifest;
+import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
             Bundle extras = getIntent().getExtras();
             if (extras.getBoolean("admin")){
                 this.admin = true;
+            }else{
+                this.admin = false;
             }
         }catch(NullPointerException e){
             e.printStackTrace();
@@ -53,7 +56,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        if (admin){
+            getMenuInflater().inflate(R.menu.menu_main2, menu);
+        }else{
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+        }
         return true;
     }
 
@@ -67,11 +74,19 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
 
-            Intent i = new Intent(this,MainActivity.class);
-            i.putExtra("admin",true);
+            Intent i = new Intent(this,LoginActivity.class);
             startActivity(i);
             finish();
             return true;
+        }else if(id == R.id.action_settings2){
+            Intent i = new Intent(this,MainActivity.class);
+            i.putExtra("admin",false);
+            startActivity(i);
+            finish();
+            return true;
+        }else if (id == R.id.action_settings3){
+            finish();
+            System.exit(0);
         }
 
         return super.onOptionsItemSelected(item);
