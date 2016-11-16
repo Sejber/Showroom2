@@ -2,6 +2,7 @@ package robertboschgmbh.test;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,13 +38,17 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
         ImageView deleteIcon = (ImageView) convertView.findViewById(R.id.listItemNoteDelete);
         ImageView editIcon = (ImageView) convertView.findViewById(R.id.listItemNoteEdit);
 
-        noteIcon.setOnClickListener(new View.OnClickListener(){
+        noteIcon.setTag(projectModel);
+        deleteIcon.setTag(projectModel);
+        editIcon.setTag(projectModel);
+
+        noteIcon.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
-                Intent i = new Intent(this,DetailViewActivity.class);
-                i.putExtra("model",projectModel);
+            public void onClick(View view) {
+                Intent i = new Intent(getContext(), DetailViewActivity.class);
+                i.putExtra("model",(ProjectModel)view.getTag());
                 i.putExtra("edit",false);
-                startActivity(i);
+                startActivity(getContext(), i, null);
             }
         });
 
@@ -58,10 +63,10 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
         editIcon.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent i = new Intent(this,DetailViewActivity.class);
+                Intent i = new Intent(getContext(), DetailViewActivity.class);
                 i.putExtra("model",projectModel);
                 i.putExtra("edit",true);
-                startActivity(i);
+                startActivity(getContext(), i, null);
             }
         });
 
@@ -75,11 +80,6 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
                 (int)getContext().getResources().getDimension(R.dimen.tileHeight));
 
         return convertView;
-    }
-
-    private int dpToPixels(int dp) {
-        return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-                getContext().getResources().getDisplayMetrics());
     }
 
     private String convertToString(Department d) {

@@ -4,6 +4,7 @@
     android:id="@+id/activity_detail_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/back1920x1080"
     tools:context="robertboschgmbh.test.DetailViewActivity">
 
     <ImageView
@@ -13,9 +14,9 @@
         android:src="@drawable/logo"
         android:scaleX="1"
         android:scaleY="1"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="10dp"/>
 
     <LinearLayout
@@ -23,11 +24,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
         <TextView
-            android:text="Überschrift"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textView5"

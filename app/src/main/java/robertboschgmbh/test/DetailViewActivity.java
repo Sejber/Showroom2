@@ -34,7 +34,7 @@ public class DetailViewActivity extends AppCompatActivity {
         //mitgeliferte Projektdtaen auslesen
 
         Bundle extras = getIntent().getExtras();
-        model = (ProjectModel)extras.get("ProjectModel");
+        model = (ProjectModel)extras.get("model");
 
         //manuelles Scrollen unterdrücken
 
@@ -50,14 +50,6 @@ public class DetailViewActivity extends AppCompatActivity {
 
         buttonLeft = (ImageView) findViewById(R.id.imageButtonLeft);
         buttonRight = (ImageView) findViewById(R.id.imageButtonRight);
-        checkButtonVisibility();
-
-    }
-
-
-    @Override
-    protected void onStart() {              //auch in onCreate?
-        super.onStart();
 
         LinearLayout content = new LinearLayout(this);
         content.setOrientation(LinearLayout.HORIZONTAL);
@@ -145,7 +137,11 @@ public class DetailViewActivity extends AppCompatActivity {
             content.addView(block);
         }
         scroll.addView(content);
+
+        checkButtonVisibility();
+
     }
+
 
     //Button links: verschiebt Position im Scrollpanel um 1 nach links
 

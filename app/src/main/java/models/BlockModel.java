@@ -1,10 +1,12 @@
 package models;
 
+import java.io.Serializable;
+
 /**
  * Created by Freddy on 11.11.2016.
  */
 
-public class BlockModel {
+public class BlockModel implements Serializable {
 
     private String title;
     private SubBlockModel subBlock1;
