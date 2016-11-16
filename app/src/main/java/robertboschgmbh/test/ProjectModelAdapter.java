@@ -1,13 +1,13 @@
 package robertboschgmbh.test;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import dataloading.AsyncImageLoader;
 import models.Department;
 import models.ProjectModel;
+
+import static android.support.v4.content.ContextCompat.startActivity;
 
 
 public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
@@ -25,7 +27,7 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
-        ProjectModel projectModel = getItem(position);
+        final ProjectModel projectModel = getItem(position);
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_row,parent,false);
         }
@@ -45,14 +47,16 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
         deleteIcon.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-
+                projectModel.getBlocks();
             }
         });
 
         editIcon.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-
+                Intent i = new Intent(this,DetailViewActivity.class);
+                i.putExtra("model",projectModel);
+                startActivity(i);
             }
         });
 
