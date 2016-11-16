@@ -40,14 +40,18 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
         noteIcon.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-
+                Intent i = new Intent(this,DetailViewActivity.class);
+                i.putExtra("model",projectModel);
+                i.putExtra("edit",false);
+                startActivity(i);
             }
         });
 
         deleteIcon.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                projectModel.getBlocks();
+
+
             }
         });
 
@@ -56,6 +60,7 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
             public void onClick(View v){
                 Intent i = new Intent(this,DetailViewActivity.class);
                 i.putExtra("model",projectModel);
+                i.putExtra("edit",true);
                 startActivity(i);
             }
         });
