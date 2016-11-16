@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/tileHeight"
+    android:background="#ffffff"
+    android:padding="5dp"
+    android:id="@+id/list_row">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#3d3d3d"
+        android:scaleType="centerCrop"
+        android:id="@+id/listItemNoteImg" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:background="#99000000"
+        android:layout_alignParentTop="true">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_create_black_24dp"
+            android:scaleType="centerCrop"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:padding="5dp"
+            android:id="@+id/listItemNoteEdit"
+            />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_delete_black_24dp"
+            android:scaleType="centerCrop"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:padding="5dp"
+            android:id="@+id/listItemNoteDelete"
+            />
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentBottom="true"
+        android:padding="5dp"
+        android:background="#99000000">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/listItemNoteTitle"
+            android:textColor="@android:color/white"
+            android:maxLines="1"/>
+
+        <TextView
+            android:layout_below="@id/listItemNoteTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/listItemNoteBody"
+            android:textColor="@android:color/white"
+            android:maxLines="1"/>
+
+
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
