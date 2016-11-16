@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,9 +22,12 @@ import static android.support.v4.content.ContextCompat.startActivity;
 
 
 public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
+    static private boolean admin = false;
 
-    public ProjectModelAdapter(Context context, ArrayList<models.ProjectModel> projectModels){
+
+    public ProjectModelAdapter(Context context, ArrayList<models.ProjectModel> projectModels,boolean admin){
         super(context,0,projectModels);
+        this.admin = admin;
     }
 
     @Override
@@ -37,6 +41,10 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
         ImageView noteIcon = (ImageView) convertView.findViewById(R.id.listItemNoteImg);
         ImageView deleteIcon = (ImageView) convertView.findViewById(R.id.listItemNoteDelete);
         ImageView editIcon = (ImageView) convertView.findViewById(R.id.listItemNoteEdit);
+        if(!admin){
+            RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.layoutAdmin);
+            rl.setVisibility(View.INVISIBLE);
+        }
 
         noteIcon.setTag(projectModel);
         deleteIcon.setTag(projectModel);
@@ -64,11 +72,11 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
             @Override
             public void onClick(View v){
                 Intent i = new Intent(getContext(), DetailViewActivity.class);
-                i.putExtra("model",projectModel);
+                i.putExtra("model",(ProjectModel)view.getTag());
                 i.putExtra("edit",true);
                 startActivity(getContext(), i, null);
             }
-        });
+        });*/
 
         noteTitle.setText(projectModel.getTitle());
         noteText.setText(convertToString(projectModel.getDepartment()));
