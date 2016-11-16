@@ -26,6 +26,16 @@ public class DetailViewActivity extends AppCompatActivity {
 
     private ProjectModel model;
 
+    private final View.OnLayoutChangeListener onLayoutChangeListener = new View.OnLayoutChangeListener() {
+        @Override
+        public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
+            AsyncImageLoader.setImageToImageView(
+                    (String)view.getTag(), (ImageView)view,
+                    view.getWidth(), view.getHeight()
+            );
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,17 +107,17 @@ public class DetailViewActivity extends AppCompatActivity {
                 subBlock1.addView(text1);
 
             } else {
-                ImageView img1 = new ImageView(this);
-                AsyncImageLoader.setImageToImageView(
-                        model.getBlocks().get(i).getSubBlock1().getImage(), img1
-                );
+                final ImageView img1 = new ImageView(this);
+
+                img1.setTag(model.getBlocks().get(i).getSubBlock1().getImage());
+                img1.addOnLayoutChangeListener(onLayoutChangeListener);
 
                 img1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
 
                 subBlock1.addView(img1);
 
-                //Bildunterschrift hinzufügen
+                //TODO: Bildunterschrift hinzufuegen
             }
 
             LinearLayout subBlock2 = new LinearLayout(this);
@@ -127,13 +137,14 @@ public class DetailViewActivity extends AppCompatActivity {
             } else {
                 ImageView img2 = new ImageView(this);
 
-                AsyncImageLoader.setImageToImageView(
-                        model.getBlocks().get(i).getSubBlock2().getImage(), img2
-                );
+                img2.setTag(model.getBlocks().get(i).getSubBlock2().getImage());
+                img2.addOnLayoutChangeListener(onLayoutChangeListener);
 
                 img2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
                 subBlock2.addView(img2);
+
+                //TODO: Bildunterschrift hinzufuegen
             }
 
 
