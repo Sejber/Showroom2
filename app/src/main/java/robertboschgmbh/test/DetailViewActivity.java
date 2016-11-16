@@ -1,15 +1,10 @@
 package robertboschgmbh.test;
 
-import android.graphics.Color;
-import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Display;
-import android.view.MotionEvent;
+import android.util.SparseArray;
 import android.view.View;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import dataloading.AsyncImageLoader;
@@ -17,200 +12,230 @@ import models.*;
 
 public class DetailViewActivity extends AppCompatActivity {
 
-    private HorizontalScrollView scroll;
+    private static final int BLOCK_LAYOUT = 0;
+    private static final int BLOCK_TITLE = 1;
+    private static final int SB1_TEXT = 2;
+    private static final int SB1_IMAGE_LAYOUT = 3;
+    private static final int SB1_IMAGE = 4;
+    private static final int SB1_SUBTITLE = 5;
+    private static final int SB2_TEXT = 6;
+    private static final int SB2_IMAGE_LAYOUT = 7;
+    private static final int SB2_IMAGE = 8;
+    private static final int SB2_SUBTITLE = 9;
+
     private ImageView buttonLeft, buttonRight;
 
-    private int scrollPosition = 0;
-    private int elementWidth = 0;
-    private int blockSize = 0;
+    private int leftBlockIndex = 0;
+    private int blockCount = 0;
 
     private ProjectModel model;
 
-    private final View.OnLayoutChangeListener onLayoutChangeListener = new View.OnLayoutChangeListener() {
-        @Override
-        public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
-            AsyncImageLoader.setImageToImageView(
-                    (String)view.getTag(), (ImageView)view,
-                    view.getWidth(), view.getHeight()
-            );
-        }
-    };
+    SparseArray<View> block1ViewSet = new SparseArray<>();
+    SparseArray<View> block2ViewSet = new SparseArray<>();
 
+    //TODO: Fix that sometimes images aren't getting loaded.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_view);
 
-        //mitgeliferte Projektdtaen auslesen
-
+        //Get the corresponding model for this activity
         Bundle extras = getIntent().getExtras();
         model = (ProjectModel)extras.get("model");
 
-        //manuelles Scrollen unterdrücken
-
-        scroll = (HorizontalScrollView) findViewById(R.id.scrollView1);
-        scroll.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
-
-
+        //Put the image views into variables so we save on findViewById-calls
         buttonLeft = (ImageView) findViewById(R.id.imageButtonLeft);
         buttonRight = (ImageView) findViewById(R.id.imageButtonRight);
 
-        LinearLayout content = new LinearLayout(this);
-        content.setOrientation(LinearLayout.HORIZONTAL);
+        //Get total block counts
+        blockCount = model.getBlocks().size();
 
-        //Anzahl Blocks auslesen und deren Weite bestimmen
+        fillViewSets();
 
-        blockSize = model.getBlocks().size();
-        elementWidth = getElementWidth();
+        updateBlocks();
+        checkButtonVisibility();
 
-        //Blöcke dynamisch laden und hinzufügen:
+    }
 
-        for (int i = 0; i < blockSize; i++) {
+    private void fillViewSets() {
 
-            LinearLayout block = new LinearLayout(this);
-            block.setOrientation(LinearLayout.VERTICAL);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(elementWidth,
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    1.0f);
-            block.setLayoutParams(params);
-            block.setPadding(20, 20, 20, 20);
+        //Fill view set for block 1
+        block1ViewSet.put(BLOCK_LAYOUT, findViewById(R.id.block1_layout));
+        block1ViewSet.put(BLOCK_TITLE, findViewById(R.id.block1_title));
+        block1ViewSet.put(SB1_TEXT, findViewById(R.id.block1_sb1_text));
+        block1ViewSet.put(SB1_IMAGE_LAYOUT, findViewById(R.id.block1_sb1_imageLayout));
+        block1ViewSet.put(SB1_IMAGE, findViewById(R.id.block1_sb1_image));
+        block1ViewSet.put(SB1_SUBTITLE, findViewById(R.id.block1_sb1_subtitle));
+        block1ViewSet.put(SB2_TEXT, findViewById(R.id.block1_sb2_text));
+        block1ViewSet.put(SB2_IMAGE_LAYOUT, findViewById(R.id.block1_sb2_imageLayout));
+        block1ViewSet.put(SB2_IMAGE, findViewById(R.id.block1_sb2_image));
+        block1ViewSet.put(SB2_SUBTITLE, findViewById(R.id.block1_sb2_subtitle));
 
-            TextView headline = new TextView(this);
-            headline.setTextSize(30);
-            headline.setTextColor(Color.WHITE);
-            headline.setText(model.getBlocks().get(i).getTitle());
-            headline.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT, 0.0f));
-            headline.setPadding(20, 20, 20, 20);
-            block.addView(headline);
+        //Fill view set for block 2
+        block2ViewSet.put(BLOCK_LAYOUT, findViewById(R.id.block2_layout));
+        block2ViewSet.put(BLOCK_TITLE, findViewById(R.id.block2_title));
+        block2ViewSet.put(SB1_TEXT, findViewById(R.id.block2_sb1_text));
+        block2ViewSet.put(SB1_IMAGE_LAYOUT, findViewById(R.id.block2_sb1_imageLayout));
+        block2ViewSet.put(SB1_IMAGE, findViewById(R.id.block2_sb1_image));
+        block2ViewSet.put(SB1_SUBTITLE, findViewById(R.id.block2_sb1_subtitle));
+        block2ViewSet.put(SB2_TEXT, findViewById(R.id.block2_sb2_text));
+        block2ViewSet.put(SB2_IMAGE_LAYOUT, findViewById(R.id.block2_sb2_imageLayout));
+        block2ViewSet.put(SB2_IMAGE, findViewById(R.id.block2_sb2_image));
+        block2ViewSet.put(SB2_SUBTITLE, findViewById(R.id.block2_sb2_subtitle));
 
+    }
 
-            LinearLayout subBlock1 = new LinearLayout(this);
-            subBlock1.setOrientation(LinearLayout.VERTICAL);
-            subBlock1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
-            subBlock1.setPadding(20, 20, 20, 20);
+    private void updateBlocks() {
 
-            if (model.getBlocks().get(i).getSubBlock1().getType() == SubBlockType.TEXT) {
+        //load left block
+        loadDataFromModel(model.getBlocks().get(leftBlockIndex), block1ViewSet);
 
-                TextView text1 = new TextView(this);
-                text1.setText(model.getBlocks().get(i).getSubBlock1().getText());
-                text1.setTextColor(Color.WHITE);
-                text1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
-                subBlock1.addView(text1);
+        if (blockCount == 1) {
+            //only display one block, stretched to the full display width,
+            //so make the other block 'gone'
+            block2ViewSet.get(BLOCK_LAYOUT).setVisibility(View.GONE);
+        } else {
+            loadDataFromModel(model.getBlocks().get(leftBlockIndex + 1), block2ViewSet);
+        }
+
+    }
+
+    private void loadDataFromModel(BlockModel bm, SparseArray<View> viewSet) {
+
+        String blockTitle = bm.getTitle();
+        SubBlockModel sb1 = bm.getSubBlock1();
+        SubBlockModel sb2 = bm.getSubBlock2();
+
+        TextView blockTitleView = (TextView)viewSet.get(BLOCK_TITLE);
+        if (blockTitle != null && !blockTitle.equals("")) {
+            blockTitleView.setVisibility(View.VISIBLE);
+            blockTitleView.setText(blockTitle);
+        } else {
+            blockTitleView.setVisibility(View.GONE);
+        }
+
+        if (sb1 != null) {
+            if (sb1.getType() == SubBlockType.TEXT) {
+
+                viewSet.get(SB1_IMAGE_LAYOUT).setVisibility(View.GONE);
+
+                TextView textView = (TextView)viewSet.get(SB1_TEXT);
+                textView.setVisibility(View.VISIBLE);
+                textView.setText(sb1.getText());
+
+                //even though the image view will be invisible for now, reset the image
+                //so the GC can collect it
+                ((ImageView)viewSet.get(SB1_IMAGE)).setImageBitmap(null);
 
             } else {
-                final ImageView img1 = new ImageView(this);
 
-                img1.setTag(model.getBlocks().get(i).getSubBlock1().getImage());
-                img1.addOnLayoutChangeListener(onLayoutChangeListener);
+                viewSet.get(SB1_TEXT).setVisibility(View.GONE);
+                viewSet.get(SB1_IMAGE_LAYOUT).setVisibility(View.VISIBLE);
 
-                img1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
+                String subtitle = sb1.getSubtitle();
+                TextView subtitleView = (TextView) viewSet.get(SB1_SUBTITLE);
+                if (subtitle != null && !subtitle.equals("")) {
+                    subtitleView.setVisibility(View.VISIBLE);
+                    subtitleView.setText(subtitle);
+                } else {
+                    subtitleView.setVisibility(View.GONE);
+                }
 
-                subBlock1.addView(img1);
+                ImageView imageView = (ImageView)viewSet.get(SB2_IMAGE);
+                imageView.setVisibility(View.VISIBLE);
+                imageView.setImageBitmap(null);
+                AsyncImageLoader.setImageToImageView(sb1.getImage(), imageView,
+                        imageView.getWidth(), imageView.getHeight());
 
-                //TODO: Bildunterschrift hinzufuegen
             }
+        } else {
 
-            LinearLayout subBlock2 = new LinearLayout(this);
-            subBlock2.setOrientation(LinearLayout.VERTICAL);
-            subBlock2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
-            subBlock2.setPadding(20, 20, 20, 20);
+            viewSet.get(SB1_TEXT).setVisibility(View.GONE);
+            viewSet.get(SB1_IMAGE_LAYOUT).setVisibility(View.GONE);
 
-            if (model.getBlocks().get(i).getSubBlock2().getType() == SubBlockType.TEXT) {
-                TextView text2 = new TextView(this);
-                text2.setText(model.getBlocks().get(i).getSubBlock2().getText());
-                text2.setTextColor(Color.WHITE);
-                text2.setTextIsSelectable(true);
-                text2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-                subBlock2.addView(text2);
+            //even though the image view will be invisible for now, reset the image
+            //so the GC can collect it
+            ((ImageView)viewSet.get(SB1_IMAGE)).setImageBitmap(null);
+        }
+
+        if (sb2 != null) {
+            if (sb2.getType() == SubBlockType.TEXT) {
+
+                viewSet.get(SB2_IMAGE_LAYOUT).setVisibility(View.GONE);
+
+                TextView textView = (TextView)viewSet.get(SB2_TEXT);
+                textView.setVisibility(View.VISIBLE);
+                textView.setText(sb2.getText());
+
+                //even though the image view will be invisible for now, reset the image
+                //so the GC can collect it
+                ((ImageView)viewSet.get(SB2_IMAGE)).setImageBitmap(null);
+
             } else {
-                ImageView img2 = new ImageView(this);
 
-                img2.setTag(model.getBlocks().get(i).getSubBlock2().getImage());
-                img2.addOnLayoutChangeListener(onLayoutChangeListener);
+                viewSet.get(SB2_TEXT).setVisibility(View.GONE);
+                viewSet.get(SB2_IMAGE_LAYOUT).setVisibility(View.VISIBLE);
 
-                img2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));
-                subBlock2.addView(img2);
+                String subtitle = sb2.getSubtitle();
+                TextView subtitleView = (TextView) viewSet.get(SB2_SUBTITLE);
+                if (subtitle != null && !subtitle.equals("")) {
+                    subtitleView.setVisibility(View.VISIBLE);
+                    subtitleView.setText(subtitle);
+                } else {
+                    subtitleView.setVisibility(View.GONE);
+                }
 
-                //TODO: Bildunterschrift hinzufuegen
+                ImageView imageView = (ImageView)viewSet.get(SB2_IMAGE);
+                imageView.setVisibility(View.VISIBLE);
+                imageView.setImageBitmap(null);
+                AsyncImageLoader.setImageToImageView(sb2.getImage(), imageView,
+                        imageView.getWidth(), imageView.getHeight());
+
             }
+        } else {
 
+            viewSet.get(SB2_TEXT).setVisibility(View.GONE);
+            viewSet.get(SB2_IMAGE_LAYOUT).setVisibility(View.GONE);
 
-            block.addView(subBlock1);
-            block.addView(subBlock2);
-
-            content.addView(block);
+            //even though the image view will be invisible for now, reset the image
+            //so the GC can collect it
+            ((ImageView)viewSet.get(SB2_IMAGE)).setImageBitmap(null);
         }
-        scroll.addView(content);
-
-        checkButtonVisibility();
 
     }
 
+    public void swipeLeft(View view) {
+        if (leftBlockIndex > 0)
+            leftBlockIndex--;
 
-    //Button links: verschiebt Position im Scrollpanel um 1 nach links
-
-    protected void swipeLeft(View view) {
-
-        if (scrollPosition > 0) {
-            scrollPosition--;
-            scroll.smoothScrollTo(scrollPosition * elementWidth, 0);
-        }
+        updateBlocks();
         checkButtonVisibility();
     }
 
-    //Button rechts: verschiebt Position im Scrollpanel um 1 nach rechts
+    public void swipeRight(View view) {
+        if (leftBlockIndex < blockCount - 2)
+            leftBlockIndex++;
 
-    protected void swipeRight(View view) {
-
-        if (scrollPosition < blockSize - 2) {
-            scrollPosition++;
-            scroll.smoothScrollTo(scrollPosition * elementWidth, 0);
-        }
+        updateBlocks();
         checkButtonVisibility();
     }
 
-    //überprüft ob Button sichtbar oder nicht sichtbar sein sollen
-
+    //check which of the swipe buttons should be visible
     private void checkButtonVisibility() {
 
-        if (scrollPosition == 0) {
-            buttonLeft.setVisibility(View.INVISIBLE);
-        } else {
+        if (leftBlockIndex > 0) {
             buttonLeft.setVisibility(View.VISIBLE);
-        }
-
-        if (scrollPosition == blockSize - 2) {
-            buttonRight.setVisibility(View.INVISIBLE);
         } else {
-            buttonRight.setVisibility(View.VISIBLE);
+            buttonLeft.setVisibility(View.INVISIBLE);
         }
+
+        if (leftBlockIndex < blockCount - 2) {
+            buttonRight.setVisibility(View.VISIBLE);
+        } else {
+            buttonRight.setVisibility(View.INVISIBLE);
+        }
+
     }
 
-    private int getElementWidth() {
-
-        Display display = getWindowManager().getDefaultDisplay();       //Displaygröße auslesen
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-
-        width = width-20;                                   //Padding von Hauptlayout abziehen
-        double faktor = 5.0/12.0;                           //Faktor betsimmt sich aus weigth der Elemente (Scrollview hat 5/6)
-        double widthTemp =  (double)width*faktor;           //ElementWidth in double
-        width = (int)widthTemp;                             //in int
-
-        return width;
-    }
 }
