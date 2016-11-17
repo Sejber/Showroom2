@@ -4,4 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="tileHeight">300dp</dimen>
     <dimen name="tileWidth">400dp</dimen>
+    <dimen name="spacingDetailViewLarge">20dp</dimen>
+    <dimen name="spacingDetailViewSmall">10dp</dimen>
 </resources>
