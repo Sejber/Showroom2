@@ -6,6 +6,7 @@ import org.xmlpull.v1.XmlSerializer;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,6 +58,8 @@ public class XmlDataManager {
 
         try {
 
+            //TODO: Delete old txt files in the project directory
+
             FileOutputStream fos = new FileOutputStream(new File(pm.getDirectory(), "project.xml"));
 
             XmlSerializer serializer = Xml.newSerializer();
@@ -91,6 +94,8 @@ public class XmlDataManager {
 
             for (BlockModel b : pm.getBlocks()) {
 
+                serializer.startTag(null, "block");
+
                 if (b.getTitle() != null && !b.getTitle().equals("")) {
                     serializer.attribute(null, "title", b.getTitle());
                 }
@@ -103,10 +108,13 @@ public class XmlDataManager {
                     printSubblock(serializer, b.getSubBlock2(), pm.getDirectory());
                 }
 
+                serializer.endTag(null, "block");
+
             }
 
             serializer.endTag(null, "content");
             serializer.endTag(null, "project");
+            serializer.flush();
             serializer.endDocument();
 
             fos.close();
@@ -132,7 +140,7 @@ public class XmlDataManager {
                 serializer.attribute(null, "subtitle", sb.getSubtitle());
             }
 
-            serializer.text(sb.getImage().substring(sb.getImage().lastIndexOf(File.pathSeparator) + 1));
+            serializer.text(sb.getImage().substring(sb.getImage().lastIndexOf("/") + 1));
         }
         serializer.endTag(null, "subblock");
     }
@@ -147,11 +155,12 @@ public class XmlDataManager {
             f = new File(directory, "text" + i + ".txt");
         }
 
-        FileOutputStream fos = new FileOutputStream(f);
-        fos.write(text.getBytes());
-        fos.close();
+        FileWriter fw = new FileWriter(f);
+        fw.write(text);
+        fw.flush();
+        fw.close();
 
-        return f.getAbsolutePath().substring(f.getAbsolutePath().lastIndexOf(File.pathSeparatorChar) + 1);
+        return f.getAbsolutePath().substring(f.getAbsolutePath().lastIndexOf("/") + 1);
     }
 
     private static void printTag(XmlSerializer serializer, String tagName, String text) throws IOException {

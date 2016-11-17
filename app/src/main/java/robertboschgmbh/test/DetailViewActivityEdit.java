@@ -48,8 +48,6 @@ public class DetailViewActivityEdit extends AppCompatActivity {
     SparseArray<View> block1ViewSet = new SparseArray<>();
     SparseArray<View> block2ViewSet = new SparseArray<>();
 
-    //TODO: Fix that sometimes images aren't getting loaded.
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +67,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
             public void onClick(View view) {
 
                 //save new project data
+                saveBlocks();
                 XmlDataManager.changeProject(model);
 
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
@@ -88,6 +87,9 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
         //Get total block counts
         blockCount = model.getBlocks().size();
+
+        EditText title = (EditText)findViewById(R.id.tvProjectTitle_edit);
+        title.setText(model.getTitle());
 
         fillViewSets();
 
@@ -217,7 +219,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
                     subtitleView.setVisibility(View.GONE);
                 }
 
-                ImageView imageView = (ImageView)viewSet.get(SB2_IMAGE);
+                ImageView imageView = (ImageView)viewSet.get(SB1_IMAGE);
                 imageView.setVisibility(View.VISIBLE);
                 imageView.setImageBitmap(null);
                 AsyncImageLoader.setImageToImageView(sb1.getImage(), imageView,

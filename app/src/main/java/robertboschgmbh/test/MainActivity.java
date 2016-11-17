@@ -54,9 +54,6 @@ public class MainActivity extends AppCompatActivity {
         myToolbar.setTitle("");
         setSupportActionBar(myToolbar);
 
-        timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)) * 60000);
-        timerThread.start();
-
         try{
             Bundle extras = getIntent().getExtras();
             if (extras.getBoolean("admin")){
@@ -67,8 +64,6 @@ public class MainActivity extends AppCompatActivity {
         }catch(NullPointerException e){
             e.printStackTrace();
         }
-
-
 
         checkPermission();
 
