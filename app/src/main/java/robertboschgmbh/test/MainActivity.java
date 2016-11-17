@@ -233,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void loadData() {
+    public void loadData() {
         GridView gw = (GridView)findViewById(R.id.gridView_alle);
         GridView gwET = (GridView)findViewById(R.id.gridView_et);
         GridView gwIT = (GridView)findViewById(R.id.gridView_it);

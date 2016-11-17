@@ -78,6 +78,7 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
 
                         if (XmlDataManager.deleteProject((ProjectModel)v.getTag())){
                             Toast.makeText(getContext(),"Erfolgreich gelöscht",Toast.LENGTH_LONG).show();
+                            ((MainActivity)getContext()).loadData();
                         }else{
                             Toast.makeText(getContext(),"Fehler beim löschen",Toast.LENGTH_LONG).show();
                         }
