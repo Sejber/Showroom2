@@ -155,8 +155,8 @@ public class XmlDataManager {
                 return "IT";
             case ET:
                 return "ET";
-            case ME:
-                return "ME";
+            case MT:
+                return "MT";
             case MB:
                 return "MB";
             case OTHER:

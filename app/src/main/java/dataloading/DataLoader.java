@@ -12,5 +12,4 @@ import models.ProjectModel;
 
 public interface DataLoader {
     ArrayList<ProjectModel> loadData(File directory);
-    ArrayList<ProjectModel> getProjectsOfDepartment(Department dep);
 }

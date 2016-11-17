@@ -174,8 +174,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
     private void loadData() {
         GridView gw = (GridView)findViewById(R.id.gridView_alle);
         GridView gwET = (GridView)findViewById(R.id.gridView_et);
@@ -183,23 +181,29 @@ public class MainActivity extends AppCompatActivity {
         GridView gwMB = (GridView)findViewById(R.id.gridView_mb);
         GridView gwMT = (GridView)findViewById(R.id.gridView_mt);
 
-<<<<<<< HEAD
-        DataLoader loader = new XmlDataLoader();
-=======
         projects = XmlDataManager.loadProjects(Environment.getExternalStorageDirectory());
->>>>>>> master
-
-        projects = loader.loadData(Environment.getExternalStorageDirectory());
         gw.setAdapter(new ProjectModelAdapter(this,projects,admin));
 
-        projects = loader.getProjectsOfDepartment(Department.ET);
+        projects = getProjectsOfDepartment(Department.ET);
         gwET.setAdapter(new ProjectModelAdapter(this,projects,admin));
-        projects = loader.getProjectsOfDepartment(Department.IT);
+        projects = getProjectsOfDepartment(Department.IT);
         gwIT.setAdapter(new ProjectModelAdapter(this,projects,admin));
-        projects = loader.getProjectsOfDepartment(Department.MB);
+        projects = getProjectsOfDepartment(Department.MB);
         gwMB.setAdapter(new ProjectModelAdapter(this,projects,admin));
-        projects = loader.getProjectsOfDepartment(Department.MT);
+        projects = getProjectsOfDepartment(Department.MT);
         gwMT.setAdapter(new ProjectModelAdapter(this,projects,admin));
+    }
+
+    private ArrayList<ProjectModel> getProjectsOfDepartment(Department dep) {
+        ArrayList<ProjectModel> projectModels = new ArrayList<ProjectModel>();
+
+        for(ProjectModel prj : projects) {
+            if(prj.getDepartment() == dep) {
+                projectModels.add(prj);
+            }
+        }
+
+        return projectModels;
     }
 
 }

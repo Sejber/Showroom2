@@ -73,18 +73,6 @@ class XmlDataLoader implements DataLoader {
         return projectModels;
     }
 
-    public ArrayList<ProjectModel> getProjectsOfDepartment(Department dep) {
-        ArrayList<ProjectModel> projectModels = new ArrayList<ProjectModel>();
-
-        for(ProjectModel prj : dataCache) {
-            if(prj.getDepartment() == dep) {
-                projectModels.add(prj);
-            }
-        }
-
-        return projectModels;
-    }
-
     private ProjectModel loadProject(File projectFile) {
 
         InputStream is;
