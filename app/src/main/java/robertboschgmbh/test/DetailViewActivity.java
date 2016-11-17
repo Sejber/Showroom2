@@ -58,6 +58,7 @@ public class DetailViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(i);
             }
         });
@@ -99,6 +100,7 @@ public class DetailViewActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
 
             Intent i = new Intent(this,LoginActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(i);
             finish();
             return true;

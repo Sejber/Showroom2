@@ -27,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (pw.equals(getResources().getString(R.string.passwort))){
                     Intent i = new Intent(LoginActivity.this,MainActivity.class);
                     i.putExtra("admin",true);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(i);
                     finish();
                 }else{
@@ -42,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(LoginActivity.this,MainActivity.class);
                 i.putExtra("admin",false);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(i);
                 finish();
             }
