@@ -266,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<ProjectModel> projectModels = new ArrayList<>();
 
         for(ProjectModel prj : projects) {
-            if(prj.getDepartment() == dep) {
+            if(prj.getDepartment().equals(dep)) {
                 projectModels.add(prj);
             }
         }
