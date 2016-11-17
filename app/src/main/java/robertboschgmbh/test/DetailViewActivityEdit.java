@@ -1,6 +1,8 @@
 package robertboschgmbh.test;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import dataloading.AsyncImageLoader;
+import dataloading.XmlDataManager;
 import models.*;
 
 public class DetailViewActivityEdit extends AppCompatActivity {
@@ -55,9 +58,14 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         imageButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //save new project data
+                XmlDataManager.changeProject(model);
+
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(i);
+
                 }
             });
 
@@ -95,13 +103,16 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings4){
-            
+
 			//adding new Block
 
             BlockModel newBlock = new BlockModel("Titel(optional)", new SubBlockModel("subtext1"), new SubBlockModel("subtext2"));
             model.addBlock(newBlock);
 
             blockCount = model.getBlocks().size();
+            checkButtonVisibility();
+
+
 			
 		}
             return super.onOptionsItemSelected(item);
@@ -258,7 +269,12 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
     }
 
+
+    //write textchanges in ProjectModel
     public void saveBlocks() {
+
+        EditText projectTitle = (EditText)findViewById(R.id.tvProjectTitle_edit);
+        model.setTitle(projectTitle.getText().toString());
 
         EditText blockTitleView1 = (EditText)block1ViewSet.get(BLOCK_TITLE);
         model.getBlocks().get(leftBlockIndex).setTitle( blockTitleView1.getText().toString());
@@ -287,7 +303,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
         }
 
-
+        //check if there are 2 blocks
         if(blockCount>1) {
 
 
