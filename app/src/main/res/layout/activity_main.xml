@@ -8,10 +8,18 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:background="@color/colorPrimary"
+        android:contentInsetStart="0dp"
+        app:contentInsetStart="0dp"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"/>
+    <ImageButton
+        android:id="@+id/main_screen_top_toolbar_settings"
+        android:layout_height="60dip"
+        android:layout_width="60dip"
+        android:layout_gravity="left"
+        android:background="@drawable/homeicon" />
 
 
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
