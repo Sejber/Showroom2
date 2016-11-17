@@ -16,8 +16,6 @@ public class screensaver extends AppCompatActivity {
         v.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                Intent i = new Intent(screensaver.this,MainActivity.class);
-                startActivity(i);
                 finish();
                 return false;
             }
