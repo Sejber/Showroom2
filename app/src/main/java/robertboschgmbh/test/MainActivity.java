@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        myToolbar.setTitle("");
         setSupportActionBar(myToolbar);
 
         timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)) * 60000);
