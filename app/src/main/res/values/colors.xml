@@ -5,4 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorArrows">#000000</color>
     <color name="colorDetailViewText">#000000</color>
+    <color name="colorHomeButton">#FFFFFF</color>
+    <color name="colorText">#FFFFFF</color>
+    <color name="colorSubtitle">#AAAAAA</color>
 </resources>
