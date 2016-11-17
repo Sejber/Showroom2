@@ -1,7 +1,6 @@
 package robertboschgmbh.test;
 
 import android.Manifest;
-import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
@@ -20,11 +19,12 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.Toast;
+import android.view.Window;
+import android.view.WindowManager;
 
 import java.util.ArrayList;
 
-import dataloading.DataLoader;
-import dataloading.XmlDataLoader;
+import dataloading.XmlDataManager;
 import models.ProjectModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_main);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -46,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
                 //Da man heir schon auf dem HomeTab ist muss keine activity gewechselt werden
             }
         });
-
 
         try{
 
@@ -141,8 +145,7 @@ public class MainActivity extends AppCompatActivity {
     private void loadData() {
         GridView gw = (GridView)findViewById(R.id.gridView1);
 
-        DataLoader loader = new XmlDataLoader();
-        projects = loader.loadData(Environment.getExternalStorageDirectory());
+        projects = XmlDataManager.loadProjects(Environment.getExternalStorageDirectory());
 
         projectModelAdapter = new ProjectModelAdapter(this,projects,admin);
 

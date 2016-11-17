@@ -10,6 +10,8 @@ public class DepartmentToStringConverter {
                 return "Elektrotechnik";
             case ME:
                 return "Mechatronik";
+            case MB:
+                return "Maschinenbau";
             default:
             case OTHER:
                 return "Andere";
