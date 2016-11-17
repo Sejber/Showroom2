@@ -6,6 +6,7 @@
     <color name="colorArrows">#000000</color>
     <color name="colorDetailViewText">#000000</color>
     <color name="colorHomeButton">#FFFFFF</color>
-    <color name="colorText">#FFFFFF</color>
-    <color name="colorSubtitle">#AAAAAA</color>
+    <color name="colorText">#000000</color>
+    <color name="colorSubtitle">#555555</color>
+    <color name="colorBlockBackground">#EEEEEE</color>
 </resources>

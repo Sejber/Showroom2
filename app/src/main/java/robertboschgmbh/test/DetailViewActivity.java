@@ -73,6 +73,10 @@ public class DetailViewActivity extends AppCompatActivity {
         //Get total block counts
         blockCount = model.getBlocks().size();
 
+        //Set the project title
+        TextView projectTitleView = (TextView)findViewById(R.id.tvProjectTitle);
+        projectTitleView.setText(model.getTitle());
+
         fillViewSets();
 
         updateBlocks();
