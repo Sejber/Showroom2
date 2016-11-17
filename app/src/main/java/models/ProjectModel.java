@@ -69,4 +69,6 @@ public class ProjectModel implements Serializable {
         this.blocks.add(newBlock);
     }
 
+    public void setTitle(String title) { this.title=title; }
+
 }
