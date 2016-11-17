@@ -2,12 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="robertboschgmbh.test">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -18,16 +13,18 @@
 
         <!-- android:theme="@style/AppTheme" -->
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".DetailViewActivity" />
-        <activity android:name=".screensaver"></activity>
+        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".DetailViewActivity"></activity>
+        <activity android:name=".DetailViewActivityEdit"></activity>
+		<activity android:name=".screensaver"></activity>
     </application>
 
 </manifest>

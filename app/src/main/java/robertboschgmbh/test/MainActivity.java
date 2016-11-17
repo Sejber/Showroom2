@@ -1,7 +1,6 @@
 package robertboschgmbh.test;
 
 import android.Manifest;
-import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
@@ -20,18 +19,20 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.Toast;
-
+import android.widget.TabHost;
+import models.Department;
+import models.DepartmentToStringConverter;
+import android.view.Window;
+import android.view.WindowManager;
 import java.util.ArrayList;
-
-import dataloading.DataLoader;
-import dataloading.XmlDataLoader;
+import dataloading.XmlDataManager;
 import models.ProjectModel;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<ProjectModel> projects;
-    private ProjectModelAdapter projectModelAdapter;
     static private boolean admin = false;
     private TimerThread timerThread = new TimerThread();
     Handler hander = new Handler(){
@@ -47,12 +48,30 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_main);
+
+        //Toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
         timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)));
         timerThread.start();
+
+        //Homebutton
+        ImageButton imageButton1 = (ImageButton)findViewById(R.id.main_screen_top_toolbar_settings);
+        imageButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(i);
+            }
+        });
 
 
         GridView gridView = (GridView)findViewById(R.id.gridView1);
@@ -76,6 +95,35 @@ public class MainActivity extends AppCompatActivity {
         }
 
         checkPermission();
+
+        TabHost host = (TabHost)findViewById(R.id.tabhost_studiengang);
+        host.setup();
+
+        //Tab 'Alle'
+        TabHost.TabSpec spec = host.newTabSpec("Alle");
+        spec.setContent(R.id.tab_alle);
+        spec.setIndicator("Alle");
+        host.addTab(spec);
+        //Tab ET
+        spec = host.newTabSpec(DepartmentToStringConverter.convertToString(Department.ET));
+        spec.setContent(R.id.tab_et);
+        spec.setIndicator(DepartmentToStringConverter.convertToString(Department.ET));
+        host.addTab(spec);
+        //Tab IT
+        spec = host.newTabSpec(DepartmentToStringConverter.convertToString(Department.IT));
+        spec.setContent(R.id.tab_it);
+        spec.setIndicator(DepartmentToStringConverter.convertToString(Department.IT));
+        host.addTab(spec);
+        //Tab MB
+        spec = host.newTabSpec(DepartmentToStringConverter.convertToString(Department.MB));
+        spec.setContent(R.id.tab_mb);
+        spec.setIndicator(DepartmentToStringConverter.convertToString(Department.MB));
+        host.addTab(spec);
+        //Tab MT
+        spec = host.newTabSpec(DepartmentToStringConverter.convertToString(Department.MT));
+        spec.setContent(R.id.tab_mt);
+        spec.setIndicator(DepartmentToStringConverter.convertToString(Department.MT));
+        host.addTab(spec);
 
     }
 
@@ -168,17 +216,36 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
     private void loadData() {
-        GridView gw = (GridView)findViewById(R.id.gridView1);
+        GridView gw = (GridView)findViewById(R.id.gridView_alle);
+        GridView gwET = (GridView)findViewById(R.id.gridView_et);
+        GridView gwIT = (GridView)findViewById(R.id.gridView_it);
+        GridView gwMB = (GridView)findViewById(R.id.gridView_mb);
+        GridView gwMT = (GridView)findViewById(R.id.gridView_mt);
 
-        DataLoader loader = new XmlDataLoader();
-        projects = loader.loadData(Environment.getExternalStorageDirectory());
+        projects = XmlDataManager.loadProjects(Environment.getExternalStorageDirectory());
+        gw.setAdapter(new ProjectModelAdapter(this,projects,admin));
 
-        projectModelAdapter = new ProjectModelAdapter(this,projects,admin);
+        projects = getProjectsOfDepartment(Department.ET);
+        gwET.setAdapter(new ProjectModelAdapter(this,projects,admin));
+        projects = getProjectsOfDepartment(Department.IT);
+        gwIT.setAdapter(new ProjectModelAdapter(this,projects,admin));
+        projects = getProjectsOfDepartment(Department.MB);
+        gwMB.setAdapter(new ProjectModelAdapter(this,projects,admin));
+        projects = getProjectsOfDepartment(Department.MT);
+        gwMT.setAdapter(new ProjectModelAdapter(this,projects,admin));
+    }
 
-        gw.setAdapter(projectModelAdapter);
+    private ArrayList<ProjectModel> getProjectsOfDepartment(Department dep) {
+        ArrayList<ProjectModel> projectModels = new ArrayList<ProjectModel>();
+
+        for(ProjectModel prj : projects) {
+            if(prj.getDepartment() == dep) {
+                projectModels.add(prj);
+            }
+        }
+
+        return projectModels;
     }
 
 }

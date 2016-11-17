@@ -3,6 +3,7 @@
     <string name="action_settings">Administrator-Modus</string>
     <string name="action_settings2">User-Modus</string>
     <string name="action_settings3">Beenden</string>
+    <string name="action_settings4">Neuer Block</string>
     <string name="title_activity_login">Sign in</string>
     <string name="passwort">test123</string>
     <string name="title_activity_screensaver">screensaver</string>

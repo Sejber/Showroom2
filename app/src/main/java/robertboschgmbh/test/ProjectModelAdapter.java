@@ -55,7 +55,6 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
             public void onClick(View view) {
                 Intent i = new Intent(getContext(), DetailViewActivity.class);
                 i.putExtra("model",(ProjectModel)view.getTag());
-                i.putExtra("edit",false);
                 startActivity(getContext(), i, null);
             }
         });
@@ -71,9 +70,8 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
         editIcon.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent i = new Intent(getContext(), DetailViewActivity.class);
+                Intent i = new Intent(getContext(), DetailViewActivityEdit.class);
                 i.putExtra("model",(ProjectModel)view.getTag());
-                i.putExtra("edit",true);
                 startActivity(getContext(), i, null);
             }
         });
@@ -92,11 +90,13 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
 
     private String convertToString(Department d) {
         switch (d) {
-            case IT:
-                return "Informatik";
             case ET:
                 return "Elektrotechnik";
-            case ME:
+            case IT:
+                return "Informatik";
+            case MB:
+                return "Maschinenbau";
+            case MT:
                 return "Mechatronik";
             default:
             case OTHER:

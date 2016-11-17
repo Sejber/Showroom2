@@ -30,9 +30,10 @@ import models.SubBlockModel;
  */
 
 
-public class XmlDataLoader implements DataLoader {
+class XmlDataLoader implements DataLoader {
 
     private File currentProjectDirectory;
+    private ArrayList<ProjectModel> dataCache;
 
     public ArrayList<ProjectModel> loadData(File directory) {
 
@@ -66,6 +67,9 @@ public class XmlDataLoader implements DataLoader {
             }
         }
 
+        // cache it
+        dataCache = projectModels;
+
         return projectModels;
     }
 
@@ -84,7 +88,7 @@ public class XmlDataLoader implements DataLoader {
         try {
             XmlPullParser xpp = Xml.newPullParser();
             is = new FileInputStream(projectFile);
-            xpp.setInput(is, null);
+            xpp.setInput(is, "UTF-8");
             xpp.nextTag();
 
             xpp.require(XmlPullParser.START_TAG, null, "project");
@@ -114,7 +118,7 @@ public class XmlDataLoader implements DataLoader {
                 }
             }
 
-            return new ProjectModel(
+            return new ProjectModel(currentProjectDirectory,
                     members, title, department, titleImage, date, tags, blocks);
 
         } catch (FileNotFoundException e) {
@@ -238,12 +242,14 @@ public class XmlDataLoader implements DataLoader {
 
     private Department parseDepartment(String s) {
         switch (s) {
-            case "IT":
-                return Department.IT;
             case "ET":
                 return Department.ET;
-            case "ME":
-                return Department.ME;
+            case "IT":
+                return Department.IT;
+            case "MB":
+                return Department.MB;
+            case "MT":
+                return Department.MT;
             default:
                 return Department.OTHER;
         }
