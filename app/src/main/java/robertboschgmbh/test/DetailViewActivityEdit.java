@@ -83,7 +83,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
 
-        getMenuInflater().inflate(R.menu.menu_main2, menu);
+        getMenuInflater().inflate(R.menu.menu_main_3, menu);
         return true;
     }
 
@@ -105,7 +105,15 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         }else if (id == R.id.action_settings3){
             finish();
             System.exit(0);
-        }
+        }else if (id == R.id.action_settings4){
+            //hier könnte anderer code stehen
+            //
+            //
+            //
+            //________________________________
+            finish();
+            System.exit(0);
+    }
             return super.onOptionsItemSelected(item);
     }
 
