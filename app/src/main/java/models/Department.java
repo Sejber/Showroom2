@@ -5,6 +5,6 @@ package models;
  */
 
 public enum Department {
-    IT, ET, ME, OTHER
+    IT, ET, ME, MB, OTHER
 }
 
