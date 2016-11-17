@@ -230,14 +230,14 @@ public class MainActivity extends AppCompatActivity {
         projects = XmlDataManager.loadProjects(Environment.getExternalStorageDirectory());
         gw.setAdapter(new ProjectModelAdapter(this,projects,admin));
 
-        projects = getProjectsOfDepartment(Department.ET);
-        gwET.setAdapter(new ProjectModelAdapter(this,projects,admin));
-        projects = getProjectsOfDepartment(Department.IT);
-        gwIT.setAdapter(new ProjectModelAdapter(this,projects,admin));
-        projects = getProjectsOfDepartment(Department.MB);
-        gwMB.setAdapter(new ProjectModelAdapter(this,projects,admin));
-        projects = getProjectsOfDepartment(Department.MT);
-        gwMT.setAdapter(new ProjectModelAdapter(this,projects,admin));
+        ArrayList<ProjectModel> lProjects = getProjectsOfDepartment(Department.ET);
+        gwET.setAdapter(new ProjectModelAdapter(this,lProjects,admin));
+        lProjects = getProjectsOfDepartment(Department.IT);
+        gwIT.setAdapter(new ProjectModelAdapter(this,lProjects,admin));
+        lProjects = getProjectsOfDepartment(Department.MB);
+        gwMB.setAdapter(new ProjectModelAdapter(this,lProjects,admin));
+        lProjects = getProjectsOfDepartment(Department.MT);
+        gwMT.setAdapter(new ProjectModelAdapter(this,lProjects,admin));
     }
 
     private ArrayList<ProjectModel> getProjectsOfDepartment(Department dep) {
