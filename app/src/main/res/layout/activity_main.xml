@@ -11,11 +11,20 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/colorPrimary"
-        android:contentInsetStart="0dp"
         app:contentInsetStart="0dp"
         android:theme="@style/AppTheme.AppBarOverlay"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"/>
-    
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:src="@drawable/logo"
+            android:layout_marginEnd="0dp"
+            android:scaleType="centerInside"
+            android:layout_marginStart="10dp"
+            android:layout_width="135dp"
+            android:layout_height="50dp" />
+
+    </android.support.v7.widget.Toolbar>
 
     <TabHost
         android:id="@+id/tabhost_studiengang"

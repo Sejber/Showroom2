@@ -51,8 +51,11 @@ public class MainActivity extends AppCompatActivity {
 
         //Toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        myToolbar.setTitle("");
         setSupportActionBar(myToolbar);
 
+        timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)) * 60000);
+        timerThread.start();
 
         try{
             Bundle extras = getIntent().getExtras();
@@ -249,14 +252,14 @@ public class MainActivity extends AppCompatActivity {
         projects = XmlDataManager.loadProjects(Environment.getExternalStorageDirectory());
         gw.setAdapter(new ProjectModelAdapter(this,projects,admin));
 
-        projects = getProjectsOfDepartment(Department.ET);
-        gwET.setAdapter(new ProjectModelAdapter(this,projects,admin));
-        projects = getProjectsOfDepartment(Department.IT);
-        gwIT.setAdapter(new ProjectModelAdapter(this,projects,admin));
-        projects = getProjectsOfDepartment(Department.MB);
-        gwMB.setAdapter(new ProjectModelAdapter(this,projects,admin));
-        projects = getProjectsOfDepartment(Department.MT);
-        gwMT.setAdapter(new ProjectModelAdapter(this,projects,admin));
+        ArrayList<ProjectModel> lProjects = getProjectsOfDepartment(Department.ET);
+        gwET.setAdapter(new ProjectModelAdapter(this,lProjects,admin));
+        lProjects = getProjectsOfDepartment(Department.IT);
+        gwIT.setAdapter(new ProjectModelAdapter(this,lProjects,admin));
+        lProjects = getProjectsOfDepartment(Department.MB);
+        gwMB.setAdapter(new ProjectModelAdapter(this,lProjects,admin));
+        lProjects = getProjectsOfDepartment(Department.MT);
+        gwMT.setAdapter(new ProjectModelAdapter(this,lProjects,admin));
     }
 
     private ArrayList<ProjectModel> getProjectsOfDepartment(Department dep) {
