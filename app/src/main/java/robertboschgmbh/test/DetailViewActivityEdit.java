@@ -102,6 +102,11 @@ public class DetailViewActivityEdit extends AppCompatActivity {
             model.addBlock(newBlock);
 
             blockCount = model.getBlocks().size();
+
+            //Move view so the new block is visible
+            leftBlockIndex = blockCount - 2;
+            updateBlocks();
+            checkButtonVisibility();
 			
 		}
             return super.onOptionsItemSelected(item);

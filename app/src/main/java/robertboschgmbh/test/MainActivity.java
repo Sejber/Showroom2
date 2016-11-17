@@ -65,21 +65,11 @@ public class MainActivity extends AppCompatActivity {
 
         //Toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        myToolbar.setTitle("");
         setSupportActionBar(myToolbar);
 
         timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)) * 60000);
         timerThread.start();
-
-        //Homebutton
-        ImageButton imageButton1 = (ImageButton)findViewById(R.id.main_screen_top_toolbar_settings);
-        imageButton1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(i);
-            }
-        });
 
         try{
             Bundle extras = getIntent().getExtras();
