@@ -33,6 +33,7 @@ import models.SubBlockModel;
 class XmlDataLoader implements DataLoader {
 
     private File currentProjectDirectory;
+    private ArrayList<ProjectModel> dataCache;
 
     public ArrayList<ProjectModel> loadData(File directory) {
 
@@ -63,6 +64,21 @@ class XmlDataLoader implements DataLoader {
                     projectModels.add(pm);
                 }
 
+            }
+        }
+
+        // cache it
+        dataCache = projectModels;
+
+        return projectModels;
+    }
+
+    public ArrayList<ProjectModel> getProjectsOfDepartment(Department dep) {
+        ArrayList<ProjectModel> projectModels = new ArrayList<ProjectModel>();
+
+        for(ProjectModel prj : dataCache) {
+            if(prj.getDepartment() == dep) {
+                projectModels.add(prj);
             }
         }
 
@@ -238,14 +254,14 @@ class XmlDataLoader implements DataLoader {
 
     private Department parseDepartment(String s) {
         switch (s) {
-            case "IT":
-                return Department.IT;
             case "ET":
                 return Department.ET;
-            case "ME":
-                return Department.ME;
+            case "IT":
+                return Department.IT;
             case "MB":
                 return Department.MB;
+            case "MT":
+                return Department.MT;
             default:
                 return Department.OTHER;
         }
