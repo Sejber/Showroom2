@@ -1,5 +1,6 @@
 package robertboschgmbh.test;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -45,8 +46,20 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_view_edit);
 
-       // Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        //setSupportActionBar(myToolbar);
+        //Toolbar
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+
+        //Homebutton
+        ImageButton imageButton1 = (ImageButton)findViewById(R.id.main_screen_top_toolbar_settings);
+        imageButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(i);
+                }
+            });
 
         //Get the corresponding model for this activity
         Bundle extras = getIntent().getExtras();
@@ -66,12 +79,10 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
     }
 
-    /*@Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-
+        getMenuInflater().inflate(R.menu.menu_main_3, menu);
         return true;
     }
 
@@ -83,22 +94,18 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-
-            //adding new Block
+        if (id == R.id.action_settings4){
+            
+			//adding new Block
 
             BlockModel newBlock = new BlockModel("Titel(optional)", new SubBlockModel("subtext1"), new SubBlockModel("subtext2"));
             model.addBlock(newBlock);
 
             blockCount = model.getBlocks().size();
-
-
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-
-    }*/
-
+			
+		}
+            return super.onOptionsItemSelected(item);
+    }
 
     private void fillViewSets() {
 
