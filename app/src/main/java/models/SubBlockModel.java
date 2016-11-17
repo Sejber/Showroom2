@@ -40,4 +40,17 @@ public class SubBlockModel implements Serializable {
         return subtitle;
     }
 
+
+    public void setType(SubBlockType type) {
+        this.type = type;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setSubtitle(String subtitle) {
+        this.subtitle = subtitle;
+    }
+
 }

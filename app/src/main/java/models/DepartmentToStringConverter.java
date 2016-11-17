@@ -4,11 +4,13 @@ public class DepartmentToStringConverter {
 
     public static String convertToString(Department d) {
         switch (d) {
-            case IT:
-                return "Informatik";
             case ET:
                 return "Elektrotechnik";
-            case ME:
+            case IT:
+                return "Informatik";
+            case MB:
+                return "Maschinenbau";
+            case MT:
                 return "Mechatronik";
             case MB:
                 return "Maschinenbau";

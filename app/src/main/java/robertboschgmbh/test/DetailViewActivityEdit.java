@@ -82,7 +82,6 @@ public class DetailViewActivityEdit extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-
         getMenuInflater().inflate(R.menu.menu_main_3, menu);
         return true;
     }
@@ -95,25 +94,16 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if(id == R.id.action_settings2){
-            Intent i = new Intent(this,MainActivity.class);
-            i.putExtra("admin",false);
-            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(i);
-            finish();
-            return true;
-        }else if (id == R.id.action_settings3){
-            finish();
-            System.exit(0);
-        }else if (id == R.id.action_settings4){
-            //hier könnte anderer code stehen
-            //
-            //
-            //
-            //________________________________
-            finish();
-            System.exit(0);
-    }
+        if (id == R.id.action_settings4){
+            
+			//adding new Block
+
+            BlockModel newBlock = new BlockModel("Titel(optional)", new SubBlockModel("subtext1"), new SubBlockModel("subtext2"));
+            model.addBlock(newBlock);
+
+            blockCount = model.getBlocks().size();
+			
+		}
             return super.onOptionsItemSelected(item);
     }
 
@@ -268,7 +258,74 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
     }
 
+    public void saveBlocks() {
+
+        EditText blockTitleView1 = (EditText)block1ViewSet.get(BLOCK_TITLE);
+        model.getBlocks().get(leftBlockIndex).setTitle( blockTitleView1.getText().toString());
+
+        if(model.getBlocks().get(leftBlockIndex).getSubBlock1().getType()==SubBlockType.TEXT) {
+
+            EditText textView1 = (EditText)block1ViewSet.get(SB1_TEXT);
+            model.getBlocks().get(leftBlockIndex).getSubBlock1().setText(textView1.getText().toString());
+
+        } else {
+
+            EditText subtitleView1 = (EditText) block1ViewSet.get(SB1_SUBTITLE);
+            model.getBlocks().get(leftBlockIndex).getSubBlock1().setSubtitle(subtitleView1.getText().toString());
+
+        }
+
+        if(model.getBlocks().get(leftBlockIndex).getSubBlock2().getType()==SubBlockType.TEXT) {
+
+            EditText textView2 = (EditText)block1ViewSet.get(SB2_TEXT);
+            model.getBlocks().get(leftBlockIndex).getSubBlock2().setText(textView2.getText().toString());
+
+        } else {
+
+            EditText subtitleView2 = (EditText) block1ViewSet.get(SB2_SUBTITLE);
+            model.getBlocks().get(leftBlockIndex).getSubBlock2().setSubtitle(subtitleView2.getText().toString());
+
+        }
+
+
+        if(blockCount>1) {
+
+
+            EditText blockTitleView2 = (EditText)block2ViewSet.get(BLOCK_TITLE);
+            model.getBlocks().get(leftBlockIndex+1).setTitle( blockTitleView2.getText().toString());
+
+            if(model.getBlocks().get(leftBlockIndex+1).getSubBlock1().getType()==SubBlockType.TEXT) {
+
+                EditText textView3 = (EditText)block2ViewSet.get(SB1_TEXT);
+                model.getBlocks().get(leftBlockIndex+1).getSubBlock1().setText(textView3.getText().toString());
+
+            } else {
+
+                EditText subtitleView3 = (EditText) block2ViewSet.get(SB1_SUBTITLE);
+                model.getBlocks().get(leftBlockIndex+1).getSubBlock1().setSubtitle(subtitleView3.getText().toString());
+
+            }
+
+            if(model.getBlocks().get(leftBlockIndex+1).getSubBlock2().getType()==SubBlockType.TEXT) {
+
+                EditText textView4 = (EditText)block2ViewSet.get(SB2_TEXT);
+                model.getBlocks().get(leftBlockIndex+1).getSubBlock2().setText(textView4.getText().toString());
+
+            } else {
+
+                EditText subtitleView4 = (EditText) block2ViewSet.get(SB2_SUBTITLE);
+                model.getBlocks().get(leftBlockIndex+1).getSubBlock2().setSubtitle(subtitleView4.getText().toString());
+
+            }
+        }
+
+    }
+
+
     public void swipeLeft(View view) {
+
+        saveBlocks();
+
         if (leftBlockIndex > 0)
             leftBlockIndex--;
 
@@ -277,6 +334,9 @@ public class DetailViewActivityEdit extends AppCompatActivity {
     }
 
     public void swipeRight(View view) {
+
+        saveBlocks();
+
         if (leftBlockIndex < blockCount - 2)
             leftBlockIndex++;
 
