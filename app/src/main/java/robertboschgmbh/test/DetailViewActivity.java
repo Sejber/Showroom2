@@ -32,10 +32,8 @@ public class DetailViewActivity extends AppCompatActivity {
 
     private ProjectModel model;
 
-    SparseArray<View> block1ViewSet = new SparseArray<>();
-    SparseArray<View> block2ViewSet = new SparseArray<>();
-
-    //TODO: Fix that sometimes images aren't getting loaded.
+    private SparseArray<View> block1ViewSet = new SparseArray<>();
+    private SparseArray<View> block2ViewSet = new SparseArray<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +145,7 @@ public class DetailViewActivity extends AppCompatActivity {
                     subtitleView.setVisibility(View.GONE);
                 }
 
-                ImageView imageView = (ImageView)viewSet.get(SB2_IMAGE);
+                ImageView imageView = (ImageView)viewSet.get(SB1_IMAGE);
                 imageView.setVisibility(View.VISIBLE);
                 imageView.setImageBitmap(null);
                 AsyncImageLoader.setImageToImageView(sb1.getImage(), imageView,
