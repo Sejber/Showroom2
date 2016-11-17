@@ -18,16 +18,18 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.Toast;
+import android.widget.TabHost;
 
 import java.util.ArrayList;
 
 import dataloading.DataLoader;
 import dataloading.XmlDataLoader;
+import models.Department;
+import models.DepartmentToStringConverter;
 import models.ProjectModel;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<ProjectModel> projects;
-    private ProjectModelAdapter projectModelAdapter;
     static private boolean admin = false;
 
     @Override
@@ -50,6 +52,35 @@ public class MainActivity extends AppCompatActivity {
         }
 
         checkPermission();
+
+        TabHost host = (TabHost)findViewById(R.id.tabhost_studiengang);
+        host.setup();
+
+        //Tab 'Alle'
+        TabHost.TabSpec spec = host.newTabSpec("Alle");
+        spec.setContent(R.id.tab_alle);
+        spec.setIndicator("Alle");
+        host.addTab(spec);
+        //Tab ET
+        spec = host.newTabSpec(DepartmentToStringConverter.convertToString(Department.ET));
+        spec.setContent(R.id.tab_et);
+        spec.setIndicator(DepartmentToStringConverter.convertToString(Department.ET));
+        host.addTab(spec);
+        //Tab IT
+        spec = host.newTabSpec(DepartmentToStringConverter.convertToString(Department.IT));
+        spec.setContent(R.id.tab_it);
+        spec.setIndicator(DepartmentToStringConverter.convertToString(Department.IT));
+        host.addTab(spec);
+        //Tab MB
+        spec = host.newTabSpec(DepartmentToStringConverter.convertToString(Department.MB));
+        spec.setContent(R.id.tab_mb);
+        spec.setIndicator(DepartmentToStringConverter.convertToString(Department.MB));
+        host.addTab(spec);
+        //Tab MT
+        spec = host.newTabSpec(DepartmentToStringConverter.convertToString(Department.MT));
+        spec.setContent(R.id.tab_mt);
+        spec.setIndicator(DepartmentToStringConverter.convertToString(Department.MT));
+        host.addTab(spec);
 
     }
 
@@ -128,14 +159,25 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void loadData() {
-        GridView gw = (GridView)findViewById(R.id.gridView1);
+        GridView gw = (GridView)findViewById(R.id.gridView_alle);
+        GridView gwET = (GridView)findViewById(R.id.gridView_et);
+        GridView gwIT = (GridView)findViewById(R.id.gridView_it);
+        GridView gwMB = (GridView)findViewById(R.id.gridView_mb);
+        GridView gwMT = (GridView)findViewById(R.id.gridView_mt);
 
         DataLoader loader = new XmlDataLoader();
+
         projects = loader.loadData(Environment.getExternalStorageDirectory());
+        gw.setAdapter(new ProjectModelAdapter(this,projects,admin));
 
-        projectModelAdapter = new ProjectModelAdapter(this,projects,admin);
-
-        gw.setAdapter(projectModelAdapter);
+        projects = loader.getProjectsOfDepartment(Department.ET);
+        gwET.setAdapter(new ProjectModelAdapter(this,projects,admin));
+        projects = loader.getProjectsOfDepartment(Department.IT);
+        gwIT.setAdapter(new ProjectModelAdapter(this,projects,admin));
+        projects = loader.getProjectsOfDepartment(Department.MB);
+        gwMB.setAdapter(new ProjectModelAdapter(this,projects,admin));
+        projects = loader.getProjectsOfDepartment(Department.MT);
+        gwMT.setAdapter(new ProjectModelAdapter(this,projects,admin));
     }
 
 }

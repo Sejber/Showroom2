@@ -92,11 +92,13 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
 
     private String convertToString(Department d) {
         switch (d) {
-            case IT:
-                return "Informatik";
             case ET:
                 return "Elektrotechnik";
-            case ME:
+            case IT:
+                return "Informatik";
+            case MB:
+                return "Maschinenbau";
+            case MT:
                 return "Mechatronik";
             default:
             case OTHER:

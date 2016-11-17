@@ -3,6 +3,7 @@ package dataloading;
 import java.io.File;
 import java.util.ArrayList;
 
+import models.Department;
 import models.ProjectModel;
 
 /**
@@ -11,4 +12,5 @@ import models.ProjectModel;
 
 public interface DataLoader {
     ArrayList<ProjectModel> loadData(File directory);
+    ArrayList<ProjectModel> getProjectsOfDepartment(Department dep);
 }
