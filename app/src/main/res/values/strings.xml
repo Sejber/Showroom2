@@ -7,5 +7,5 @@
     <string name="title_activity_login">Sign in</string>
     <string name="passwort">test123</string>
     <string name="title_activity_screensaver">screensaver</string>
-    <string name="screensaver_delay">2000</string>
+    <string name="screensaver_delay">10</string>
 </resources>

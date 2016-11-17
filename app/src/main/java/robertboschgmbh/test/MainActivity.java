@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<ProjectModel> projects;
     static private boolean admin = false;
     private TimerThread timerThread = new TimerThread();
+
     Handler hander = new Handler(){
         public void handleMessage(Message m){
             Intent intent = new Intent (MainActivity.this, screensaver.class);
@@ -44,6 +45,13 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private View.OnTouchListener touchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            timerThread.reset();
+            return false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)));
+        timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)) * 60000);
         timerThread.start();
 
         //Homebutton
@@ -70,16 +78,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(i);
-            }
-        });
-
-
-        GridView gridView = (GridView)findViewById(R.id.gridView1);
-        gridView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                timerThread.reset();
-                return false;
             }
         });
 
@@ -223,6 +221,12 @@ public class MainActivity extends AppCompatActivity {
         GridView gwMB = (GridView)findViewById(R.id.gridView_mb);
         GridView gwMT = (GridView)findViewById(R.id.gridView_mt);
 
+        gw.setOnTouchListener(touchListener);
+        gwET.setOnTouchListener(touchListener);
+        gwIT.setOnTouchListener(touchListener);
+        gwMB.setOnTouchListener(touchListener);
+        gwMT.setOnTouchListener(touchListener);
+
         projects = XmlDataManager.loadProjects(Environment.getExternalStorageDirectory());
         gw.setAdapter(new ProjectModelAdapter(this,projects,admin));
 
@@ -237,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private ArrayList<ProjectModel> getProjectsOfDepartment(Department dep) {
-        ArrayList<ProjectModel> projectModels = new ArrayList<ProjectModel>();
+        ArrayList<ProjectModel> projectModels = new ArrayList<>();
 
         for(ProjectModel prj : projects) {
             if(prj.getDepartment() == dep) {

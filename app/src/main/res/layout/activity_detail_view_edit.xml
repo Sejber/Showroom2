@@ -7,6 +7,41 @@
     android:layout_height="match_parent"
     tools:context="robertboschgmbh.test.DetailViewActivityEdit">
 
+    <android.support.v7.widget.Toolbar
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:contentInsetStart="0dp"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/main_screen_top_toolbar_settings"
+                android:layout_height="60dp"
+                android:layout_width="60dp"
+                android:layout_gravity="start"
+                android:background="@drawable/ic_home_black_24dp" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:src="@drawable/logo"
+                android:scaleType="centerInside"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="6dp"
+                android:layout_width="135dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="10dp" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
     <EditText
         android:id="@+id/tvProjectTitle_edit"
         android:layout_width="match_parent"
@@ -214,16 +249,5 @@
               android:layout_gravity="center_vertical" />
 
       </LinearLayout>
-
-      <ImageView
-          android:layout_width="150dp"
-          android:layout_height="55dp"
-          android:id="@+id/imageView_edit"
-          android:src="@drawable/logo"
-          android:scaleX="1"
-          android:scaleY="1"
-          android:layout_alignParentEnd="true"
-          android:layout_alignParentTop="true"
-          android:layout_marginEnd="10dp" />
 
   </RelativeLayout>
