@@ -84,7 +84,7 @@ class XmlDataLoader implements DataLoader {
         try {
             XmlPullParser xpp = Xml.newPullParser();
             is = new FileInputStream(projectFile);
-            xpp.setInput(is, null);
+            xpp.setInput(is, "UTF-8");
             xpp.nextTag();
 
             xpp.require(XmlPullParser.START_TAG, null, "project");
