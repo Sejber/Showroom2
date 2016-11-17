@@ -2,7 +2,10 @@ package robertboschgmbh.test;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.SparseArray;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -42,6 +45,9 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_view_edit);
 
+       // Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        //setSupportActionBar(myToolbar);
+
         //Get the corresponding model for this activity
         Bundle extras = getIntent().getExtras();
         model = (ProjectModel)extras.get("model");
@@ -59,6 +65,40 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         checkButtonVisibility();
 
     }
+
+    /*@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+
+            //adding new Block
+
+            BlockModel newBlock = new BlockModel("Titel(optional)", new SubBlockModel("subtext1"), new SubBlockModel("subtext2"));
+            model.addBlock(newBlock);
+
+            blockCount = model.getBlocks().size();
+
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+
+    }*/
+
 
     private void fillViewSets() {
 
@@ -211,7 +251,74 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
     }
 
+    public void saveBlocks() {
+
+        EditText blockTitleView1 = (EditText)block1ViewSet.get(BLOCK_TITLE);
+        model.getBlocks().get(leftBlockIndex).setTitle( blockTitleView1.getText().toString());
+
+        if(model.getBlocks().get(leftBlockIndex).getSubBlock1().getType()==SubBlockType.TEXT) {
+
+            EditText textView1 = (EditText)block1ViewSet.get(SB1_TEXT);
+            model.getBlocks().get(leftBlockIndex).getSubBlock1().setText(textView1.getText().toString());
+
+        } else {
+
+            EditText subtitleView1 = (EditText) block1ViewSet.get(SB1_SUBTITLE);
+            model.getBlocks().get(leftBlockIndex).getSubBlock1().setSubtitle(subtitleView1.getText().toString());
+
+        }
+
+        if(model.getBlocks().get(leftBlockIndex).getSubBlock2().getType()==SubBlockType.TEXT) {
+
+            EditText textView2 = (EditText)block1ViewSet.get(SB2_TEXT);
+            model.getBlocks().get(leftBlockIndex).getSubBlock2().setText(textView2.getText().toString());
+
+        } else {
+
+            EditText subtitleView2 = (EditText) block1ViewSet.get(SB2_SUBTITLE);
+            model.getBlocks().get(leftBlockIndex).getSubBlock2().setSubtitle(subtitleView2.getText().toString());
+
+        }
+
+
+        if(blockCount>1) {
+
+
+            EditText blockTitleView2 = (EditText)block2ViewSet.get(BLOCK_TITLE);
+            model.getBlocks().get(leftBlockIndex+1).setTitle( blockTitleView2.getText().toString());
+
+            if(model.getBlocks().get(leftBlockIndex+1).getSubBlock1().getType()==SubBlockType.TEXT) {
+
+                EditText textView3 = (EditText)block2ViewSet.get(SB1_TEXT);
+                model.getBlocks().get(leftBlockIndex+1).getSubBlock1().setText(textView3.getText().toString());
+
+            } else {
+
+                EditText subtitleView3 = (EditText) block2ViewSet.get(SB1_SUBTITLE);
+                model.getBlocks().get(leftBlockIndex+1).getSubBlock1().setSubtitle(subtitleView3.getText().toString());
+
+            }
+
+            if(model.getBlocks().get(leftBlockIndex+1).getSubBlock2().getType()==SubBlockType.TEXT) {
+
+                EditText textView4 = (EditText)block2ViewSet.get(SB2_TEXT);
+                model.getBlocks().get(leftBlockIndex+1).getSubBlock2().setText(textView4.getText().toString());
+
+            } else {
+
+                EditText subtitleView4 = (EditText) block2ViewSet.get(SB2_SUBTITLE);
+                model.getBlocks().get(leftBlockIndex+1).getSubBlock2().setSubtitle(subtitleView4.getText().toString());
+
+            }
+        }
+
+    }
+
+
     public void swipeLeft(View view) {
+
+        saveBlocks();
+
         if (leftBlockIndex > 0)
             leftBlockIndex--;
 
@@ -220,6 +327,9 @@ public class DetailViewActivityEdit extends AppCompatActivity {
     }
 
     public void swipeRight(View view) {
+
+        saveBlocks();
+
         if (leftBlockIndex < blockCount - 2)
             leftBlockIndex++;
 
