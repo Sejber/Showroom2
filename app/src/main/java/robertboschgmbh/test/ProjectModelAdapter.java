@@ -65,18 +65,18 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
 
         deleteIcon.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v){
+            public void onClick(View view){
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Achtung");
                 builder.setMessage("Möchten sie das Projekt wirklich löschen?");
 
-
+                final View v = view;
                 builder.setPositiveButton("JA", new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        if (XmlDataManager.deleteProject(projectModel)){
+                        if (XmlDataManager.deleteProject((ProjectModel)v.getTag())){
                             Toast.makeText(getContext(),"Erfolgreich gelöscht",Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(getContext(),"Fehler beim löschen",Toast.LENGTH_LONG).show();
