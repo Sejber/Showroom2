@@ -5,6 +5,8 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -14,6 +16,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ListAdapter;
@@ -29,6 +33,16 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<ProjectModel> projects;
     private ProjectModelAdapter projectModelAdapter;
     static private boolean admin = false;
+    private TimerThread timerThread = new TimerThread();
+    Handler hander = new Handler(){
+        public void handleMessage(Message m){
+            Intent intent = new Intent (MainActivity.this, screensaver.class);
+            startActivity(intent);
+            timerThread.interrupt();
+            finish();
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +51,20 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        try{
+        timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)));
+        timerThread.start();
 
+
+        GridView gridView = (GridView)findViewById(R.id.gridView1);
+        gridView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                timerThread.reset();
+                return false;
+            }
+        });
+
+        try{
             Bundle extras = getIntent().getExtras();
             if (extras.getBoolean("admin")){
                 this.admin = true;
@@ -51,6 +77,24 @@ public class MainActivity extends AppCompatActivity {
 
         checkPermission();
 
+    }
+
+    public class TimerThread extends Thread{
+        long delay = 0;
+        long endTime;
+        public void run(){
+            endTime = System.currentTimeMillis()+delay;
+            while(System.currentTimeMillis()<endTime){
+
+            }
+            hander.sendMessage(new Message());
+        }
+        public void reset(){
+            endTime = System.currentTimeMillis()+delay;
+        }
+        public void setDelay(long delay){
+            this.delay = delay;
+        }
     }
 
     @Override
@@ -73,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-
             Intent i = new Intent(this,LoginActivity.class);
             startActivity(i);
             finish();
