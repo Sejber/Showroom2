@@ -92,7 +92,7 @@ public class XmlDataManager {
             for (BlockModel b : pm.getBlocks()) {
 
                 if (b.getTitle() != null && !b.getTitle().equals("")) {
-                    serializer.setProperty("title", b.getTitle());
+                    serializer.attribute(null, "title", b.getTitle());
                 }
 
                 if (b.getSubBlock1() != null) {
@@ -106,6 +106,10 @@ public class XmlDataManager {
             }
 
             serializer.endTag(null, "content");
+            serializer.endTag(null, "project");
+            serializer.endDocument();
+
+            fos.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -119,13 +123,13 @@ public class XmlDataManager {
     private static void printSubblock(XmlSerializer serializer, SubBlockModel sb, File directory) throws IOException {
         serializer.startTag(null, "subblock");
         if (sb.getType() == SubBlockType.TEXT) {
-            serializer.setProperty("type", "text");
+            serializer.attribute(null, "type", "text");
             serializer.text(printTextToFile(directory, sb.getText()));
         } else {
-            serializer.setProperty("type", "image");
+            serializer.attribute(null, "type", "image");
 
             if (sb.getSubtitle() != null && !sb.getSubtitle().equals("")) {
-                serializer.setProperty("subtitle", sb.getSubtitle());
+                serializer.attribute(null, "subtitle", sb.getSubtitle());
             }
 
             serializer.text(sb.getImage().substring(sb.getImage().lastIndexOf(File.pathSeparator) + 1));
