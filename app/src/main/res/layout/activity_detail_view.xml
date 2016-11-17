@@ -66,8 +66,8 @@
 
             <ImageView
                 android:id="@+id/imageButtonLeft"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/btnLeftRightSize"
+                android:layout_height="@dimen/btnLeftRightSize"
                 android:src="@drawable/ic_keyboard_arrow_left_black_24dp"
                 android:onClick="swipeLeft"
                 android:layout_gravity="center_vertical" />
@@ -260,8 +260,8 @@
 
             <ImageView
                 android:id="@+id/imageButtonRight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/btnLeftRightSize"
+                android:layout_height="@dimen/btnLeftRightSize"
                 android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
                 android:onClick="swipeRight"
                 android:layout_gravity="center_vertical" />

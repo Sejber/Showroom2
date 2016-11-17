@@ -6,4 +6,5 @@
     <dimen name="tileWidth">400dp</dimen>
     <dimen name="spacingDetailViewLarge">20dp</dimen>
     <dimen name="spacingDetailViewSmall">10dp</dimen>
+    <dimen name="btnLeftRightSize">40dp</dimen>
 </resources>
