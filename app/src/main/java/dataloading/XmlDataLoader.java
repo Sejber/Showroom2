@@ -30,7 +30,7 @@ import models.SubBlockModel;
  */
 
 
-public class XmlDataLoader implements DataLoader {
+class XmlDataLoader implements DataLoader {
 
     private File currentProjectDirectory;
 
@@ -114,7 +114,7 @@ public class XmlDataLoader implements DataLoader {
                 }
             }
 
-            return new ProjectModel(
+            return new ProjectModel(currentProjectDirectory,
                     members, title, department, titleImage, date, tags, blocks);
 
         } catch (FileNotFoundException e) {
@@ -244,6 +244,8 @@ public class XmlDataLoader implements DataLoader {
                 return Department.ET;
             case "ME":
                 return Department.ME;
+            case "MB":
+                return Department.MB;
             default:
                 return Department.OTHER;
         }
