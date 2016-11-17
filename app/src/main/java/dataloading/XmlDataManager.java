@@ -39,8 +39,15 @@ public class XmlDataManager {
         if (dir == null)
             return false;
 
-        return dir.delete();
+        return DeleteRecursive(dir);
 
+    }
+    private static boolean DeleteRecursive(File Directory) {
+        if (Directory.isDirectory())
+            for (File child : Directory.listFiles())
+                DeleteRecursive(child);
+
+        return Directory.delete();
     }
 
     public static boolean changeProject(ProjectModel pm) {
