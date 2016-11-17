@@ -24,6 +24,7 @@
         <activity android:name=".LoginActivity"></activity>
         <activity android:name=".DetailViewActivity"></activity>
         <activity android:name=".DetailViewActivityEdit"></activity>
+		<activity android:name=".screensaver"></activity>
     </application>
 
 </manifest>
