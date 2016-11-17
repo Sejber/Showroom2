@@ -22,6 +22,10 @@ public class BlockModel implements Serializable {
         return title;
     }
 
+    public void setTitle(String title){
+        this.title = title;
+    }
+
     public SubBlockModel getSubBlock1() {
         return subBlock1;
     }
