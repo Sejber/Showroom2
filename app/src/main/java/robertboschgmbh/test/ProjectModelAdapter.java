@@ -1,6 +1,8 @@
 package robertboschgmbh.test;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -11,10 +13,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import dataloading.AsyncImageLoader;
+import dataloading.XmlDataManager;
 import models.Department;
 import models.ProjectModel;
 
@@ -62,8 +66,40 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
         deleteIcon.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Achtung");
+                builder.setMessage("Möchten sie das Projekt wirklich löschen?");
 
 
+                builder.setPositiveButton("JA", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        if (XmlDataManager.deleteProject(projectModel)){
+                            Toast.makeText(getContext(),"Erfolgreich gelöscht",Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getContext(),"Fehler beim löschen",Toast.LENGTH_LONG).show();
+                        }
+                        dialog.dismiss();
+                    }
+
+                });
+
+
+                builder.setNegativeButton("NEIN", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+                    }
+
+                });
+
+
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
 
