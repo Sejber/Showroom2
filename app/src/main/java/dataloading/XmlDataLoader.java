@@ -33,7 +33,6 @@ import models.SubBlockModel;
 class XmlDataLoader implements DataLoader {
 
     private File currentProjectDirectory;
-    private ArrayList<ProjectModel> dataCache;
 
     public ArrayList<ProjectModel> loadData(File directory) {
 
@@ -66,9 +65,6 @@ class XmlDataLoader implements DataLoader {
 
             }
         }
-
-        // cache it
-        dataCache = projectModels;
 
         return projectModels;
     }
