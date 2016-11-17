@@ -1,6 +1,7 @@
 package robertboschgmbh.test;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
@@ -34,24 +35,9 @@ import models.ProjectModel;
 public class MainActivity extends AppCompatActivity {
     private ArrayList<ProjectModel> projects;
     static private boolean admin = false;
-    private TimerThread timerThread = new TimerThread();
+    private TimerThread timerThread;
+    private static boolean foreground = true;
 
-    Handler hander = new Handler(){
-        public void handleMessage(Message m){
-            Intent intent = new Intent (MainActivity.this, screensaver.class);
-            startActivity(intent);
-            timerThread.interrupt();
-            finish();
-        }
-    };
-
-    private View.OnTouchListener touchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            timerThread.reset();
-            return false;
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,21 +51,11 @@ public class MainActivity extends AppCompatActivity {
 
         //Toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        myToolbar.setTitle("");
         setSupportActionBar(myToolbar);
 
         timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)) * 60000);
         timerThread.start();
-
-        //Homebutton
-        ImageButton imageButton1 = (ImageButton)findViewById(R.id.main_screen_top_toolbar_settings);
-        imageButton1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(i);
-            }
-        });
 
         try{
             Bundle extras = getIntent().getExtras();
@@ -91,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
         }catch(NullPointerException e){
             e.printStackTrace();
         }
+
+
 
         checkPermission();
 
@@ -125,21 +103,63 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    Handler hander = new Handler(){
+        public void handleMessage(Message m){
+            Intent intent = new Intent (MainActivity.this, screensaver.class);
+            startActivity(intent);
+            timerThread.interrupt();
+        }
+    };
+
+    private View.OnTouchListener touchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            timerThread.reset();
+            return false;
+        }
+    };
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        foreground = false;
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        foreground = true;
+        timerThread = new TimerThread();
+        timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)) * 60000 );
+        timerThread.setContext(this);
+        timerThread.start();
+    }
+
     public class TimerThread extends Thread{
         long delay = 0;
         long endTime;
+        MainActivity context;
         public void run(){
             endTime = System.currentTimeMillis()+delay;
-            while(System.currentTimeMillis()<endTime){
-
+            boolean b = false;
+            while(System.currentTimeMillis()<endTime&&!b){
+                if(context.isDestroyed()||!foreground){
+                    b = true;
+                }
             }
-            hander.sendMessage(new Message());
+            if (!b) {
+                hander.sendMessage(new Message());
+            }
         }
         public void reset(){
             endTime = System.currentTimeMillis()+delay;
         }
         public void setDelay(long delay){
             this.delay = delay;
+        }
+        public void setContext(MainActivity context){
+            this.context = context;
         }
     }
 
@@ -165,12 +185,14 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             Intent i = new Intent(this,LoginActivity.class);
             startActivity(i);
+            //timerThread.interrupt();
             finish();
             return true;
         }else if(id == R.id.action_settings2){
             Intent i = new Intent(this,MainActivity.class);
             i.putExtra("admin",false);
             startActivity(i);
+            timerThread.interrupt();
             finish();
             return true;
         }else if (id == R.id.action_settings3){

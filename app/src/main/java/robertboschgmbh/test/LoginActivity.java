@@ -1,8 +1,11 @@
 package robertboschgmbh.test;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -11,6 +14,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
+    private TimerThread timerThread;
+    private static boolean foreground = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,4 +56,56 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+
+    Handler hander = new Handler(){
+        public void handleMessage(Message m){
+            Intent intent = new Intent (LoginActivity.this, screensaver.class);
+            startActivity(intent);
+            timerThread.interrupt();
+        }
+    };
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        foreground = false;
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        foreground = true;
+        timerThread = new TimerThread();
+        timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)) * 60000  );
+        timerThread.setContext(this);
+        timerThread.start();
+    }
+
+    public class TimerThread extends Thread{
+        long delay = 0;
+        long endTime;
+        LoginActivity context;
+        public void run(){
+            endTime = System.currentTimeMillis()+delay;
+            boolean b = false;
+            while(System.currentTimeMillis()<endTime&&!b){
+                if(context.isDestroyed()||!foreground){
+                    b = true;
+                }
+            }
+            if (!b) {
+                hander.sendMessage(new Message());
+            }
+        }
+        public void reset(){
+            endTime = System.currentTimeMillis()+delay;
+        }
+        public void setDelay(long delay){
+            this.delay = delay;
+        }
+        public void setContext(LoginActivity context){
+            this.context = context;
+        }
+    }
+
 }
