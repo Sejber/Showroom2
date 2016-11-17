@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DH-Showroom</string>
+    <string name="app_name"></string>
     <string name="action_settings">Administrator-Modus</string>
     <string name="action_settings2">User-Modus</string>
     <string name="action_settings3">Beenden</string>

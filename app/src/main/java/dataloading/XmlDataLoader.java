@@ -30,7 +30,7 @@ import models.SubBlockModel;
  */
 
 
-public class XmlDataLoader implements DataLoader {
+class XmlDataLoader implements DataLoader {
 
     private File currentProjectDirectory;
     private ArrayList<ProjectModel> dataCache;
@@ -100,7 +100,7 @@ public class XmlDataLoader implements DataLoader {
         try {
             XmlPullParser xpp = Xml.newPullParser();
             is = new FileInputStream(projectFile);
-            xpp.setInput(is, null);
+            xpp.setInput(is, "UTF-8");
             xpp.nextTag();
 
             xpp.require(XmlPullParser.START_TAG, null, "project");
@@ -130,7 +130,7 @@ public class XmlDataLoader implements DataLoader {
                 }
             }
 
-            return new ProjectModel(
+            return new ProjectModel(currentProjectDirectory,
                     members, title, department, titleImage, date, tags, blocks);
 
         } catch (FileNotFoundException e) {

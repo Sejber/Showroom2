@@ -4,5 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#003b6a</color>
     <color name="colorArrows">#000000</color>
-
+    <color name="colorDetailViewText">#000000</color>
+    <color name="colorHomeButton">#FFFFFF</color>
+    <color name="colorText">#FFFFFF</color>
+    <color name="colorSubtitle">#AAAAAA</color>
 </resources>

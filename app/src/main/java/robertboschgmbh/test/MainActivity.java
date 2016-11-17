@@ -1,7 +1,6 @@
 package robertboschgmbh.test;
 
 import android.Manifest;
-import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
@@ -14,18 +13,19 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.Toast;
 import android.widget.TabHost;
-
-import java.util.ArrayList;
-
-import dataloading.DataLoader;
-import dataloading.XmlDataLoader;
 import models.Department;
 import models.DepartmentToStringConverter;
+import android.view.Window;
+import android.view.WindowManager;
+import java.util.ArrayList;
+import dataloading.XmlDataManager;
 import models.ProjectModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,9 +35,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_main);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
+        ImageButton imageButton1 = (ImageButton)findViewById(R.id.main_screen_top_toolbar_settings);
+        imageButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Da man heir schon auf dem HomeTab ist muss keine activity gewechselt werden
+            }
+        });
 
         try{
 
@@ -165,7 +178,11 @@ public class MainActivity extends AppCompatActivity {
         GridView gwMB = (GridView)findViewById(R.id.gridView_mb);
         GridView gwMT = (GridView)findViewById(R.id.gridView_mt);
 
+<<<<<<< HEAD
         DataLoader loader = new XmlDataLoader();
+=======
+        projects = XmlDataManager.loadProjects(Environment.getExternalStorageDirectory());
+>>>>>>> master
 
         projects = loader.loadData(Environment.getExternalStorageDirectory());
         gw.setAdapter(new ProjectModelAdapter(this,projects,admin));

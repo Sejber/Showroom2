@@ -55,7 +55,6 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
             public void onClick(View view) {
                 Intent i = new Intent(getContext(), DetailViewActivity.class);
                 i.putExtra("model",(ProjectModel)view.getTag());
-                i.putExtra("edit",false);
                 startActivity(getContext(), i, null);
             }
         });
@@ -71,9 +70,8 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
         editIcon.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent i = new Intent(getContext(), DetailViewActivity.class);
+                Intent i = new Intent(getContext(), DetailViewActivityEdit.class);
                 i.putExtra("model",(ProjectModel)view.getTag());
-                i.putExtra("edit",true);
                 startActivity(getContext(), i, null);
             }
         });
