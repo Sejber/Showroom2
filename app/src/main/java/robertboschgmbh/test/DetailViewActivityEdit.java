@@ -1,11 +1,12 @@
 package robertboschgmbh.test;
 
 import android.content.DialogInterface;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.SparseArray;
@@ -17,11 +18,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import dataloading.AsyncImageLoader;
 import dataloading.XmlDataManager;
 import models.*;
+
 
 public class DetailViewActivityEdit extends AppCompatActivity {
 
@@ -61,7 +62,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         rl.setOnTouchListener(touchListener);
 
         //Homebutton
-        ImageButton imageButton1 = (ImageButton)findViewById(R.id.main_screen_top_toolbar_settings);
+        ImageButton imageButton1 = (ImageButton)findViewById(R.id.imageSave);
         imageButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,12 +71,43 @@ public class DetailViewActivityEdit extends AppCompatActivity {
                 saveBlocks();
                 XmlDataManager.changeProject(model);
 
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                Intent i = new Intent(DetailViewActivityEdit.this, MainActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(i);
-
+                finish();
                 }
             });
+
+        ImageButton imageButton2 = (ImageButton)findViewById(R.id.imageEnd);
+        imageButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                android.app.AlertDialog.Builder builder = new AlertDialog.Builder(DetailViewActivityEdit.this);
+                builder.setTitle("Achtung");
+                builder.setMessage("Möchten sie das Projekt schließen ohne zu speichern?");
+
+                final View v = view;
+                builder.setPositiveButton("JA", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i = new Intent(DetailViewActivityEdit.this, MainActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(i);
+                        finish();
+                        dialog.dismiss();
+                    }});
+
+                builder.setNegativeButton("NEIN", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+            }});
+
+                android.app.AlertDialog alert = builder.create();
+                alert.show();
+        }});
 
         //Get the corresponding model for this activity
         Bundle extras = getIntent().getExtras();
