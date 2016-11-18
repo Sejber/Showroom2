@@ -1,23 +1,18 @@
 package robertboschgmbh.test;
 
-import android.content.DialogInterface;
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.content.DialogInterface;
+import android.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import dataloading.AsyncImageLoader;
 import dataloading.XmlDataManager;
@@ -36,8 +31,6 @@ public class DetailViewActivityEdit extends AppCompatActivity {
     private static final int SB2_IMAGE_LAYOUT = 7;
     private static final int SB2_IMAGE = 8;
     private static final int SB2_SUBTITLE = 9;
-    private TimerThread timerThread;
-    private static boolean foreground = true;
 
     private ImageView buttonLeft, buttonRight;
 
@@ -57,9 +50,6 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         //Toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-
-        RelativeLayout rl = (RelativeLayout)findViewById(R.id.activity_detail_view_edit);
-        rl.setOnTouchListener(touchListener);
 
         //Homebutton
         ImageButton imageButton1 = (ImageButton)findViewById(R.id.imageSave);
@@ -422,63 +412,4 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
     }
 
-
-    Handler hander = new Handler(){
-        public void handleMessage(Message m){
-            Intent intent = new Intent (DetailViewActivityEdit.this, screensaver.class);
-            startActivity(intent);
-            timerThread.interrupt();
-        }
-    };
-
-    private View.OnTouchListener touchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            timerThread.reset();
-            return false;
-        }
-    };
-
-    @Override
-    public void onStop(){
-        super.onStop();
-        foreground = false;
-    }
-
-    @Override
-    public void onStart(){
-        super.onStart();
-        foreground = true;
-        timerThread = new TimerThread();
-        timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)) * 60000  );
-        timerThread.setContext(this);
-        timerThread.start();
-    }
-
-    public class TimerThread extends Thread{
-        long delay = 0;
-        long endTime;
-        DetailViewActivityEdit context;
-        public void run(){
-            endTime = System.currentTimeMillis()+delay;
-            boolean b = false;
-            while(System.currentTimeMillis()<endTime&&!b){
-                if(context.isDestroyed()||!foreground){
-                    b = true;
-                }
-            }
-            if (!b) {
-                hander.sendMessage(new Message());
-            }
-        }
-        public void reset(){
-            endTime = System.currentTimeMillis()+delay;
-        }
-        public void setDelay(long delay){
-            this.delay = delay;
-        }
-        public void setContext(DetailViewActivityEdit context){
-            this.context = context;
-        }
-    }
 }
