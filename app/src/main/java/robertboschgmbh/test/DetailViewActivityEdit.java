@@ -18,10 +18,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.File;
 
 import dataloading.AsyncImageLoader;
 import dataloading.XmlDataManager;
 import models.*;
+import filechooser.*;
 
 public class DetailViewActivityEdit extends AppCompatActivity {
 
@@ -43,6 +47,14 @@ public class DetailViewActivityEdit extends AppCompatActivity {
     private int leftBlockIndex = 0;
     private int blockCount = 0;
 
+    private boolean hasTitle;
+    private boolean subBlock1IsText = true;
+    private boolean subBlock2IsText = true;
+    private boolean isInterrupted;
+    private String path1, path2;
+    private String title = "";
+    private SubBlockModel sub1, sub2;
+
     private ProjectModel model;
 
     SparseArray<View> block1ViewSet = new SparseArray<>();
@@ -56,6 +68,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         //Toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
 
         RelativeLayout rl = (RelativeLayout)findViewById(R.id.activity_detail_view_edit);
         rl.setOnTouchListener(touchListener);
@@ -74,8 +87,8 @@ public class DetailViewActivityEdit extends AppCompatActivity {
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(i);
 
-                }
-            });
+            }
+        });
 
         //Get the corresponding model for this activity
         Bundle extras = getIntent().getExtras();
@@ -96,6 +109,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         updateBlocks();
         checkButtonVisibility();
 
+
     }
 
     @Override
@@ -115,20 +129,165 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings4){
 
-			//adding new Block
+            //adding new Block
+            addNewBlock();
 
-            BlockModel newBlock = new BlockModel("Titel(optional)", new SubBlockModel("subtext1"), new SubBlockModel("subtext2"));
-            model.addBlock(newBlock);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-            blockCount = model.getBlocks().size();
+    private void addNewBlock() {
 
-            //Move view so the new block is visible
-            leftBlockIndex = blockCount - 2;
-            updateBlocks();
-            checkButtonVisibility();
-			
-		}
-            return super.onOptionsItemSelected(item);
+        isInterrupted = false;
+
+
+        final CharSequence[] itemsTitle = {" Ja "," Nein "};
+        final CharSequence[] itemsSubBlock = {" Text "," Image "};
+
+        if(!isInterrupted) {
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+            builder.setTitle("Blocküberschrift hinzufügen?");
+            builder.setSingleChoiceItems(itemsTitle, -1, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+
+                    switch(item)
+                    {
+                        case 0:
+                            hasTitle = true;
+                            break;
+                        case 1:
+                            hasTitle = false;
+                            break;
+                    }
+
+                    dialog.dismiss();
+
+                }
+            });
+            builder.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    isInterrupted = true;
+                    dialog.dismiss();
+                }
+            });
+            android.app.AlertDialog alert = builder.create();
+            alert.show();
+        }
+
+        if(!isInterrupted) {
+            android.app.AlertDialog.Builder builder2 = new android.app.AlertDialog.Builder(this);
+            builder2.setTitle("oberer Block:");
+            builder2.setSingleChoiceItems(itemsSubBlock, -1, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+
+                    switch(item)
+                    {
+                        case 0:
+                            subBlock1IsText = true;
+                            break;
+                        case 1:
+                            subBlock1IsText = false;
+                            break;
+                    }
+
+                    dialog.dismiss();
+
+                }
+            });
+            builder2.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    isInterrupted = true;
+                    dialog.dismiss();
+                }
+            });
+            android.app.AlertDialog alert2 = builder2.create();
+            alert2.show();
+        }
+
+
+        if(!isInterrupted) {
+            android.app.AlertDialog.Builder builder3 = new android.app.AlertDialog.Builder(this);
+            builder3.setTitle("unterer Block:");
+            builder3.setSingleChoiceItems(itemsSubBlock, -1, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+
+                    switch(item)
+                    {
+                        case 0:
+                            subBlock2IsText = true;
+                            break;
+                        case 1:
+                            subBlock2IsText = false;
+                            break;
+                    }
+                    dialog.dismiss();
+
+                }
+            });
+            builder3.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    isInterrupted = true;
+                    dialog.dismiss();
+                }
+            });
+            android.app.AlertDialog alert3 = builder3.create();
+            alert3.show();
+        }
+
+
+
+        if(hasTitle) {
+            title = "Titel";
+        }
+
+
+        if(subBlock1IsText) {
+            sub1 = new SubBlockModel("subtext1");
+        } else {
+
+            new FileChooser(this).setFileListener(new FileChooser.FileSelectedListener() {
+                @Override public void fileSelected(final File file) {
+
+                    path1 = file.getPath();
+
+
+                }}).showDialog();
+            sub1 = new SubBlockModel(path1,"Beschreibung");
+        }
+
+
+
+        if(subBlock2IsText) {
+            sub2 = new SubBlockModel("subtext2");
+        } else {
+
+            new FileChooser(this).setFileListener(new FileChooser.FileSelectedListener() {
+                @Override public void fileSelected(final File file) {
+
+                    path2 = file.getPath();
+
+
+                }}).showDialog();
+            sub2 = new SubBlockModel(path2,"Beschreibung");
+
+        }
+
+
+        BlockModel newBlock = new BlockModel(title, sub1, sub2);
+        model.addBlock(newBlock);
+
+        blockCount = model.getBlocks().size();
+
+        //Move view so the new block is visible
+        leftBlockIndex = blockCount - 2;
+        updateBlocks();
+        checkButtonVisibility();
+
+
+
     }
 
     private void fillViewSets() {
