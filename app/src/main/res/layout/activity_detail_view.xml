@@ -95,14 +95,19 @@
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"/>
 
                 <!-- Upper Subblock -->
-                <TextView
-                    android:id="@+id/block1_sb1_text"
-                    android:textColor="@color/colorDetailViewText"
-                    android:layout_weight="1"
+                <ScrollView
+                    android:id="@+id/block1_sb1_scrollViewer"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:layout_marginTop="@dimen/spacingDetailViewSmall"
-                    android:layout_marginBottom="@dimen/spacingDetailViewSmall"/>
+                    android:layout_marginBottom="@dimen/spacingDetailViewSmall">
+                    <TextView
+                        android:id="@+id/block1_sb1_text"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/colorDetailViewText" />
+                </ScrollView>
                 <LinearLayout
                     android:id="@+id/block1_sb1_imageLayout"
                     android:layout_weight="1"
@@ -131,13 +136,19 @@
                 </LinearLayout>
 
                 <!-- Lower Subblock -->
-                <TextView
-                    android:id="@+id/block1_sb2_text"
-                    android:textColor="@color/colorDetailViewText"
-                    android:layout_weight="1"
+                <ScrollView
+                    android:id="@+id/block1_sb2_scrollViewer"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/spacingDetailViewSmall"/>
+                    android:layout_weight="1"
+                    android:layout_marginTop="@dimen/spacingDetailViewSmall"
+                    android:layout_marginBottom="@dimen/spacingDetailViewSmall">
+                    <TextView
+                        android:id="@+id/block1_sb2_text"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/colorDetailViewText" />
+                </ScrollView>
                 <LinearLayout
                     android:id="@+id/block1_sb2_imageLayout"
                     android:layout_weight="1"
@@ -187,14 +198,19 @@
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"/>
 
                 <!-- Upper Subblock -->
-                <TextView
-                    android:id="@+id/block2_sb1_text"
-                    android:textColor="@color/colorDetailViewText"
-                    android:layout_weight="1"
+                <ScrollView
+                    android:id="@+id/block2_sb1_scrollViewer"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:layout_marginTop="@dimen/spacingDetailViewSmall"
-                    android:layout_marginBottom="@dimen/spacingDetailViewSmall"/>
+                    android:layout_marginBottom="@dimen/spacingDetailViewSmall">
+                    <TextView
+                        android:id="@+id/block2_sb1_text"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/colorDetailViewText" />
+                </ScrollView>
                 <LinearLayout
                     android:id="@+id/block2_sb1_imageLayout"
                     android:layout_weight="1"
@@ -223,13 +239,19 @@
                 </LinearLayout>
 
                 <!-- Lower Subblock -->
-                <TextView
-                    android:id="@+id/block2_sb2_text"
-                    android:textColor="@color/colorDetailViewText"
-                    android:layout_weight="1"
+                <ScrollView
+                    android:id="@+id/block2_sb2_scrollViewer"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/spacingDetailViewSmall"/>
+                    android:layout_weight="1"
+                    android:layout_marginTop="@dimen/spacingDetailViewSmall"
+                    android:layout_marginBottom="@dimen/spacingDetailViewSmall">
+                    <TextView
+                        android:id="@+id/block2_sb2_text"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/colorDetailViewText" />
+                </ScrollView>
                 <LinearLayout
                     android:id="@+id/block2_sb2_imageLayout"
                     android:layout_weight="1"
