@@ -58,6 +58,7 @@
                         android:id="@+id/gridView_alle"
                         android:numColumns="auto_fit"
                         android:gravity="center"
+                        android:background="#ffffff"
                         android:stretchMode="columnWidth"
                         android:columnWidth="@dimen/tileWidth"
                         android:layout_width="fill_parent"
@@ -77,6 +78,7 @@
                         android:numColumns="auto_fit"
                         android:gravity="center"
                         android:stretchMode="columnWidth"
+                        android:background="#ffffff"
                         android:columnWidth="@dimen/tileWidth"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent" >
@@ -95,6 +97,7 @@
                         android:numColumns="auto_fit"
                         android:gravity="center"
                         android:stretchMode="columnWidth"
+                        android:background="#ffffff"
                         android:columnWidth="@dimen/tileWidth"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent" >
@@ -112,6 +115,7 @@
                         android:id="@+id/gridView_mb"
                         android:numColumns="auto_fit"
                         android:gravity="center"
+                        android:background="#ffffff"
                         android:stretchMode="columnWidth"
                         android:columnWidth="@dimen/tileWidth"
                         android:layout_width="fill_parent"
@@ -131,6 +135,7 @@
                         android:numColumns="auto_fit"
                         android:gravity="center"
                         android:stretchMode="columnWidth"
+                        android:background="#ffffff"
                         android:columnWidth="@dimen/tileWidth"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent" >

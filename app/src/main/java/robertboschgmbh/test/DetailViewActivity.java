@@ -29,10 +29,12 @@ public class DetailViewActivity extends AppCompatActivity {
     private static final int SB1_IMAGE_LAYOUT = 3;
     private static final int SB1_IMAGE = 4;
     private static final int SB1_SUBTITLE = 5;
-    private static final int SB2_TEXT = 6;
-    private static final int SB2_IMAGE_LAYOUT = 7;
-    private static final int SB2_IMAGE = 8;
-    private static final int SB2_SUBTITLE = 9;
+    private static final int SB1_SCROLLVIEWER = 6;
+    private static final int SB2_TEXT = 7;
+    private static final int SB2_IMAGE_LAYOUT = 8;
+    private static final int SB2_IMAGE = 9;
+    private static final int SB2_SUBTITLE = 10;
+    private static final int SB2_SCROLLVIEWER = 11;
     private TimerThread timerThread;
     private static boolean foreground = true;
 
@@ -103,10 +105,12 @@ public class DetailViewActivity extends AppCompatActivity {
         block1ViewSet.put(SB1_IMAGE_LAYOUT, findViewById(R.id.block1_sb1_imageLayout));
         block1ViewSet.put(SB1_IMAGE, findViewById(R.id.block1_sb1_image));
         block1ViewSet.put(SB1_SUBTITLE, findViewById(R.id.block1_sb1_subtitle));
+        block1ViewSet.put(SB1_SCROLLVIEWER, findViewById(R.id.block1_sb1_scrollViewer));
         block1ViewSet.put(SB2_TEXT, findViewById(R.id.block1_sb2_text));
         block1ViewSet.put(SB2_IMAGE_LAYOUT, findViewById(R.id.block1_sb2_imageLayout));
         block1ViewSet.put(SB2_IMAGE, findViewById(R.id.block1_sb2_image));
         block1ViewSet.put(SB2_SUBTITLE, findViewById(R.id.block1_sb2_subtitle));
+        block1ViewSet.put(SB2_SCROLLVIEWER, findViewById(R.id.block1_sb2_scrollViewer));
 
         //Fill view set for block 2
         block2ViewSet.put(BLOCK_LAYOUT, findViewById(R.id.block2_layout));
@@ -115,10 +119,12 @@ public class DetailViewActivity extends AppCompatActivity {
         block2ViewSet.put(SB1_IMAGE_LAYOUT, findViewById(R.id.block2_sb1_imageLayout));
         block2ViewSet.put(SB1_IMAGE, findViewById(R.id.block2_sb1_image));
         block2ViewSet.put(SB1_SUBTITLE, findViewById(R.id.block2_sb1_subtitle));
+        block2ViewSet.put(SB1_SCROLLVIEWER, findViewById(R.id.block2_sb1_scrollViewer));
         block2ViewSet.put(SB2_TEXT, findViewById(R.id.block2_sb2_text));
         block2ViewSet.put(SB2_IMAGE_LAYOUT, findViewById(R.id.block2_sb2_imageLayout));
         block2ViewSet.put(SB2_IMAGE, findViewById(R.id.block2_sb2_image));
         block2ViewSet.put(SB2_SUBTITLE, findViewById(R.id.block2_sb2_subtitle));
+        block2ViewSet.put(SB2_SCROLLVIEWER, findViewById(R.id.block2_sb2_scrollViewer));
 
     }
 
@@ -155,9 +161,9 @@ public class DetailViewActivity extends AppCompatActivity {
             if (sb1.getType() == SubBlockType.TEXT) {
 
                 viewSet.get(SB1_IMAGE_LAYOUT).setVisibility(View.GONE);
+                viewSet.get(SB1_SCROLLVIEWER).setVisibility(View.VISIBLE);
 
                 TextView textView = (TextView)viewSet.get(SB1_TEXT);
-                textView.setVisibility(View.VISIBLE);
                 textView.setText(sb1.getText());
 
                 //even though the image view will be invisible for now, reset the image
@@ -166,7 +172,7 @@ public class DetailViewActivity extends AppCompatActivity {
 
             } else {
 
-                viewSet.get(SB1_TEXT).setVisibility(View.GONE);
+                viewSet.get(SB1_SCROLLVIEWER).setVisibility(View.GONE);
                 viewSet.get(SB1_IMAGE_LAYOUT).setVisibility(View.VISIBLE);
 
                 String subtitle = sb1.getSubtitle();
@@ -187,7 +193,7 @@ public class DetailViewActivity extends AppCompatActivity {
             }
         } else {
 
-            viewSet.get(SB1_TEXT).setVisibility(View.GONE);
+            viewSet.get(SB1_SCROLLVIEWER).setVisibility(View.GONE);
             viewSet.get(SB1_IMAGE_LAYOUT).setVisibility(View.GONE);
 
             //even though the image view will be invisible for now, reset the image
@@ -199,9 +205,9 @@ public class DetailViewActivity extends AppCompatActivity {
             if (sb2.getType() == SubBlockType.TEXT) {
 
                 viewSet.get(SB2_IMAGE_LAYOUT).setVisibility(View.GONE);
+                viewSet.get(SB2_SCROLLVIEWER).setVisibility(View.VISIBLE);
 
                 TextView textView = (TextView)viewSet.get(SB2_TEXT);
-                textView.setVisibility(View.VISIBLE);
                 textView.setText(sb2.getText());
 
                 //even though the image view will be invisible for now, reset the image
@@ -210,7 +216,7 @@ public class DetailViewActivity extends AppCompatActivity {
 
             } else {
 
-                viewSet.get(SB2_TEXT).setVisibility(View.GONE);
+                viewSet.get(SB2_SCROLLVIEWER).setVisibility(View.GONE);
                 viewSet.get(SB2_IMAGE_LAYOUT).setVisibility(View.VISIBLE);
 
                 String subtitle = sb2.getSubtitle();
@@ -231,7 +237,7 @@ public class DetailViewActivity extends AppCompatActivity {
             }
         } else {
 
-            viewSet.get(SB2_TEXT).setVisibility(View.GONE);
+            viewSet.get(SB2_SCROLLVIEWER).setVisibility(View.GONE);
             viewSet.get(SB2_IMAGE_LAYOUT).setVisibility(View.GONE);
 
             //even though the image view will be invisible for now, reset the image
