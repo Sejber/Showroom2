@@ -18,6 +18,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import models.BlockModel;
 import models.Department;
@@ -252,7 +253,7 @@ class XmlDataLoader implements DataLoader {
     }
 
     private Date parseDate(String s) {
-        DateFormat df = SimpleDateFormat.getDateInstance();
+        DateFormat df = new SimpleDateFormat("yyyy", Locale.GERMAN);
 
         try {
             return df.parse(s);

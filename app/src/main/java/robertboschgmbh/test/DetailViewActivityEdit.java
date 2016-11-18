@@ -314,28 +314,32 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         EditText blockTitleView1 = (EditText)block1ViewSet.get(BLOCK_TITLE);
         model.getBlocks().get(leftBlockIndex).setTitle( blockTitleView1.getText().toString());
 
-        if(model.getBlocks().get(leftBlockIndex).getSubBlock1().getType()==SubBlockType.TEXT) {
+        if (model.getBlocks().get(leftBlockIndex).getSubBlock1() != null) {
+            if (model.getBlocks().get(leftBlockIndex).getSubBlock1().getType() == SubBlockType.TEXT) {
 
-            EditText textView1 = (EditText)block1ViewSet.get(SB1_TEXT);
-            model.getBlocks().get(leftBlockIndex).getSubBlock1().setText(textView1.getText().toString());
+                EditText textView1 = (EditText) block1ViewSet.get(SB1_TEXT);
+                model.getBlocks().get(leftBlockIndex).getSubBlock1().setText(textView1.getText().toString());
 
-        } else {
+            } else {
 
-            EditText subtitleView1 = (EditText) block1ViewSet.get(SB1_SUBTITLE);
-            model.getBlocks().get(leftBlockIndex).getSubBlock1().setSubtitle(subtitleView1.getText().toString());
+                EditText subtitleView1 = (EditText) block1ViewSet.get(SB1_SUBTITLE);
+                model.getBlocks().get(leftBlockIndex).getSubBlock1().setSubtitle(subtitleView1.getText().toString());
 
+            }
         }
 
-        if(model.getBlocks().get(leftBlockIndex).getSubBlock2().getType()==SubBlockType.TEXT) {
+        if (model.getBlocks().get(leftBlockIndex).getSubBlock2() != null) {
+            if (model.getBlocks().get(leftBlockIndex).getSubBlock2().getType() == SubBlockType.TEXT) {
 
-            EditText textView2 = (EditText)block1ViewSet.get(SB2_TEXT);
-            model.getBlocks().get(leftBlockIndex).getSubBlock2().setText(textView2.getText().toString());
+                EditText textView2 = (EditText) block1ViewSet.get(SB2_TEXT);
+                model.getBlocks().get(leftBlockIndex).getSubBlock2().setText(textView2.getText().toString());
 
-        } else {
+            } else {
 
-            EditText subtitleView2 = (EditText) block1ViewSet.get(SB2_SUBTITLE);
-            model.getBlocks().get(leftBlockIndex).getSubBlock2().setSubtitle(subtitleView2.getText().toString());
+                EditText subtitleView2 = (EditText) block1ViewSet.get(SB2_SUBTITLE);
+                model.getBlocks().get(leftBlockIndex).getSubBlock2().setSubtitle(subtitleView2.getText().toString());
 
+            }
         }
 
         //check if there are 2 blocks
@@ -345,28 +349,32 @@ public class DetailViewActivityEdit extends AppCompatActivity {
             EditText blockTitleView2 = (EditText)block2ViewSet.get(BLOCK_TITLE);
             model.getBlocks().get(leftBlockIndex+1).setTitle( blockTitleView2.getText().toString());
 
-            if(model.getBlocks().get(leftBlockIndex+1).getSubBlock1().getType()==SubBlockType.TEXT) {
+            if (model.getBlocks().get(leftBlockIndex + 1).getSubBlock1() != null) {
+                if (model.getBlocks().get(leftBlockIndex + 1).getSubBlock1().getType() == SubBlockType.TEXT) {
 
-                EditText textView3 = (EditText)block2ViewSet.get(SB1_TEXT);
-                model.getBlocks().get(leftBlockIndex+1).getSubBlock1().setText(textView3.getText().toString());
+                    EditText textView3 = (EditText) block2ViewSet.get(SB1_TEXT);
+                    model.getBlocks().get(leftBlockIndex + 1).getSubBlock1().setText(textView3.getText().toString());
 
-            } else {
+                } else {
 
-                EditText subtitleView3 = (EditText) block2ViewSet.get(SB1_SUBTITLE);
-                model.getBlocks().get(leftBlockIndex+1).getSubBlock1().setSubtitle(subtitleView3.getText().toString());
+                    EditText subtitleView3 = (EditText) block2ViewSet.get(SB1_SUBTITLE);
+                    model.getBlocks().get(leftBlockIndex + 1).getSubBlock1().setSubtitle(subtitleView3.getText().toString());
 
+                }
             }
 
-            if(model.getBlocks().get(leftBlockIndex+1).getSubBlock2().getType()==SubBlockType.TEXT) {
+            if (model.getBlocks().get(leftBlockIndex + 1).getSubBlock2() != null) {
+                if (model.getBlocks().get(leftBlockIndex + 1).getSubBlock2().getType() == SubBlockType.TEXT) {
 
-                EditText textView4 = (EditText)block2ViewSet.get(SB2_TEXT);
-                model.getBlocks().get(leftBlockIndex+1).getSubBlock2().setText(textView4.getText().toString());
+                    EditText textView4 = (EditText) block2ViewSet.get(SB2_TEXT);
+                    model.getBlocks().get(leftBlockIndex + 1).getSubBlock2().setText(textView4.getText().toString());
 
-            } else {
+                } else {
 
-                EditText subtitleView4 = (EditText) block2ViewSet.get(SB2_SUBTITLE);
-                model.getBlocks().get(leftBlockIndex+1).getSubBlock2().setSubtitle(subtitleView4.getText().toString());
+                    EditText subtitleView4 = (EditText) block2ViewSet.get(SB2_SUBTITLE);
+                    model.getBlocks().get(leftBlockIndex + 1).getSubBlock2().setSubtitle(subtitleView4.getText().toString());
 
+                }
             }
         }
 
