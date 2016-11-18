@@ -32,6 +32,7 @@ import models.*;
 
 public class DetailViewActivityEdit extends AppCompatActivity {
 
+    //Indizes für ViewSets
     private static final int BLOCK_LAYOUT = 0;
     private static final int BLOCK_TITLE = 1;
     private static final int SB1_TEXT = 2;
@@ -43,26 +44,29 @@ public class DetailViewActivityEdit extends AppCompatActivity {
     private static final int SB2_IMAGE = 8;
     private static final int SB2_SUBTITLE = 9;
 
-    private ImageView buttonLeft, buttonRight;
+    private ImageView buttonLeft, buttonRight;//Scrollbuttons
 
-    private int leftBlockIndex = 0;
-    private int blockCount = 0;
+    private int leftBlockIndex = 0; //Index des linken Blocks
+    private int blockCount = 0; //Anzahl der Blöcke im aktuellen Projekt
 
-    private ProjectModel model;
+    private ProjectModel model; //Aktuelles Projekt
 
+    //Speichert Views
     SparseArray<View> block1ViewSet = new SparseArray<>();
     SparseArray<View> block2ViewSet = new SparseArray<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //ContentView
         setContentView(R.layout.activity_detail_view_edit);
 
         //Toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        //Homebutton
+        //Speicherbutton
         ImageButton imageButton1 = (ImageButton)findViewById(R.id.imageSave);
         imageButton1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +83,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
                 }
             });
 
+        //EndButton
         ImageButton imageButton2 = (ImageButton)findViewById(R.id.imageEnd);
         imageButton2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +126,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         //Get total block counts
         blockCount = model.getBlocks().size();
 
+        //Set the project title
         EditText title = (EditText)findViewById(R.id.tvProjectTitle_edit);
         title.setText(model.getTitle());
 
@@ -164,8 +170,8 @@ public class DetailViewActivityEdit extends AppCompatActivity {
             return super.onOptionsItemSelected(item);
     }
 
+    //Füllt alle Views in die SparseArrays
     private void fillViewSets() {
-
         //Fill view set for block 1
         block1ViewSet.put(BLOCK_LAYOUT, findViewById(R.id.block1_layout_edit));
         block1ViewSet.put(BLOCK_TITLE, findViewById(R.id.block1_title_edit));
@@ -192,8 +198,8 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
     }
 
+    //Füllt Blöcke mit Daten
     private void updateBlocks() {
-
         //load left block
         loadDataFromModel(model.getBlocks().get(leftBlockIndex), block1ViewSet);
 
@@ -210,7 +216,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
     }
 
-
+    //Füllt Views von einem Block mit Daten
     private void loadDataFromModel(BlockModel bm, SparseArray<View> viewSet) {
 
         String blockTitle = bm.getTitle();
@@ -383,7 +389,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
     }
 
-
+    //Nach links scrollen
     public void swipeLeft(View view) {
 
         saveBlocks();
@@ -395,6 +401,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         checkButtonVisibility();
     }
 
+    //Nach rechts scrollen
     public void swipeRight(View view) {
 
         saveBlocks();
