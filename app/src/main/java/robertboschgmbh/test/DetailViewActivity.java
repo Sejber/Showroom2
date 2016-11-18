@@ -34,6 +34,7 @@ import models.*;
 
 public class DetailViewActivity extends AppCompatActivity {
 
+    //Indizes für ViewSets
     private static final int BLOCK_LAYOUT = 0;
     private static final int BLOCK_TITLE = 1;
     private static final int SB1_TEXT = 2;
@@ -46,31 +47,38 @@ public class DetailViewActivity extends AppCompatActivity {
     private static final int SB2_IMAGE = 9;
     private static final int SB2_SUBTITLE = 10;
     private static final int SB2_SCROLLVIEWER = 11;
-    private TimerThread timerThread;
-    private static boolean foreground = true;
 
-    private ImageView buttonLeft, buttonRight;
+    private TimerThread timerThread; //Steuert den Bildschirmschoner
+    private static boolean foreground = true; //Variable zur Steuerung des Bildschirmschoners
 
-    private int leftBlockIndex = 0;
-    private int blockCount = 0;
+    private ImageView buttonLeft, buttonRight; //Scrollbuttons
 
-    private ProjectModel model;
+    private int leftBlockIndex = 0; //Index des linken Blocks
+    private int blockCount = 0; //Anzahl der Blöcke im aktuellen Projekt
 
+    private ProjectModel model; //Aktuelles Projekt
+
+    //Speichert Views
     private SparseArray<View> block1ViewSet = new SparseArray<>();
     private SparseArray<View> block2ViewSet = new SparseArray<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Fullscreen
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        //ContentView
         setContentView(R.layout.activity_detail_view);
 
         //Toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
+        //OnTouchListener zuweisen
         RelativeLayout rl = (RelativeLayout)findViewById(R.id.activity_detail_view);
         rl.setOnTouchListener(touchListener);
 
@@ -107,8 +115,8 @@ public class DetailViewActivity extends AppCompatActivity {
 
     }
 
+    //Füllt alle Views in die SparseArrays
     private void fillViewSets() {
-
         //Fill view set for block 1
         block1ViewSet.put(BLOCK_LAYOUT, findViewById(R.id.block1_layout));
         block1ViewSet.put(BLOCK_TITLE, findViewById(R.id.block1_title));
@@ -139,8 +147,8 @@ public class DetailViewActivity extends AppCompatActivity {
 
     }
 
+    //Füllt Blöcke mit Daten
     private void updateBlocks() {
-
         //load left block
         loadDataFromModel(model.getBlocks().get(leftBlockIndex), block1ViewSet);
 
@@ -154,6 +162,7 @@ public class DetailViewActivity extends AppCompatActivity {
 
     }
 
+    //Füllt Views von einem Block mit Daten
     private void loadDataFromModel(BlockModel bm, SparseArray<View> viewSet) {
 
         String blockTitle = bm.getTitle();
@@ -258,6 +267,7 @@ public class DetailViewActivity extends AppCompatActivity {
 
     }
 
+    //Nach links scrollen
     public void swipeLeft(View view) {
         if (leftBlockIndex > 0)
             leftBlockIndex--;
@@ -266,6 +276,7 @@ public class DetailViewActivity extends AppCompatActivity {
         checkButtonVisibility();
     }
 
+    //Nach rechts scrollen
     public void swipeRight(View view) {
         if (leftBlockIndex < blockCount - 2)
             leftBlockIndex++;
@@ -291,6 +302,7 @@ public class DetailViewActivity extends AppCompatActivity {
 
     }
 
+    //Startet den screensaver
     Handler hander = new Handler(){
         public void handleMessage(Message m){
             Intent intent = new Intent (DetailViewActivity.this, screensaver.class);
@@ -299,6 +311,7 @@ public class DetailViewActivity extends AppCompatActivity {
         }
     };
 
+    //OnTouchListener zum zurücksetzen des screensaver Timers
     private View.OnTouchListener touchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -310,11 +323,12 @@ public class DetailViewActivity extends AppCompatActivity {
     @Override
     public void onStop(){
         super.onStop();
-        foreground = false;
+        foreground = false; //Screensaver Timer stoppen
     }
 
     @Override
     public void onStart(){
+        //Timer starten
         super.onStart();
         foreground = true;
         timerThread = new TimerThread();
@@ -323,6 +337,7 @@ public class DetailViewActivity extends AppCompatActivity {
         timerThread.start();
     }
 
+    //Screensaver TimerThread
     public class TimerThread extends Thread{
         long delay = 0;
         long endTime;
@@ -336,6 +351,7 @@ public class DetailViewActivity extends AppCompatActivity {
                 }
             }
             if (!b) {
+                //Startet den screensaver, wenn die Activity noch läuft und im Vordergrund ist
                 hander.sendMessage(new Message());
             }
         }

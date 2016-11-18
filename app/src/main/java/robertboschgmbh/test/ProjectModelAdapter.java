@@ -29,15 +29,17 @@ import java.util.ArrayList;
 import dataloading.AsyncImageLoader;
 import dataloading.XmlDataManager;
 import models.Department;
+import models.DepartmentToStringConverter;
 import models.ProjectModel;
 
 import static android.support.v4.content.ContextCompat.startActivity;
 
 
 public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
-    static private boolean admin = false;
 
+    static private boolean admin = false; //Admin Modus Umschalter
 
+    //Kunstruktor
     public ProjectModelAdapter(Context context, ArrayList<models.ProjectModel> projectModels,boolean admin){
         super(context,0,projectModels);
         this.admin = admin;
@@ -45,24 +47,32 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
-        final ProjectModel projectModel = getItem(position);
+
+        final ProjectModel projectModel = getItem(position); //Aktuelles ProjectModel
+
+        //Neues Column erstellen falls nicht schon vorhanden
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.grid_column,parent,false);
         }
-        TextView noteTitle = (TextView) convertView.findViewById(R.id.listItemNoteTitle);
-        TextView noteText = (TextView) convertView.findViewById(R.id.listItemNoteBody);
-        ImageView noteIcon = (ImageView) convertView.findViewById(R.id.listItemNoteImg);
-        ImageView deleteIcon = (ImageView) convertView.findViewById(R.id.listItemNoteDelete);
-        ImageView editIcon = (ImageView) convertView.findViewById(R.id.listItemNoteEdit);
+
+        TextView noteTitle = (TextView) convertView.findViewById(R.id.listItemNoteTitle); //ProjektTitel
+        TextView noteText = (TextView) convertView.findViewById(R.id.listItemNoteBody); //Projektfachrichtung
+        ImageView noteIcon = (ImageView) convertView.findViewById(R.id.listItemNoteImg); //ProjektBild
+        ImageView deleteIcon = (ImageView) convertView.findViewById(R.id.listItemNoteDelete); //DeleteButton
+        ImageView editIcon = (ImageView) convertView.findViewById(R.id.listItemNoteEdit); //EditButton
+
+        //Layout , dass Adminfunktionen beinhaltet gegebenenfalls deaktivieren
         if(!admin){
             RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.layoutAdmin);
             rl.setVisibility(View.INVISIBLE);
         }
 
+        //Jedem klickbaren Item sein ProjectModel anhängen
         noteIcon.setTag(projectModel);
         deleteIcon.setTag(projectModel);
         editIcon.setTag(projectModel);
 
+        //Öffnet ein Projekt
         noteIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,6 +82,7 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
             }
         });
 
+        //Löscht ein Projekt nach erneuter Abfrage
         deleteIcon.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -96,23 +107,21 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
 
                 });
 
-
                 builder.setNegativeButton("NEIN", new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         dialog.dismiss();
                     }
 
                 });
-
 
                 AlertDialog alert = builder.create();
                 alert.show();
             }
         });
 
+        //Öffnet die Bearbeitungsactivity eines Projektes
         editIcon.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -122,32 +131,15 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
             }
         });
 
-        noteTitle.setText(projectModel.getTitle());
-        noteText.setText(convertToString(projectModel.getDepartment()));
 
-        noteIcon.setImageBitmap(null);
-
+        noteTitle.setText(projectModel.getTitle()); //Setzt Titel
+        noteText.setText(DepartmentToStringConverter.convertToString(projectModel.getDepartment())); //Setzt Fachrichtung
+        noteIcon.setImageBitmap(null); //Nötig aus Designgründen, falls recycled wird
         AsyncImageLoader.setImageToImageView(projectModel.getTitleImage(), noteIcon,
                 (int)getContext().getResources().getDimension(R.dimen.tileWidth),
-                (int)getContext().getResources().getDimension(R.dimen.tileHeight));
+                (int)getContext().getResources().getDimension(R.dimen.tileHeight)); //Setzt ProjektBild
 
         return convertView;
-    }
-
-    private String convertToString(Department d) {
-        switch (d) {
-            case ET:
-                return "Elektrotechnik";
-            case IT:
-                return "Informatik";
-            case MB:
-                return "Maschinenbau";
-            case MT:
-                return "Mechatronik";
-            default:
-            case OTHER:
-                return "Andere";
-        }
     }
 
 }
