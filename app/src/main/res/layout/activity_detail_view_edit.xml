@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+/*********************************************************************/
+/**  Dateiname: activity_detail_view_edit.xml                       **/
+/**                                                                 **/
+/**  Beschreibung:  Activity zum Bearbeiten des Inhalts             **/
+/**                 eines Projektes                                 **/
+/**                                                                 **/
+/**  Autoren: Frederik Wagner, Lukas Schultt, Leunar Kalludra,      **/
+/**           Jonathan Lessing, Marcel Vetter, Leopold Ormos        **/
+/**           Merlin Baudert, Rino Grupp, Hannes Kececi             **/
+/**                                                                 **/
+/*********************************************************************/
+-->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"

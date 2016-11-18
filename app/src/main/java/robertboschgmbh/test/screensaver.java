@@ -1,5 +1,16 @@
 package robertboschgmbh.test;
-import android.content.Intent;
+
+/*********************************************************************/
+/**  Dateiname: screensaver.java                                    **/
+/**                                                                 **/
+/**  Beschreibung:  Zeigt den Bildschirmschoner an                  **/
+/**                                                                 **/
+/**  Autoren: Frederik Wagner, Lukas Schultt, Leunar Kalludra,      **/
+/**           Jonathan Lessing, Marcel Vetter, Leopold Ormos        **/
+/**           Merlin Baudert, Rino Grupp, Hannes Kececi             **/
+/**                                                                 **/
+/*********************************************************************/
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;

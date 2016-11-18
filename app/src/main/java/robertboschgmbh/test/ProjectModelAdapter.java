@@ -1,11 +1,20 @@
 package robertboschgmbh.test;
 
+/*********************************************************************/
+/**  Dateiname: ProjectModelAdapter.java                            **/
+/**                                                                 **/
+/**  Beschreibung:  Bindeglied zwischen GridView und ihrer Inhalte  **/
+/**                                                                 **/
+/**  Autoren: Frederik Wagner, Lukas Schultt, Leunar Kalludra,      **/
+/**           Jonathan Lessing, Marcel Vetter, Leopold Ormos        **/
+/**           Merlin Baudert, Rino Grupp, Hannes Kececi             **/
+/**                                                                 **/
+/*********************************************************************/
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +47,7 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
     public View getView(int position, View convertView, ViewGroup parent){
         final ProjectModel projectModel = getItem(position);
         if (convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_row,parent,false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.grid_column,parent,false);
         }
         TextView noteTitle = (TextView) convertView.findViewById(R.id.listItemNoteTitle);
         TextView noteText = (TextView) convertView.findViewById(R.id.listItemNoteBody);

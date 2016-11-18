@@ -1,13 +1,20 @@
 package models;
 
+/*********************************************************************/
+/**  Dateiname: ProjectModel.java                                   **/
+/**                                                                 **/
+/**  Beschreibung:  Objekt mit allen Informationen eines Projektes  **/
+/**                                                                 **/
+/**  Autoren: Frederik Wagner, Lukas Schultt, Leunar Kalludra,      **/
+/**           Jonathan Lessing, Marcel Vetter, Leopold Ormos        **/
+/**           Merlin Baudert, Rino Grupp, Hannes Kececi             **/
+/**                                                                 **/
+/*********************************************************************/
+
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-
-/**
- * Created by Freddy on 11.11.2016.
- */
 
 public class ProjectModel implements Serializable {
 

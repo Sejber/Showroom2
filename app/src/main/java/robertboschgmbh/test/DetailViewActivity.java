@@ -1,5 +1,16 @@
 package robertboschgmbh.test;
 
+/*********************************************************************/
+/**  Dateiname: DetailViewActivity.java                             **/
+/**                                                                 **/
+/**  Beschreibung:  Zeigt den Inhalt eines Projektes  an            **/
+/**                                                                 **/
+/**  Autoren: Frederik Wagner, Lukas Schultt, Leunar Kalludra,      **/
+/**           Jonathan Lessing, Marcel Vetter, Leopold Ormos        **/
+/**           Merlin Baudert, Rino Grupp, Hannes Kececi             **/
+/**                                                                 **/
+/*********************************************************************/
+
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
