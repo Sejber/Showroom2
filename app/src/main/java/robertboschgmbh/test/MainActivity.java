@@ -65,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        checkPermission();
-
         TabHost host = (TabHost)findViewById(R.id.tabhost_studiengang);
         host.setup();
 
@@ -123,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onStart(){
+        checkPermission();
         super.onStart();
         foreground = true;
         timerThread = new TimerThread();
