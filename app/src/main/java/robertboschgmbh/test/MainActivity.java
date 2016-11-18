@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         foreground = true;
         timerThread = new TimerThread();
-        timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)) * 60000 );
+        timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)));
         timerThread.setContext(this);
         timerThread.start();
     }

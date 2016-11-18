@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         foreground = true;
         timerThread = new TimerThread();
-        timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)) * 60000  );
+        timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)) );
         timerThread.setContext(this);
         timerThread.start();
     }
@@ -96,9 +96,6 @@ public class LoginActivity extends AppCompatActivity {
             if (!b) {
                 hander.sendMessage(new Message());
             }
-        }
-        public void reset(){
-            endTime = System.currentTimeMillis()+delay;
         }
         public void setDelay(long delay){
             this.delay = delay;
