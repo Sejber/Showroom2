@@ -1,5 +1,16 @@
 package dataloading;
 
+/*********************************************************************/
+/**  Dateiname: XmlDataLoader.java                                  **/
+/**                                                                 **/
+/**  Beschreibung:  Lädt alle Projekte in ein ProjektModel Array    **/
+/**                                                                 **/
+/**  Autoren: Frederik Wagner, Lukas Schultt, Leunar Kalludra,      **/
+/**           Jonathan Lessing, Marcel Vetter, Leopold Ormos        **/
+/**           Merlin Baudert, Rino Grupp, Hannes Kececi             **/
+/**                                                                 **/
+/*********************************************************************/
+
 import android.util.Log;
 import android.util.Xml;
 
@@ -23,12 +34,6 @@ import models.BlockModel;
 import models.Department;
 import models.ProjectModel;
 import models.SubBlockModel;
-
-/**
- * Created by Freddy on 11.11.2016.
- *
- */
-
 
 class XmlDataLoader implements DataLoader {
 

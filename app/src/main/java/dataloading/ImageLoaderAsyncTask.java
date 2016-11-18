@@ -1,5 +1,16 @@
 package dataloading;
 
+/*********************************************************************/
+/**  Dateiname: ImageLoaderAsyncTask.java                           **/
+/**                                                                 **/
+/**  Beschreibung:  Ladet und skaliert Bilder für Performance       **/
+/**                                                                 **/
+/**  Autoren: Frederik Wagner, Lukas Schultt, Leunar Kalludra,      **/
+/**           Jonathan Lessing, Marcel Vetter, Leopold Ormos        **/
+/**           Merlin Baudert, Rino Grupp, Hannes Kececi             **/
+/**                                                                 **/
+/*********************************************************************/
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;

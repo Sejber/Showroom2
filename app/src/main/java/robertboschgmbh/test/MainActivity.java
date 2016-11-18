@@ -1,7 +1,19 @@
 package robertboschgmbh.test;
 
+/*********************************************************************/
+/**  Dateiname: MainActivity.java                                   **/
+/**                                                                 **/
+/**  Beschreibung:  Zeigt eine Übersicht aller Projekte an          **/
+/**                                                                 **/
+/**  Autoren: Frederik Wagner, Lukas Schultt, Leunar Kalludra,      **/
+/**           Jonathan Lessing, Marcel Vetter, Leopold Ormos        **/
+/**           Merlin Baudert, Rino Grupp, Hannes Kececi             **/
+/**                                                                 **/
+/*********************************************************************/
+
+
+
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
@@ -18,11 +30,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.ImageButton;
-import android.widget.ListAdapter;
-import android.widget.Toast;
 import android.widget.TabHost;
 import models.Department;
 import models.DepartmentToStringConverter;
@@ -31,6 +39,7 @@ import android.view.WindowManager;
 import java.util.ArrayList;
 import dataloading.XmlDataManager;
 import models.ProjectModel;
+
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<ProjectModel> projects;

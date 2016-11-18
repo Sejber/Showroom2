@@ -1,5 +1,16 @@
 package dataloading;
 
+/*********************************************************************/
+/**  Dateiname: XmlDataManager.java                                 **/
+/**                                                                 **/
+/**  Beschreibung:  Verwaltet exestierende Xml Projektdateien       **/
+/**                                                                 **/
+/**  Autoren: Frederik Wagner, Lukas Schultt, Leunar Kalludra,      **/
+/**           Jonathan Lessing, Marcel Vetter, Leopold Ormos        **/
+/**           Merlin Baudert, Rino Grupp, Hannes Kececi             **/
+/**                                                                 **/
+/*********************************************************************/
+
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlSerializer;
@@ -17,11 +28,6 @@ import models.Department;
 import models.ProjectModel;
 import models.SubBlockModel;
 import models.SubBlockType;
-
-/**
- * Created by Freddy on 17.11.2016.
- *
- */
 
 public class XmlDataManager {
 

@@ -1,5 +1,16 @@
 package robertboschgmbh.test;
 
+/*********************************************************************/
+/**  Dateiname: DetailViewActivityEdit.java                         **/
+/**                                                                 **/
+/**  Beschreibung:  Bearbeitet den Inhalt eines Projektes           **/
+/**                                                                 **/
+/**  Autoren: Frederik Wagner, Lukas Schultt, Leunar Kalludra,      **/
+/**           Jonathan Lessing, Marcel Vetter, Leopold Ormos        **/
+/**           Merlin Baudert, Rino Grupp, Hannes Kececi             **/
+/**                                                                 **/
+/*********************************************************************/
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.content.DialogInterface;

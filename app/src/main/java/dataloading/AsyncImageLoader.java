@@ -1,5 +1,16 @@
 package dataloading;
 
+/*********************************************************************/
+/**  Dateiname: AsyncImageLoade.java                                **/
+/**                                                                 **/
+/**  Beschreibung:  Lädt Bilder in eine ImageView                   **/
+/**                                                                 **/
+/**  Autoren: Frederik Wagner, Lukas Schultt, Leunar Kalludra,      **/
+/**           Jonathan Lessing, Marcel Vetter, Leopold Ormos        **/
+/**           Merlin Baudert, Rino Grupp, Hannes Kececi             **/
+/**                                                                 **/
+/*********************************************************************/
+
 import android.widget.ImageView;
 
 public class AsyncImageLoader {
