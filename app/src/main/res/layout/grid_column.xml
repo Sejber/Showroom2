@@ -85,6 +85,15 @@
             android:textColor="@android:color/white"
             android:maxLines="1"/>
 
+        <TextView
+            android:layout_below="@id/listItemNoteTitle"
+            android:paddingStart="15dp"
+            android:textColor="@android:color/white"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/listItemNoteBody"
+            android:id="@+id/listItemNoteDate" />
 
 
     </RelativeLayout>
