@@ -72,6 +72,10 @@ public class ProjectModel implements Serializable {
 
     public File getDirectory() { return directory; }
 
+    public void setDirectory(File f) {
+        directory = f;
+    }
+
     public void addBlock(BlockModel newBlock) {
         this.blocks.add(newBlock);
     }

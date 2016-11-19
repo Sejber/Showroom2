@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Random;
 
 import models.BlockModel;
 import models.Department;
@@ -189,6 +190,49 @@ public class XmlDataManager {
             default:
                 return "OTHER";
         }
+    }
+
+    public static boolean createProject(ProjectModel pm, File directory) {
+
+        //check if there is a 'projects' folder in the specified directory
+        File projectsDirectory = new File(directory, "projects");
+        if (!projectsDirectory.exists() || !projectsDirectory.isDirectory()) {
+            return false;
+        }
+
+        //if the project does not have a project folder yet (which should
+        //be the case when this method is called, but just making sure)
+        //then create one
+        if (pm.getDirectory() == null) {
+
+            File newProjectDir;
+
+            //create random directory names until we find one that
+            //doesnt exist yet.
+            do {
+                newProjectDir = new File(projectsDirectory, createRandomFilename(12));
+            } while (newProjectDir.exists());
+
+            pm.setDirectory(newProjectDir);
+
+        }
+
+        return changeProject(pm);
+
+    }
+
+    private static String createRandomFilename(int count) {
+
+        char[] allowedChars = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+        StringBuilder builder = new StringBuilder();
+        Random r = new Random();
+
+        for (int i = 0; i < count; i++) {
+            builder.append(allowedChars[r.nextInt(allowedChars.length)]);
+        }
+
+        return  builder.toString();
+
     }
 
 }
