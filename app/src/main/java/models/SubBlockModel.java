@@ -1,10 +1,17 @@
 package models;
 
-import java.io.Serializable;
+/*********************************************************************/
+/**  Dateiname: SubBlockModel.java                                  **/
+/**                                                                 **/
+/**  Beschreibung:  Beinhaltet die Infomationen eines Subblocks     **/
+/**                                                                 **/
+/**  Autoren: Frederik Wagner, Lukas Schultt, Leunar Kalludra,      **/
+/**           Jonathan Lessing, Marcel Vetter, Leopold Ormos        **/
+/**           Merlin Baudert, Rino Grupp, Hannes Kececi             **/
+/**                                                                 **/
+/*********************************************************************/
 
-/**
- * Created by Freddy on 11.11.2016.
- */
+import java.io.Serializable;
 
 public class SubBlockModel implements Serializable {
 

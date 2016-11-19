@@ -1,5 +1,16 @@
 package robertboschgmbh.test;
 
+/*********************************************************************/
+/**  Dateiname: LoginActivity.java                                  **/
+/**                                                                 **/
+/**  Beschreibung:  Passwortabfrage für den Admin Modus             **/
+/**                                                                 **/
+/**  Autoren: Frederik Wagner, Lukas Schultt, Leunar Kalludra,      **/
+/**           Jonathan Lessing, Marcel Vetter, Leopold Ormos        **/
+/**           Merlin Baudert, Rino Grupp, Hannes Kececi             **/
+/**                                                                 **/
+/*********************************************************************/
+
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -14,17 +25,24 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
-    private TimerThread timerThread;
-    private static boolean foreground = true;
+
+    private TimerThread timerThread; //Steuert den Bildschirmschoner
+    private static boolean foreground = true; //Variable zur Steuerung des Bildschirmschoners
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Fullscreen
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        //ContentView
         setContentView(R.layout.activity_login);
+
+        //Anmeldebutten Passwortüberprüfung
         Button okButton = (Button) findViewById(R.id.okButton);
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        //Abbrechen und zurückkehren zur MainActivity
         Button cancelButton = (Button)findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    //Startet den screensaver
     Handler hander = new Handler(){
         public void handleMessage(Message m){
             Intent intent = new Intent (LoginActivity.this, screensaver.class);
@@ -68,19 +88,21 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStop(){
         super.onStop();
-        foreground = false;
+        foreground = false; //Screensaver Timer stoppen
     }
 
     @Override
     public void onStart(){
+        //Timer starten
         super.onStart();
         foreground = true;
         timerThread = new TimerThread();
-        timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)) * 60000  );
+        timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)) );
         timerThread.setContext(this);
         timerThread.start();
     }
 
+    //Screensaver TimerThread
     public class TimerThread extends Thread{
         long delay = 0;
         long endTime;
@@ -94,11 +116,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
             if (!b) {
+                //Startet den screensaver, wenn die Activity noch läuft und im Vordergrund ist
                 hander.sendMessage(new Message());
             }
-        }
-        public void reset(){
-            endTime = System.currentTimeMillis()+delay;
         }
         public void setDelay(long delay){
             this.delay = delay;

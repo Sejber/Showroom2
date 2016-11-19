@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--
+/*********************************************************************/
+/**  Dateiname: activity_main.xml                                   **/
+/**                                                                 **/
+/**  Beschreibung:  Activity für die Projektübersicht               **/
+/**                                                                 **/
+/**  Autoren: Frederik Wagner, Lukas Schultt, Leunar Kalludra,      **/
+/**           Jonathan Lessing, Marcel Vetter, Leopold Ormos        **/
+/**           Merlin Baudert, Rino Grupp, Hannes Kececi             **/
+/**                                                                 **/
+/*********************************************************************/
+-->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -55,9 +67,11 @@
                     android:orientation="vertical">
 
                     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:fastScrollAlwaysVisible="true"
                         android:id="@+id/gridView_alle"
                         android:numColumns="auto_fit"
                         android:gravity="center"
+                        android:background="#ffffff"
                         android:stretchMode="columnWidth"
                         android:columnWidth="@dimen/tileWidth"
                         android:layout_width="fill_parent"
@@ -73,10 +87,12 @@
                     android:orientation="vertical">
 
                     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:fastScrollAlwaysVisible="true"
                         android:id="@+id/gridView_et"
                         android:numColumns="auto_fit"
                         android:gravity="center"
                         android:stretchMode="columnWidth"
+                        android:background="#ffffff"
                         android:columnWidth="@dimen/tileWidth"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent" >
@@ -91,10 +107,12 @@
                     android:orientation="vertical">
 
                     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:fastScrollAlwaysVisible="true"
                         android:id="@+id/gridView_it"
                         android:numColumns="auto_fit"
                         android:gravity="center"
                         android:stretchMode="columnWidth"
+                        android:background="#ffffff"
                         android:columnWidth="@dimen/tileWidth"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent" >
@@ -109,9 +127,11 @@
                     android:orientation="vertical">
 
                     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:fastScrollAlwaysVisible="true"
                         android:id="@+id/gridView_mb"
                         android:numColumns="auto_fit"
                         android:gravity="center"
+                        android:background="#ffffff"
                         android:stretchMode="columnWidth"
                         android:columnWidth="@dimen/tileWidth"
                         android:layout_width="fill_parent"
@@ -127,10 +147,12 @@
                     android:orientation="vertical">
 
                     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:fastScrollAlwaysVisible="true"
                         android:id="@+id/gridView_mt"
                         android:numColumns="auto_fit"
                         android:gravity="center"
                         android:stretchMode="columnWidth"
+                        android:background="#ffffff"
                         android:columnWidth="@dimen/tileWidth"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent" >

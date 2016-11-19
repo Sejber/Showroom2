@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+/*********************************************************************/
+/**  Dateiname: grid_column  .xml                                   **/
+/**                                                                 **/
+/**  Beschreibung:  View einer einzelnen Kachel                     **/
+/**                                                                 **/
+/**  Autoren: Frederik Wagner, Lukas Schultt, Leunar Kalludra,      **/
+/**           Jonathan Lessing, Marcel Vetter, Leopold Ormos        **/
+/**           Merlin Baudert, Rino Grupp, Hannes Kececi             **/
+/**                                                                 **/
+/*********************************************************************/
+-->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/tileHeight"
     android:background="#ffffff"
-    android:padding="5dp"
-    android:id="@+id/list_row">
+    android:padding="5dp">
 
 
     <ImageView
@@ -72,6 +85,15 @@
             android:textColor="@android:color/white"
             android:maxLines="1"/>
 
+        <TextView
+            android:layout_below="@id/listItemNoteTitle"
+            android:paddingStart="15dp"
+            android:textColor="@android:color/white"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/listItemNoteBody"
+            android:id="@+id/listItemNoteDate" />
 
 
     </RelativeLayout>

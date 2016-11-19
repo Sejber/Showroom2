@@ -1,5 +1,16 @@
 package dataloading;
 
+/*********************************************************************/
+/**  Dateiname: XmlDataLoader.java                                  **/
+/**                                                                 **/
+/**  Beschreibung:  Lädt alle Projekte in ein ProjektModel Array    **/
+/**                                                                 **/
+/**  Autoren: Frederik Wagner, Lukas Schultt, Leunar Kalludra,      **/
+/**           Jonathan Lessing, Marcel Vetter, Leopold Ormos        **/
+/**           Merlin Baudert, Rino Grupp, Hannes Kececi             **/
+/**                                                                 **/
+/*********************************************************************/
+
 import android.util.Log;
 import android.util.Xml;
 
@@ -18,22 +29,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import models.BlockModel;
 import models.Department;
 import models.ProjectModel;
 import models.SubBlockModel;
 
-/**
- * Created by Freddy on 11.11.2016.
- *
- */
-
-
 class XmlDataLoader implements DataLoader {
 
     private File currentProjectDirectory;
-    private ArrayList<ProjectModel> dataCache;
 
     public ArrayList<ProjectModel> loadData(File directory) {
 
@@ -66,9 +71,6 @@ class XmlDataLoader implements DataLoader {
 
             }
         }
-
-        // cache it
-        dataCache = projectModels;
 
         return projectModels;
     }
@@ -256,7 +258,7 @@ class XmlDataLoader implements DataLoader {
     }
 
     private Date parseDate(String s) {
-        DateFormat df = SimpleDateFormat.getDateInstance();
+        DateFormat df = new SimpleDateFormat("yyyy", Locale.GERMAN);
 
         try {
             return df.parse(s);

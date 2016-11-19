@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+/*********************************************************************/
+/**  Dateiname: activity_detail_view_edit.xml                       **/
+/**                                                                 **/
+/**  Beschreibung:  Activity zum Bearbeiten des Inhalts             **/
+/**                 eines Projektes                                 **/
+/**                                                                 **/
+/**  Autoren: Frederik Wagner, Lukas Schultt, Leunar Kalludra,      **/
+/**           Jonathan Lessing, Marcel Vetter, Leopold Ormos        **/
+/**           Merlin Baudert, Rino Grupp, Hannes Kececi             **/
+/**                                                                 **/
+/*********************************************************************/
+-->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -21,12 +36,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageButton
-                android:id="@+id/main_screen_top_toolbar_settings"
-                android:layout_height="60dp"
-                android:layout_width="60dp"
-                android:layout_gravity="start"
-                android:background="@drawable/ic_home_black_24dp" />
 
             <ImageView
                 android:id="@+id/imageView"
@@ -37,6 +46,25 @@
                 android:layout_width="135dp"
                 android:layout_height="50dp"
                 android:layout_marginEnd="10dp" />
+
+            <ImageButton
+                android:id="@+id/imageSave"
+                android:layout_height="60dp"
+                android:layout_width="60dp"
+                android:layout_gravity="start"
+                android:background="@drawable/ic_save_black_24dp"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/imageEnd" />
+
+            <ImageButton
+                android:id="@+id/imageEnd"
+                android:layout_height="60dp"
+                android:layout_width="60dp"
+                android:layout_gravity="start"
+                android:background="@drawable/ic_close_black_24dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true" />
+
 
         </RelativeLayout>
 
@@ -60,6 +88,7 @@
 
         <ImageView
             android:id="@+id/imageButtonLeft_edit"
+            android:paddingLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_keyboard_arrow_left_black_24dp"
@@ -279,6 +308,7 @@
 
           <ImageView
               android:id="@+id/imageButtonRight_edit"
+              android:paddingRight="10dp"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:src="@drawable/ic_keyboard_arrow_right_black_24dp"

@@ -1,7 +1,19 @@
 package robertboschgmbh.test;
 
+/*********************************************************************/
+/**  Dateiname: MainActivity.java                                   **/
+/**                                                                 **/
+/**  Beschreibung:  Zeigt eine Übersicht aller Projekte an          **/
+/**                                                                 **/
+/**  Autoren: Frederik Wagner, Lukas Schultt, Leunar Kalludra,      **/
+/**           Jonathan Lessing, Marcel Vetter, Leopold Ormos        **/
+/**           Merlin Baudert, Rino Grupp, Hannes Kececi             **/
+/**                                                                 **/
+/*********************************************************************/
+
+
+
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
@@ -18,11 +30,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.ImageButton;
-import android.widget.ListAdapter;
-import android.widget.Toast;
 import android.widget.TabHost;
 import models.Department;
 import models.DepartmentToStringConverter;
@@ -32,21 +40,25 @@ import java.util.ArrayList;
 import dataloading.XmlDataManager;
 import models.ProjectModel;
 
+
 public class MainActivity extends AppCompatActivity {
-    private ArrayList<ProjectModel> projects;
-    static private boolean admin = false;
-    private TimerThread timerThread;
-    private static boolean foreground = true;
+
+    private ArrayList<ProjectModel> projects; //ArrayList aller Projekte
+    private boolean admin = false; //Admin Modus Umschalter
+    private TimerThread timerThread; //Steuert den Bildschirmschoner
+    private static boolean foreground = true;  //Variable zur Steuerung des Bildschirmschoners
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Fullscreen
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        //ContentView
         setContentView(R.layout.activity_main);
 
         //Toolbar
@@ -54,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         myToolbar.setTitle("");
         setSupportActionBar(myToolbar);
 
+        //Admin Modus umschalten
         try{
             Bundle extras = getIntent().getExtras();
             if (extras.getBoolean("admin")){
@@ -65,8 +78,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        checkPermission();
-
+        //TabHost
         TabHost host = (TabHost)findViewById(R.id.tabhost_studiengang);
         host.setup();
 
@@ -98,66 +110,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-    Handler hander = new Handler(){
-        public void handleMessage(Message m){
-            Intent intent = new Intent (MainActivity.this, screensaver.class);
-            startActivity(intent);
-            timerThread.interrupt();
-        }
-    };
-
-    private View.OnTouchListener touchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            timerThread.reset();
-            return false;
-        }
-    };
-
-    @Override
-    public void onStop(){
-        super.onStop();
-        foreground = false;
-    }
-
-    @Override
-    public void onStart(){
-        super.onStart();
-        foreground = true;
-        timerThread = new TimerThread();
-        timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)) * 60000 );
-        timerThread.setContext(this);
-        timerThread.start();
-    }
-
-    public class TimerThread extends Thread{
-        long delay = 0;
-        long endTime;
-        MainActivity context;
-        public void run(){
-            endTime = System.currentTimeMillis()+delay;
-            boolean b = false;
-            while(System.currentTimeMillis()<endTime&&!b){
-                if(context.isDestroyed()||!foreground){
-                    b = true;
-                }
-            }
-            if (!b) {
-                hander.sendMessage(new Message());
-            }
-        }
-        public void reset(){
-            endTime = System.currentTimeMillis()+delay;
-        }
-        public void setDelay(long delay){
-            this.delay = delay;
-        }
-        public void setContext(MainActivity context){
-            this.context = context;
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -177,20 +129,19 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.admin_button) {
             Intent i = new Intent(this,LoginActivity.class);
             startActivity(i);
-            //timerThread.interrupt();
             finish();
             return true;
-        }else if(id == R.id.action_settings2){
+        }else if(id == R.id.user_button){
             Intent i = new Intent(this,MainActivity.class);
             i.putExtra("admin",false);
             startActivity(i);
             timerThread.interrupt();
             finish();
             return true;
-        }else if (id == R.id.action_settings3){
+        }else if (id == R.id.end_button){
             finish();
             System.exit(0);
         }
@@ -198,7 +149,8 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void checkPermission() {
+    //Permission verlangen für neuere Android Versionen
+    private void checkPermission(){
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
@@ -231,22 +183,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //Füllt alle GridViews mit Projekten
     public void loadData() {
+        //Variablen erstellen
         GridView gw = (GridView)findViewById(R.id.gridView_alle);
         GridView gwET = (GridView)findViewById(R.id.gridView_et);
         GridView gwIT = (GridView)findViewById(R.id.gridView_it);
         GridView gwMB = (GridView)findViewById(R.id.gridView_mb);
         GridView gwMT = (GridView)findViewById(R.id.gridView_mt);
 
+        //OnTouchListener zuweisen
         gw.setOnTouchListener(touchListener);
         gwET.setOnTouchListener(touchListener);
         gwIT.setOnTouchListener(touchListener);
         gwMB.setOnTouchListener(touchListener);
         gwMT.setOnTouchListener(touchListener);
 
+        //Projekte laden
         projects = XmlDataManager.loadProjects(Environment.getExternalStorageDirectory());
-        gw.setAdapter(new ProjectModelAdapter(this,projects,admin));
 
+        //Projekte nach Fachrichtung filtern und den GridViews zuweisen
+        gw.setAdapter(new ProjectModelAdapter(this,projects,admin));
         ArrayList<ProjectModel> lProjects = getProjectsOfDepartment(Department.ET);
         gwET.setAdapter(new ProjectModelAdapter(this,lProjects,admin));
         lProjects = getProjectsOfDepartment(Department.IT);
@@ -257,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
         gwMT.setAdapter(new ProjectModelAdapter(this,lProjects,admin));
     }
 
+    //Filtert projects nach einer Fachrichtung
     private ArrayList<ProjectModel> getProjectsOfDepartment(Department dep) {
         ArrayList<ProjectModel> projectModels = new ArrayList<>();
 
@@ -267,6 +225,71 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return projectModels;
+    }
+
+    //Startet den screensaver
+    Handler hander = new Handler(){
+        public void handleMessage(Message m){
+            Intent intent = new Intent (MainActivity.this, screensaver.class);
+            startActivity(intent);
+            timerThread.interrupt();
+        }
+    };
+
+    //OnTouchListener zum zurücksetzen des screensaver Timers
+    private View.OnTouchListener touchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            timerThread.reset();
+            return false;
+        }
+    };
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        foreground = false; //Screensaver Timer stoppen
+    }
+
+    @Override
+    public void onStart(){
+        //Timer starten
+        checkPermission();
+        super.onStart();
+        foreground = true;
+        timerThread = new TimerThread();
+        timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)));
+        timerThread.setContext(this);
+        timerThread.start();
+    }
+
+    //Screensaver TimerThread
+    public class TimerThread extends Thread{
+        long delay = 0;
+        long endTime;
+        MainActivity context;
+        public void run(){
+            endTime = System.currentTimeMillis()+delay;
+            boolean b = false;
+            while(System.currentTimeMillis()<endTime&&!b){
+                if(context.isDestroyed()||!foreground){
+                    b = true;
+                }
+            }
+            if (!b) {
+                //Startet den screensaver, wenn die Activity noch läuft und im Vordergrund ist
+                hander.sendMessage(new Message());
+            }
+        }
+        public void reset(){
+            endTime = System.currentTimeMillis()+delay;
+        }
+        public void setDelay(long delay){
+            this.delay = delay;
+        }
+        public void setContext(MainActivity context){
+            this.context = context;
+        }
     }
 
 }

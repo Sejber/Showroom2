@@ -1,5 +1,16 @@
 package robertboschgmbh.test;
 
+/*********************************************************************/
+/**  Dateiname: DetailViewActivity.java                             **/
+/**                                                                 **/
+/**  Beschreibung:  Zeigt den Inhalt eines Projektes  an            **/
+/**                                                                 **/
+/**  Autoren: Frederik Wagner, Lukas Schultt, Leunar Kalludra,      **/
+/**           Jonathan Lessing, Marcel Vetter, Leopold Ormos        **/
+/**           Merlin Baudert, Rino Grupp, Hannes Kececi             **/
+/**                                                                 **/
+/*********************************************************************/
+
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -23,41 +34,51 @@ import models.*;
 
 public class DetailViewActivity extends AppCompatActivity {
 
+    //Indizes für ViewSets
     private static final int BLOCK_LAYOUT = 0;
     private static final int BLOCK_TITLE = 1;
     private static final int SB1_TEXT = 2;
     private static final int SB1_IMAGE_LAYOUT = 3;
     private static final int SB1_IMAGE = 4;
     private static final int SB1_SUBTITLE = 5;
-    private static final int SB2_TEXT = 6;
-    private static final int SB2_IMAGE_LAYOUT = 7;
-    private static final int SB2_IMAGE = 8;
-    private static final int SB2_SUBTITLE = 9;
-    private TimerThread timerThread;
-    private static boolean foreground = true;
+    private static final int SB1_SCROLLVIEWER = 6;
+    private static final int SB2_TEXT = 7;
+    private static final int SB2_IMAGE_LAYOUT = 8;
+    private static final int SB2_IMAGE = 9;
+    private static final int SB2_SUBTITLE = 10;
+    private static final int SB2_SCROLLVIEWER = 11;
 
-    private ImageView buttonLeft, buttonRight;
+    private TimerThread timerThread; //Steuert den Bildschirmschoner
+    private static boolean foreground = true; //Variable zur Steuerung des Bildschirmschoners
 
-    private int leftBlockIndex = 0;
-    private int blockCount = 0;
+    private ImageView buttonLeft, buttonRight; //Scrollbuttons
 
-    private ProjectModel model;
+    private int leftBlockIndex = 0; //Index des linken Blocks
+    private int blockCount = 0; //Anzahl der Blöcke im aktuellen Projekt
 
+    private ProjectModel model; //Aktuelles Projekt
+
+    //Speichert Views
     private SparseArray<View> block1ViewSet = new SparseArray<>();
     private SparseArray<View> block2ViewSet = new SparseArray<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Fullscreen
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        //ContentView
         setContentView(R.layout.activity_detail_view);
 
         //Toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
+        //OnTouchListener zuweisen
         RelativeLayout rl = (RelativeLayout)findViewById(R.id.activity_detail_view);
         rl.setOnTouchListener(touchListener);
 
@@ -94,35 +115,8 @@ public class DetailViewActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-
-            Intent i = new Intent(this,LoginActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(i);
-            finish();
-            return true;
-        }
-        else return false;
-    }
-
+    //Füllt alle Views in die SparseArrays
     private void fillViewSets() {
-
         //Fill view set for block 1
         block1ViewSet.put(BLOCK_LAYOUT, findViewById(R.id.block1_layout));
         block1ViewSet.put(BLOCK_TITLE, findViewById(R.id.block1_title));
@@ -130,10 +124,12 @@ public class DetailViewActivity extends AppCompatActivity {
         block1ViewSet.put(SB1_IMAGE_LAYOUT, findViewById(R.id.block1_sb1_imageLayout));
         block1ViewSet.put(SB1_IMAGE, findViewById(R.id.block1_sb1_image));
         block1ViewSet.put(SB1_SUBTITLE, findViewById(R.id.block1_sb1_subtitle));
+        block1ViewSet.put(SB1_SCROLLVIEWER, findViewById(R.id.block1_sb1_scrollViewer));
         block1ViewSet.put(SB2_TEXT, findViewById(R.id.block1_sb2_text));
         block1ViewSet.put(SB2_IMAGE_LAYOUT, findViewById(R.id.block1_sb2_imageLayout));
         block1ViewSet.put(SB2_IMAGE, findViewById(R.id.block1_sb2_image));
         block1ViewSet.put(SB2_SUBTITLE, findViewById(R.id.block1_sb2_subtitle));
+        block1ViewSet.put(SB2_SCROLLVIEWER, findViewById(R.id.block1_sb2_scrollViewer));
 
         //Fill view set for block 2
         block2ViewSet.put(BLOCK_LAYOUT, findViewById(R.id.block2_layout));
@@ -142,15 +138,17 @@ public class DetailViewActivity extends AppCompatActivity {
         block2ViewSet.put(SB1_IMAGE_LAYOUT, findViewById(R.id.block2_sb1_imageLayout));
         block2ViewSet.put(SB1_IMAGE, findViewById(R.id.block2_sb1_image));
         block2ViewSet.put(SB1_SUBTITLE, findViewById(R.id.block2_sb1_subtitle));
+        block2ViewSet.put(SB1_SCROLLVIEWER, findViewById(R.id.block2_sb1_scrollViewer));
         block2ViewSet.put(SB2_TEXT, findViewById(R.id.block2_sb2_text));
         block2ViewSet.put(SB2_IMAGE_LAYOUT, findViewById(R.id.block2_sb2_imageLayout));
         block2ViewSet.put(SB2_IMAGE, findViewById(R.id.block2_sb2_image));
         block2ViewSet.put(SB2_SUBTITLE, findViewById(R.id.block2_sb2_subtitle));
+        block2ViewSet.put(SB2_SCROLLVIEWER, findViewById(R.id.block2_sb2_scrollViewer));
 
     }
 
+    //Füllt Blöcke mit Daten
     private void updateBlocks() {
-
         //load left block
         loadDataFromModel(model.getBlocks().get(leftBlockIndex), block1ViewSet);
 
@@ -164,6 +162,7 @@ public class DetailViewActivity extends AppCompatActivity {
 
     }
 
+    //Füllt Views von einem Block mit Daten
     private void loadDataFromModel(BlockModel bm, SparseArray<View> viewSet) {
 
         String blockTitle = bm.getTitle();
@@ -182,9 +181,9 @@ public class DetailViewActivity extends AppCompatActivity {
             if (sb1.getType() == SubBlockType.TEXT) {
 
                 viewSet.get(SB1_IMAGE_LAYOUT).setVisibility(View.GONE);
+                viewSet.get(SB1_SCROLLVIEWER).setVisibility(View.VISIBLE);
 
                 TextView textView = (TextView)viewSet.get(SB1_TEXT);
-                textView.setVisibility(View.VISIBLE);
                 textView.setText(sb1.getText());
 
                 //even though the image view will be invisible for now, reset the image
@@ -193,7 +192,7 @@ public class DetailViewActivity extends AppCompatActivity {
 
             } else {
 
-                viewSet.get(SB1_TEXT).setVisibility(View.GONE);
+                viewSet.get(SB1_SCROLLVIEWER).setVisibility(View.GONE);
                 viewSet.get(SB1_IMAGE_LAYOUT).setVisibility(View.VISIBLE);
 
                 String subtitle = sb1.getSubtitle();
@@ -214,7 +213,7 @@ public class DetailViewActivity extends AppCompatActivity {
             }
         } else {
 
-            viewSet.get(SB1_TEXT).setVisibility(View.GONE);
+            viewSet.get(SB1_SCROLLVIEWER).setVisibility(View.GONE);
             viewSet.get(SB1_IMAGE_LAYOUT).setVisibility(View.GONE);
 
             //even though the image view will be invisible for now, reset the image
@@ -226,9 +225,9 @@ public class DetailViewActivity extends AppCompatActivity {
             if (sb2.getType() == SubBlockType.TEXT) {
 
                 viewSet.get(SB2_IMAGE_LAYOUT).setVisibility(View.GONE);
+                viewSet.get(SB2_SCROLLVIEWER).setVisibility(View.VISIBLE);
 
                 TextView textView = (TextView)viewSet.get(SB2_TEXT);
-                textView.setVisibility(View.VISIBLE);
                 textView.setText(sb2.getText());
 
                 //even though the image view will be invisible for now, reset the image
@@ -237,7 +236,7 @@ public class DetailViewActivity extends AppCompatActivity {
 
             } else {
 
-                viewSet.get(SB2_TEXT).setVisibility(View.GONE);
+                viewSet.get(SB2_SCROLLVIEWER).setVisibility(View.GONE);
                 viewSet.get(SB2_IMAGE_LAYOUT).setVisibility(View.VISIBLE);
 
                 String subtitle = sb2.getSubtitle();
@@ -258,7 +257,7 @@ public class DetailViewActivity extends AppCompatActivity {
             }
         } else {
 
-            viewSet.get(SB2_TEXT).setVisibility(View.GONE);
+            viewSet.get(SB2_SCROLLVIEWER).setVisibility(View.GONE);
             viewSet.get(SB2_IMAGE_LAYOUT).setVisibility(View.GONE);
 
             //even though the image view will be invisible for now, reset the image
@@ -268,6 +267,7 @@ public class DetailViewActivity extends AppCompatActivity {
 
     }
 
+    //Nach links scrollen
     public void swipeLeft(View view) {
         if (leftBlockIndex > 0)
             leftBlockIndex--;
@@ -276,6 +276,7 @@ public class DetailViewActivity extends AppCompatActivity {
         checkButtonVisibility();
     }
 
+    //Nach rechts scrollen
     public void swipeRight(View view) {
         if (leftBlockIndex < blockCount - 2)
             leftBlockIndex++;
@@ -301,6 +302,7 @@ public class DetailViewActivity extends AppCompatActivity {
 
     }
 
+    //Startet den screensaver
     Handler hander = new Handler(){
         public void handleMessage(Message m){
             Intent intent = new Intent (DetailViewActivity.this, screensaver.class);
@@ -309,6 +311,7 @@ public class DetailViewActivity extends AppCompatActivity {
         }
     };
 
+    //OnTouchListener zum zurücksetzen des screensaver Timers
     private View.OnTouchListener touchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -320,19 +323,21 @@ public class DetailViewActivity extends AppCompatActivity {
     @Override
     public void onStop(){
         super.onStop();
-        foreground = false;
+        foreground = false; //Screensaver Timer stoppen
     }
 
     @Override
     public void onStart(){
+        //Timer starten
         super.onStart();
         foreground = true;
         timerThread = new TimerThread();
-        timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)) * 60000  );
+        timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)));
         timerThread.setContext(this);
         timerThread.start();
     }
 
+    //Screensaver TimerThread
     public class TimerThread extends Thread{
         long delay = 0;
         long endTime;
@@ -346,6 +351,7 @@ public class DetailViewActivity extends AppCompatActivity {
                 }
             }
             if (!b) {
+                //Startet den screensaver, wenn die Activity noch läuft und im Vordergrund ist
                 hander.sendMessage(new Message());
             }
         }

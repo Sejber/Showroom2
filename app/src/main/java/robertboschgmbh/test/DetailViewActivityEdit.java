@@ -1,6 +1,16 @@
 package robertboschgmbh.test;
 
-import android.content.DialogInterface;
+/*********************************************************************/
+/**  Dateiname: DetailViewActivityEdit.java                         **/
+/**                                                                 **/
+/**  Beschreibung:  Bearbeitet den Inhalt eines Projektes           **/
+/**                                                                 **/
+/**  Autoren: Frederik Wagner, Lukas Schultt, Leunar Kalludra,      **/
+/**           Jonathan Lessing, Marcel Vetter, Leopold Ormos        **/
+/**           Merlin Baudert, Rino Grupp, Hannes Kececi             **/
+/**                                                                 **/
+/*********************************************************************/
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,7 +22,6 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -31,10 +40,10 @@ import java.io.OutputStream;
 import dataloading.AsyncImageLoader;
 import dataloading.XmlDataManager;
 import models.*;
-import filechooser.*;
 
 public class DetailViewActivityEdit extends AppCompatActivity {
 
+    //Indizes für ViewSets
     private static final int BLOCK_LAYOUT = 0;
     private static final int BLOCK_TITLE = 1;
     private static final int SB1_TEXT = 2;
@@ -51,35 +60,34 @@ public class DetailViewActivityEdit extends AppCompatActivity {
     private TimerThread timerThread;
     private static boolean foreground = true;
 
-    private ImageView buttonLeft, buttonRight;
+    private ImageView buttonLeft, buttonRight;//Scrollbuttons
 
-    private int leftBlockIndex = 0;
-    private int blockCount = 0;
+    private int leftBlockIndex = 0; //Index des linken Blocks
+    private int blockCount = 0; //Anzahl der Blöcke im aktuellen Projekt
 
     private RadioButton rbSb1Text;
     private RadioButton rbSb2Text;
     private String currentTag = "";
 
-    private ProjectModel model;
+    private ProjectModel model; //Aktuelles Projekt
 
+    //Speichert Views
     SparseArray<View> block1ViewSet = new SparseArray<>();
     SparseArray<View> block2ViewSet = new SparseArray<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //ContentView
         setContentView(R.layout.activity_detail_view_edit);
 
         //Toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-
-        RelativeLayout rl = (RelativeLayout)findViewById(R.id.activity_detail_view_edit);
-        rl.setOnTouchListener(touchListener);
-
-        //Homebutton
-        ImageButton imageButton1 = (ImageButton)findViewById(R.id.main_screen_top_toolbar_settings);
+        //Speicherbutton
+        ImageButton imageButton1 = (ImageButton)findViewById(R.id.imageSave);
         imageButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,12 +96,44 @@ public class DetailViewActivityEdit extends AppCompatActivity {
                 saveBlocks();
                 XmlDataManager.changeProject(model);
 
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                Intent i = new Intent(DetailViewActivityEdit.this, MainActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(i);
+                finish();
+                }
+            });
 
-            }
-        });
+        //EndButton
+        ImageButton imageButton2 = (ImageButton)findViewById(R.id.imageEnd);
+        imageButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                android.app.AlertDialog.Builder builder = new AlertDialog.Builder(DetailViewActivityEdit.this);
+                builder.setTitle("Achtung");
+                builder.setMessage("Möchten sie das Projekt schließen ohne zu speichern?");
+
+                final View v = view;
+                builder.setPositiveButton("JA", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i = new Intent(DetailViewActivityEdit.this, MainActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(i);
+                        finish();
+                        dialog.dismiss();
+                    }});
+
+                builder.setNegativeButton("NEIN", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+            }});
+
+                android.app.AlertDialog alert = builder.create();
+                alert.show();
+        }});
 
         //Get the corresponding model for this activity
         Bundle extras = getIntent().getExtras();
@@ -106,6 +146,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         //Get total block counts
         blockCount = model.getBlocks().size();
 
+        //Set the project title
         EditText title = (EditText)findViewById(R.id.tvProjectTitle_edit);
         title.setText(model.getTitle());
 
@@ -202,6 +243,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
             return new SubBlockModel("", "");
     }
 
+    //Füllt alle Views in die SparseArrays
     private void fillViewSets() {
 
         //Fill view set for block 1
@@ -234,6 +276,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
     }
 
+    //Füllt Blöcke mit Daten
     private void updateBlocks() {
 
         //load left block
@@ -249,7 +292,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
     }
 
-
+    //Füllt Views von einem Block mit Daten
     private void loadDataFromModel(BlockModel bm, SparseArray<View> viewSet) {
 
         String blockTitle = bm.getTitle();
@@ -389,28 +432,32 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         EditText blockTitleView1 = (EditText)block1ViewSet.get(BLOCK_TITLE);
         model.getBlocks().get(leftBlockIndex).setTitle( blockTitleView1.getText().toString());
 
-        if(model.getBlocks().get(leftBlockIndex).getSubBlock1().getType()==SubBlockType.TEXT) {
+        if (model.getBlocks().get(leftBlockIndex).getSubBlock1() != null) {
+            if (model.getBlocks().get(leftBlockIndex).getSubBlock1().getType() == SubBlockType.TEXT) {
 
-            EditText textView1 = (EditText)block1ViewSet.get(SB1_TEXT);
-            model.getBlocks().get(leftBlockIndex).getSubBlock1().setText(textView1.getText().toString());
+                EditText textView1 = (EditText) block1ViewSet.get(SB1_TEXT);
+                model.getBlocks().get(leftBlockIndex).getSubBlock1().setText(textView1.getText().toString());
 
-        } else {
+            } else {
 
-            EditText subtitleView1 = (EditText) block1ViewSet.get(SB1_SUBTITLE);
-            model.getBlocks().get(leftBlockIndex).getSubBlock1().setSubtitle(subtitleView1.getText().toString());
+                EditText subtitleView1 = (EditText) block1ViewSet.get(SB1_SUBTITLE);
+                model.getBlocks().get(leftBlockIndex).getSubBlock1().setSubtitle(subtitleView1.getText().toString());
 
+            }
         }
 
-        if(model.getBlocks().get(leftBlockIndex).getSubBlock2().getType()==SubBlockType.TEXT) {
+        if (model.getBlocks().get(leftBlockIndex).getSubBlock2() != null) {
+            if (model.getBlocks().get(leftBlockIndex).getSubBlock2().getType() == SubBlockType.TEXT) {
 
-            EditText textView2 = (EditText)block1ViewSet.get(SB2_TEXT);
-            model.getBlocks().get(leftBlockIndex).getSubBlock2().setText(textView2.getText().toString());
+                EditText textView2 = (EditText) block1ViewSet.get(SB2_TEXT);
+                model.getBlocks().get(leftBlockIndex).getSubBlock2().setText(textView2.getText().toString());
 
-        } else {
+            } else {
 
-            EditText subtitleView2 = (EditText) block1ViewSet.get(SB2_SUBTITLE);
-            model.getBlocks().get(leftBlockIndex).getSubBlock2().setSubtitle(subtitleView2.getText().toString());
+                EditText subtitleView2 = (EditText) block1ViewSet.get(SB2_SUBTITLE);
+                model.getBlocks().get(leftBlockIndex).getSubBlock2().setSubtitle(subtitleView2.getText().toString());
 
+            }
         }
 
         //check if there are 2 blocks
@@ -420,34 +467,38 @@ public class DetailViewActivityEdit extends AppCompatActivity {
             EditText blockTitleView2 = (EditText)block2ViewSet.get(BLOCK_TITLE);
             model.getBlocks().get(leftBlockIndex+1).setTitle( blockTitleView2.getText().toString());
 
-            if(model.getBlocks().get(leftBlockIndex+1).getSubBlock1().getType()==SubBlockType.TEXT) {
+            if (model.getBlocks().get(leftBlockIndex + 1).getSubBlock1() != null) {
+                if (model.getBlocks().get(leftBlockIndex + 1).getSubBlock1().getType() == SubBlockType.TEXT) {
 
-                EditText textView3 = (EditText)block2ViewSet.get(SB1_TEXT);
-                model.getBlocks().get(leftBlockIndex+1).getSubBlock1().setText(textView3.getText().toString());
+                    EditText textView3 = (EditText) block2ViewSet.get(SB1_TEXT);
+                    model.getBlocks().get(leftBlockIndex + 1).getSubBlock1().setText(textView3.getText().toString());
 
-            } else {
+                } else {
 
-                EditText subtitleView3 = (EditText) block2ViewSet.get(SB1_SUBTITLE);
-                model.getBlocks().get(leftBlockIndex+1).getSubBlock1().setSubtitle(subtitleView3.getText().toString());
+                    EditText subtitleView3 = (EditText) block2ViewSet.get(SB1_SUBTITLE);
+                    model.getBlocks().get(leftBlockIndex + 1).getSubBlock1().setSubtitle(subtitleView3.getText().toString());
 
+                }
             }
 
-            if(model.getBlocks().get(leftBlockIndex+1).getSubBlock2().getType()==SubBlockType.TEXT) {
+            if (model.getBlocks().get(leftBlockIndex + 1).getSubBlock2() != null) {
+                if (model.getBlocks().get(leftBlockIndex + 1).getSubBlock2().getType() == SubBlockType.TEXT) {
 
-                EditText textView4 = (EditText)block2ViewSet.get(SB2_TEXT);
-                model.getBlocks().get(leftBlockIndex+1).getSubBlock2().setText(textView4.getText().toString());
+                    EditText textView4 = (EditText) block2ViewSet.get(SB2_TEXT);
+                    model.getBlocks().get(leftBlockIndex + 1).getSubBlock2().setText(textView4.getText().toString());
 
-            } else {
+                } else {
 
-                EditText subtitleView4 = (EditText) block2ViewSet.get(SB2_SUBTITLE);
-                model.getBlocks().get(leftBlockIndex+1).getSubBlock2().setSubtitle(subtitleView4.getText().toString());
+                    EditText subtitleView4 = (EditText) block2ViewSet.get(SB2_SUBTITLE);
+                    model.getBlocks().get(leftBlockIndex + 1).getSubBlock2().setSubtitle(subtitleView4.getText().toString());
 
+                }
             }
         }
 
     }
 
-
+    //Nach links scrollen
     public void swipeLeft(View view) {
 
         saveBlocks();
@@ -459,6 +510,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         checkButtonVisibility();
     }
 
+    //Nach rechts scrollen
     public void swipeRight(View view) {
 
         saveBlocks();

@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+/*********************************************************************/
+/**  Dateiname: activity_detail_view.xml                            **/
+/**                                                                 **/
+/**  Beschreibung:  Activity zum Anzeigen des Inhalts eines Projekts**/
+/**                                                                 **/
+/**  Autoren: Frederik Wagner, Lukas Schultt, Leunar Kalludra,      **/
+/**           Jonathan Lessing, Marcel Vetter, Leopold Ormos        **/
+/**           Merlin Baudert, Rino Grupp, Hannes Kececi             **/
+/**                                                                 **/
+/*********************************************************************/
+-->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_detail_view"
@@ -18,7 +32,18 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/rlToolbar">
+            <TextView
+                android:id="@+id/tvProjectTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:textColor="@android:color/white"
+                android:gravity="bottom"
+                android:textAlignment="center"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:layout_alignBottom="@+id/imageView" />
 
             <ImageButton
                 android:id="@+id/main_screen_top_toolbar_settings"
@@ -47,18 +72,11 @@
         android:layout_below="@id/my_toolbar"
         android:layout_margin="@dimen/spacingDetailViewLarge" >
 
-        <TextView
-            android:id="@+id/tvProjectTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
-            android:layout_marginBottom="@dimen/spacingDetailViewLarge"/>
+
 
         <!-- BLOCKS -->
         <LinearLayout
-            android:layout_below="@id/tvProjectTitle"
+
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -95,14 +113,19 @@
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"/>
 
                 <!-- Upper Subblock -->
-                <TextView
-                    android:id="@+id/block1_sb1_text"
-                    android:textColor="@color/colorDetailViewText"
-                    android:layout_weight="1"
+                <ScrollView
+                    android:id="@+id/block1_sb1_scrollViewer"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:layout_marginTop="@dimen/spacingDetailViewSmall"
-                    android:layout_marginBottom="@dimen/spacingDetailViewSmall"/>
+                    android:layout_marginBottom="@dimen/spacingDetailViewSmall">
+                    <TextView
+                        android:id="@+id/block1_sb1_text"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/colorDetailViewText" />
+                </ScrollView>
                 <LinearLayout
                     android:id="@+id/block1_sb1_imageLayout"
                     android:layout_weight="1"
@@ -131,13 +154,19 @@
                 </LinearLayout>
 
                 <!-- Lower Subblock -->
-                <TextView
-                    android:id="@+id/block1_sb2_text"
-                    android:textColor="@color/colorDetailViewText"
-                    android:layout_weight="1"
+                <ScrollView
+                    android:id="@+id/block1_sb2_scrollViewer"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/spacingDetailViewSmall"/>
+                    android:layout_weight="1"
+                    android:layout_marginTop="@dimen/spacingDetailViewSmall"
+                    android:layout_marginBottom="@dimen/spacingDetailViewSmall">
+                    <TextView
+                        android:id="@+id/block1_sb2_text"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/colorDetailViewText" />
+                </ScrollView>
                 <LinearLayout
                     android:id="@+id/block1_sb2_imageLayout"
                     android:layout_weight="1"
@@ -187,14 +216,19 @@
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"/>
 
                 <!-- Upper Subblock -->
-                <TextView
-                    android:id="@+id/block2_sb1_text"
-                    android:textColor="@color/colorDetailViewText"
-                    android:layout_weight="1"
+                <ScrollView
+                    android:id="@+id/block2_sb1_scrollViewer"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:layout_marginTop="@dimen/spacingDetailViewSmall"
-                    android:layout_marginBottom="@dimen/spacingDetailViewSmall"/>
+                    android:layout_marginBottom="@dimen/spacingDetailViewSmall">
+                    <TextView
+                        android:id="@+id/block2_sb1_text"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/colorDetailViewText" />
+                </ScrollView>
                 <LinearLayout
                     android:id="@+id/block2_sb1_imageLayout"
                     android:layout_weight="1"
@@ -223,13 +257,19 @@
                 </LinearLayout>
 
                 <!-- Lower Subblock -->
-                <TextView
-                    android:id="@+id/block2_sb2_text"
-                    android:textColor="@color/colorDetailViewText"
-                    android:layout_weight="1"
+                <ScrollView
+                    android:id="@+id/block2_sb2_scrollViewer"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/spacingDetailViewSmall"/>
+                    android:layout_weight="1"
+                    android:layout_marginTop="@dimen/spacingDetailViewSmall"
+                    android:layout_marginBottom="@dimen/spacingDetailViewSmall">
+                    <TextView
+                        android:id="@+id/block2_sb2_text"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/colorDetailViewText" />
+                </ScrollView>
                 <LinearLayout
                     android:id="@+id/block2_sb2_imageLayout"
                     android:layout_weight="1"
