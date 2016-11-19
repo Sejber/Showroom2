@@ -44,7 +44,7 @@ import models.ProjectModel;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<ProjectModel> projects; //ArrayList aller Projekte
-    private boolean admin = false; //Admin Modus Umschalter
+    private boolean admin = true; //Admin Modus Umschalter
     private TimerThread timerThread; //Steuert den Bildschirmschoner
     private static boolean foreground = true;  //Variable zur Steuerung des Bildschirmschoners
 
@@ -144,6 +144,10 @@ public class MainActivity extends AppCompatActivity {
         }else if (id == R.id.end_button){
             finish();
             System.exit(0);
+        }else if (id == R.id.new_button){
+            Intent i = new Intent(this,NewProjectActivity.class);
+            startActivity(i);
+            timerThread.interrupt();
         }
 
         return super.onOptionsItemSelected(item);

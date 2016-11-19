@@ -302,6 +302,11 @@ public class DetailViewActivity extends AppCompatActivity {
 
     }
 
+    //Show InfoView
+    public void onInfoButtonClicked(View v) {
+        new InfoView(this, model).show();
+    }
+
     //Startet den screensaver
     Handler hander = new Handler(){
         public void handleMessage(Message m){

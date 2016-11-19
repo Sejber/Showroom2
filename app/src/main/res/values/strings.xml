@@ -19,4 +19,11 @@
     <string name="chooseImageFile">Bild laden</string>
     <string name="projectName">Projektname</string>
     <string name="blockTitle">Blocktitel</string>
+    <string-array name="planets_array">
+        <item>Elektrotechnik</item>
+        <item>Informatik</item>
+        <item>Maschinenbau</item>
+        <item>Mechatronik</item>
+        <item>Andere</item>
+    </string-array>
 </resources>
