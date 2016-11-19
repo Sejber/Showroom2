@@ -12,8 +12,11 @@
     <string name="newBlock_lowerSubblock">Unterer Teil</string>
     <string name="image">Bild</string>
     <string name="text">Text</string>
+    <string name="subtitle">Untertitel</string>
     <string name="dialog_btnAdd">Hinzufügen</string>
     <string name="dialog_btnCancel">Abbrechen</string>
     <string name="dialog_title">Teilblocktypen auswählen</string>
     <string name="chooseImageFile">Bild laden</string>
+    <string name="projectName">Projektname</string>
+    <string name="blockTitle">Blocktitel</string>
 </resources>

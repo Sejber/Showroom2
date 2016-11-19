@@ -57,7 +57,7 @@ public class FileChooser {
             }
         });
         dialog.setContentView(list);
-        dialog.getWindow().setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+        dialog.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         refresh(Environment.getExternalStorageDirectory());
     }
 

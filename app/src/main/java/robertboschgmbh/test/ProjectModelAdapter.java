@@ -24,7 +24,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import dataloading.AsyncImageLoader;
 import dataloading.XmlDataManager;
@@ -133,7 +135,8 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
         });
 
 
-        noteDate.setText(projectModel.getDate().toString().substring(projectModel.getDate().toString().length()-4)); //Setzt Datum
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy", Locale.GERMAN);
+        noteDate.setText(sdf.format(projectModel.getDate())); //Setzt Datum
         noteTitle.setText(projectModel.getTitle()); //Setzt Titel
         noteText.setText(DepartmentToStringConverter.convertToString(projectModel.getDepartment())); //Setzt Fachrichtung
         noteIcon.setImageBitmap(null); //Nötig aus Designgründen, falls recycled wird

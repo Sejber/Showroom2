@@ -67,7 +67,7 @@
                     android:orientation="vertical">
 
                     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:fastScrollAlwaysVisible="true"
+                        android:scrollbarFadeDuration="0"
                         android:id="@+id/gridView_alle"
                         android:numColumns="auto_fit"
                         android:gravity="center"
@@ -87,7 +87,7 @@
                     android:orientation="vertical">
 
                     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:fastScrollAlwaysVisible="true"
+                        android:scrollbarFadeDuration="0"
                         android:id="@+id/gridView_et"
                         android:numColumns="auto_fit"
                         android:gravity="center"
@@ -107,7 +107,7 @@
                     android:orientation="vertical">
 
                     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:fastScrollAlwaysVisible="true"
+                        android:scrollbarFadeDuration="0"
                         android:id="@+id/gridView_it"
                         android:numColumns="auto_fit"
                         android:gravity="center"
@@ -127,7 +127,7 @@
                     android:orientation="vertical">
 
                     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:fastScrollAlwaysVisible="true"
+                        android:scrollbarFadeDuration="0"
                         android:id="@+id/gridView_mb"
                         android:numColumns="auto_fit"
                         android:gravity="center"
@@ -147,7 +147,7 @@
                     android:orientation="vertical">
 
                     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:fastScrollAlwaysVisible="true"
+                        android:scrollbarFadeDuration="0"
                         android:id="@+id/gridView_mt"
                         android:numColumns="auto_fit"
                         android:gravity="center"

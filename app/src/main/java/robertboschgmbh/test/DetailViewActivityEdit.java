@@ -11,6 +11,7 @@ package robertboschgmbh.test;
 /**                                                                 **/
 /*********************************************************************/
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,23 +23,19 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 import dataloading.AsyncImageLoader;
+import dataloading.ImageFileHelper;
 import dataloading.XmlDataManager;
+import filechooser.FileChooser;
 import models.*;
 
 public class DetailViewActivityEdit extends AppCompatActivity {
@@ -108,7 +105,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         imageButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                android.app.AlertDialog.Builder builder = new AlertDialog.Builder(DetailViewActivityEdit.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetailViewActivityEdit.this);
                 builder.setTitle("Achtung");
                 builder.setMessage("Möchten sie das Projekt schließen ohne zu speichern?");
 
@@ -131,7 +128,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
                         dialog.dismiss();
             }});
 
-                android.app.AlertDialog alert = builder.create();
+                AlertDialog alert = builder.create();
                 alert.show();
         }});
 
@@ -151,6 +148,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         title.setText(model.getTitle());
 
         fillViewSets();
+        setOnLongClickListeners();
 
         updateBlocks();
         checkButtonVisibility();
@@ -273,6 +271,23 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         block2ViewSet.put(SB2_IMAGE, findViewById(R.id.block2_sb2_image_edit));
         block2ViewSet.put(SB2_SUBTITLE, findViewById(R.id.block2_sb2_subtitle_edit));
         block2ViewSet.put(SB2_BTN_LOAD_IMAGE, findViewById(R.id.block2_sb2_btnLoadImage));
+
+    }
+
+    private void setOnLongClickListeners() {
+        //Setup the onLongClickListeners for the ImageViews
+        View.OnLongClickListener listener = new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                DetailViewActivityEdit.this.onBtnImageLoadClick(view);
+                return true;
+            }
+        };
+
+        block1ViewSet.get(SB1_IMAGE).setOnLongClickListener(listener);
+        block1ViewSet.get(SB2_IMAGE).setOnLongClickListener(listener);
+        block2ViewSet.get(SB1_IMAGE).setOnLongClickListener(listener);
+        block2ViewSet.get(SB2_IMAGE).setOnLongClickListener(listener);
 
     }
 
@@ -557,40 +572,24 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
     private void applyImageFile(File file) {
 
-        //copy image to project directory
-        String filename = file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("/"));
-        File fileInProjectDir = new File(model.getDirectory(), filename);
+        File f = ImageFileHelper.copyFileToDirectory(this, file, model.getDirectory());
 
-        try {
-            InputStream in = new FileInputStream(file);
-            OutputStream out = new FileOutputStream(fileInProjectDir);
+        if (f != null) {
 
-            // Transfer bytes from in to out
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = in.read(buf)) > 0) {
-                out.write(buf, 0, len);
+            switch (currentTag) {
+                case "block1_sb1":
+                    model.getBlocks().get(leftBlockIndex).getSubBlock1().setImage(f.getAbsolutePath());
+                case "block1_sb2":
+                    model.getBlocks().get(leftBlockIndex).getSubBlock2().setImage(f.getAbsolutePath());
+                case "block2_sb1":
+                    model.getBlocks().get(leftBlockIndex + 1).getSubBlock1().setImage(f.getAbsolutePath());
+                case "block2_sb2":
+                    model.getBlocks().get(leftBlockIndex + 1).getSubBlock2().setImage(f.getAbsolutePath());
             }
 
-            in.close();
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Konnte Bild nicht kopieren", Toast.LENGTH_LONG).show();
-        }
+            updateBlocks();
 
-        switch (currentTag) {
-            case "block1_sb1":
-                model.getBlocks().get(leftBlockIndex).getSubBlock1().setImage(fileInProjectDir.getAbsolutePath());
-            case "block1_sb2":
-                model.getBlocks().get(leftBlockIndex).getSubBlock2().setImage(fileInProjectDir.getAbsolutePath());
-            case "block2_sb1":
-                model.getBlocks().get(leftBlockIndex + 1).getSubBlock1().setImage(fileInProjectDir.getAbsolutePath());
-            case "block2_sb2":
-                model.getBlocks().get(leftBlockIndex + 1).getSubBlock2().setImage(fileInProjectDir.getAbsolutePath());
         }
-
-        updateBlocks();
 
     }
 
