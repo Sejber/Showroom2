@@ -2,6 +2,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="robertboschgmbh.test.MainActivity" >
+
+    <item android:id="@+id/new_button"
+        android:title="Neues Projekt"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
     <item android:id="@+id/user_button"
         android:title="@string/action_settings2"
         android:orderInCategory="100"
@@ -10,4 +15,5 @@
         android:title="@string/action_settings3"
         android:orderInCategory="100"
         app:showAsAction="never" />
+
 </menu>

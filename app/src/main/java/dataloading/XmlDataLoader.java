@@ -35,7 +35,7 @@ import models.Department;
 import models.ProjectModel;
 import models.SubBlockModel;
 
-class XmlDataLoader implements DataLoader {
+public class XmlDataLoader implements DataLoader {
 
     private File currentProjectDirectory;
 
@@ -256,7 +256,7 @@ class XmlDataLoader implements DataLoader {
         }
     }
 
-    private Date parseDate(String s) {
+    public static Date parseDate(String s) {
         DateFormat df = SimpleDateFormat.getDateInstance();
 
         try {
