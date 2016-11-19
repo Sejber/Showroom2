@@ -8,4 +8,11 @@
     <string name="passwort">test123</string>
     <string name="title_activity_screensaver">screensaver</string>
     <string name="screensaver_delay">600000</string>
+    <string-array name="planets_array">
+        <item>Elektrotechnik</item>
+        <item>Informatik</item>
+        <item>Maschinenbau</item>
+        <item>Mechatronik</item>
+        <item>Andere</item>
+    </string-array>
 </resources>

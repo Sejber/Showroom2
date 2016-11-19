@@ -29,14 +29,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 
 import models.BlockModel;
 import models.Department;
 import models.ProjectModel;
 import models.SubBlockModel;
 
-class XmlDataLoader implements DataLoader {
+public class XmlDataLoader implements DataLoader {
 
     private File currentProjectDirectory;
 
@@ -257,8 +256,8 @@ class XmlDataLoader implements DataLoader {
         }
     }
 
-    private Date parseDate(String s) {
-        DateFormat df = new SimpleDateFormat("yyyy", Locale.GERMAN);
+    public static Date parseDate(String s) {
+        DateFormat df = SimpleDateFormat.getDateInstance();
 
         try {
             return df.parse(s);
