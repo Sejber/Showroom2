@@ -104,6 +104,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp" />
 
+                <Button
+                    android:id="@+id/block1_sb1_btnLoadImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:tag="block1_sb1"
+                    android:onClick="onBtnImageLoadClick"
+                    android:text="@string/chooseImageFile"/>
+
                 <EditText
                     android:id="@+id/block1_sb1_subtitle_edit"
                     android:layout_width="match_parent"
@@ -132,6 +141,15 @@
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="0dp" />
+
+                <Button
+                    android:id="@+id/block1_sb2_btnLoadImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:tag="block1_sb2"
+                    android:onClick="onBtnImageLoadClick"
+                    android:text="@string/chooseImageFile"/>
 
                 <EditText
                     android:id="@+id/block1_sb2_subtitle_edit"
@@ -190,6 +208,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp" />
 
+                <Button
+                    android:id="@+id/block2_sb1_btnLoadImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:tag="block2_sb1"
+                    android:onClick="onBtnImageLoadClick"
+                    android:text="@string/chooseImageFile"/>
+
                 <EditText
                     android:id="@+id/block2_sb1_subtitle_edit"
                     android:layout_width="match_parent"
@@ -218,6 +245,15 @@
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="0dp" />
+
+                <Button
+                    android:id="@+id/block2_sb2_btnLoadImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:tag="block2_sb2"
+                    android:onClick="onBtnImageLoadClick"
+                    android:text="@string/chooseImageFile"/>
 
                 <EditText
                     android:id="@+id/block2_sb2_subtitle_edit"

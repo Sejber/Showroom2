@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -16,11 +17,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import dataloading.AsyncImageLoader;
 import dataloading.XmlDataManager;
@@ -35,10 +41,13 @@ public class DetailViewActivityEdit extends AppCompatActivity {
     private static final int SB1_IMAGE_LAYOUT = 3;
     private static final int SB1_IMAGE = 4;
     private static final int SB1_SUBTITLE = 5;
-    private static final int SB2_TEXT = 6;
-    private static final int SB2_IMAGE_LAYOUT = 7;
-    private static final int SB2_IMAGE = 8;
-    private static final int SB2_SUBTITLE = 9;
+    private static final int SB1_BTN_LOAD_IMAGE = 6;
+    private static final int SB2_TEXT = 7;
+    private static final int SB2_IMAGE_LAYOUT = 8;
+    private static final int SB2_IMAGE = 9;
+    private static final int SB2_SUBTITLE = 10;
+    private static final int SB2_BTN_LOAD_IMAGE = 11;
+
     private TimerThread timerThread;
     private static boolean foreground = true;
 
@@ -47,13 +56,9 @@ public class DetailViewActivityEdit extends AppCompatActivity {
     private int leftBlockIndex = 0;
     private int blockCount = 0;
 
-    private boolean hasTitle;
-    private boolean subBlock1IsText = true;
-    private boolean subBlock2IsText = true;
-    private boolean isInterrupted;
-    private String path1, path2;
-    private String title = "";
-    private SubBlockModel sub1, sub2;
+    private RadioButton rbSb1Text;
+    private RadioButton rbSb2Text;
+    private String currentTag = "";
 
     private ProjectModel model;
 
@@ -109,7 +114,6 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         updateBlocks();
         checkButtonVisibility();
 
-
     }
 
     @Override
@@ -138,146 +142,49 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
     private void addNewBlock() {
 
-        isInterrupted = false;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
 
+        View v = inflater.inflate(R.layout.dialog_new_block, null);
+        rbSb1Text = (RadioButton)v.findViewById(R.id.rbUpperText);
+        rbSb2Text = (RadioButton)v.findViewById(R.id.rbLowerText);
 
-        final CharSequence[] itemsTitle = {" Ja "," Nein "};
-        final CharSequence[] itemsSubBlock = {" Text "," Image "};
+        builder.setView(v);
+        builder.setTitle(R.string.dialog_title);
 
-        if(!isInterrupted) {
-            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-            builder.setTitle("Blocküberschrift hinzufügen?");
-            builder.setSingleChoiceItems(itemsTitle, -1, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
+        builder.setPositiveButton(R.string.dialog_btnAdd, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                DetailViewActivityEdit.this.onDialogResult(
+                        rbSb1Text.isChecked() ? SubBlockType.TEXT : SubBlockType.IMAGE,
+                        rbSb2Text.isChecked() ? SubBlockType.TEXT : SubBlockType.IMAGE
+                );
+            }
+        });
 
-                    switch(item)
-                    {
-                        case 0:
-                            hasTitle = true;
-                            break;
-                        case 1:
-                            hasTitle = false;
-                            break;
-                    }
+        builder.setNegativeButton(R.string.dialog_btnCancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
 
-                    dialog.dismiss();
+        builder.create().show();
 
-                }
-            });
-            builder.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    isInterrupted = true;
-                    dialog.dismiss();
-                }
-            });
-            android.app.AlertDialog alert = builder.create();
-            alert.show();
+    }
+
+    public void onDialogResult(SubBlockType sb1Type, SubBlockType sb2Type) {
+
+        SubBlockModel sb1, sb2 = null;
+
+        sb1 = createEmptySubblock(sb1Type);
+
+        if (sb1Type != sb2Type) {
+            sb2 = createEmptySubblock(sb2Type);
         }
 
-        if(!isInterrupted) {
-            android.app.AlertDialog.Builder builder2 = new android.app.AlertDialog.Builder(this);
-            builder2.setTitle("oberer Block:");
-            builder2.setSingleChoiceItems(itemsSubBlock, -1, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
-
-                    switch(item)
-                    {
-                        case 0:
-                            subBlock1IsText = true;
-                            break;
-                        case 1:
-                            subBlock1IsText = false;
-                            break;
-                    }
-
-                    dialog.dismiss();
-
-                }
-            });
-            builder2.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    isInterrupted = true;
-                    dialog.dismiss();
-                }
-            });
-            android.app.AlertDialog alert2 = builder2.create();
-            alert2.show();
-        }
-
-
-        if(!isInterrupted) {
-            android.app.AlertDialog.Builder builder3 = new android.app.AlertDialog.Builder(this);
-            builder3.setTitle("unterer Block:");
-            builder3.setSingleChoiceItems(itemsSubBlock, -1, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
-
-                    switch(item)
-                    {
-                        case 0:
-                            subBlock2IsText = true;
-                            break;
-                        case 1:
-                            subBlock2IsText = false;
-                            break;
-                    }
-                    dialog.dismiss();
-
-                }
-            });
-            builder3.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    isInterrupted = true;
-                    dialog.dismiss();
-                }
-            });
-            android.app.AlertDialog alert3 = builder3.create();
-            alert3.show();
-        }
-
-
-
-        if(hasTitle) {
-            title = "Titel";
-        }
-
-
-        if(subBlock1IsText) {
-            sub1 = new SubBlockModel("subtext1");
-        } else {
-
-            new FileChooser(this).setFileListener(new FileChooser.FileSelectedListener() {
-                @Override public void fileSelected(final File file) {
-
-                    path1 = file.getPath();
-
-
-                }}).showDialog();
-            sub1 = new SubBlockModel(path1,"Beschreibung");
-        }
-
-
-
-        if(subBlock2IsText) {
-            sub2 = new SubBlockModel("subtext2");
-        } else {
-
-            new FileChooser(this).setFileListener(new FileChooser.FileSelectedListener() {
-                @Override public void fileSelected(final File file) {
-
-                    path2 = file.getPath();
-
-
-                }}).showDialog();
-            sub2 = new SubBlockModel(path2,"Beschreibung");
-
-        }
-
-
-        BlockModel newBlock = new BlockModel(title, sub1, sub2);
-        model.addBlock(newBlock);
+        BlockModel b = new BlockModel("", sb1, sb2);
+        model.addBlock(b);
 
         blockCount = model.getBlocks().size();
 
@@ -286,8 +193,13 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         updateBlocks();
         checkButtonVisibility();
 
+    }
 
-
+    private SubBlockModel createEmptySubblock(SubBlockType type) {
+        if (type == SubBlockType.TEXT)
+            return new SubBlockModel("");
+        else
+            return new SubBlockModel("", "");
     }
 
     private void fillViewSets() {
@@ -299,10 +211,12 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         block1ViewSet.put(SB1_IMAGE_LAYOUT, findViewById(R.id.block1_sb1_imageLayout_edit));
         block1ViewSet.put(SB1_IMAGE, findViewById(R.id.block1_sb1_image_edit));
         block1ViewSet.put(SB1_SUBTITLE, findViewById(R.id.block1_sb1_subtitle_edit));
+        block1ViewSet.put(SB1_BTN_LOAD_IMAGE, findViewById(R.id.block1_sb1_btnLoadImage));
         block1ViewSet.put(SB2_TEXT, findViewById(R.id.block1_sb2_text_edit));
         block1ViewSet.put(SB2_IMAGE_LAYOUT, findViewById(R.id.block1_sb2_imageLayout_edit));
         block1ViewSet.put(SB2_IMAGE, findViewById(R.id.block1_sb2_image_edit));
         block1ViewSet.put(SB2_SUBTITLE, findViewById(R.id.block1_sb2_subtitle_edit));
+        block1ViewSet.put(SB2_BTN_LOAD_IMAGE, findViewById(R.id.block1_sb2_btnLoadImage));
 
         //Fill view set for block 2
         block2ViewSet.put(BLOCK_LAYOUT, findViewById(R.id.block2_layout_edit));
@@ -311,10 +225,12 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         block2ViewSet.put(SB1_IMAGE_LAYOUT, findViewById(R.id.block2_sb1_imageLayout_edit));
         block2ViewSet.put(SB1_IMAGE, findViewById(R.id.block2_sb1_image_edit));
         block2ViewSet.put(SB1_SUBTITLE, findViewById(R.id.block2_sb1_subtitle_edit));
+        block2ViewSet.put(SB1_BTN_LOAD_IMAGE, findViewById(R.id.block2_sb1_btnLoadImage));
         block2ViewSet.put(SB2_TEXT, findViewById(R.id.block2_sb2_text_edit));
         block2ViewSet.put(SB2_IMAGE_LAYOUT, findViewById(R.id.block2_sb2_imageLayout_edit));
         block2ViewSet.put(SB2_IMAGE, findViewById(R.id.block2_sb2_image_edit));
         block2ViewSet.put(SB2_SUBTITLE, findViewById(R.id.block2_sb2_subtitle_edit));
+        block2ViewSet.put(SB2_BTN_LOAD_IMAGE, findViewById(R.id.block2_sb2_btnLoadImage));
 
     }
 
@@ -328,10 +244,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
             //so make the other block 'gone'
             block2ViewSet.get(BLOCK_LAYOUT).setVisibility(View.GONE);
         } else {
-
             loadDataFromModel(model.getBlocks().get(leftBlockIndex + 1), block2ViewSet);
-
-
         }
 
     }
@@ -345,10 +258,9 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
         EditText blockTitleView = (EditText)viewSet.get(BLOCK_TITLE);
         if (blockTitle != null && !blockTitle.equals("")) {
-            blockTitleView.setVisibility(View.VISIBLE);
             blockTitleView.setText(blockTitle);
         } else {
-            blockTitleView.setVisibility(View.GONE);
+            blockTitleView.setText("");
         }
 
         if (sb1 != null) {
@@ -372,17 +284,30 @@ public class DetailViewActivityEdit extends AppCompatActivity {
                 String subtitle = sb1.getSubtitle();
                 EditText subtitleView = (EditText) viewSet.get(SB1_SUBTITLE);
                 if (subtitle != null && !subtitle.equals("")) {
-                    subtitleView.setVisibility(View.VISIBLE);
                     subtitleView.setText(subtitle);
                 } else {
-                    subtitleView.setVisibility(View.GONE);
+                    subtitleView.setText("");
                 }
 
-                ImageView imageView = (ImageView)viewSet.get(SB1_IMAGE);
-                imageView.setVisibility(View.VISIBLE);
-                imageView.setImageBitmap(null);
-                AsyncImageLoader.setImageToImageView(sb1.getImage(), imageView,
-                        imageView.getWidth(), imageView.getHeight());
+                if (sb1.getImage() == null || sb1.getImage().equals("")) {
+
+                    viewSet.get(SB1_BTN_LOAD_IMAGE).setVisibility(View.VISIBLE);
+
+                    ImageView imageView = (ImageView)viewSet.get(SB1_IMAGE);
+                    imageView.setVisibility(View.GONE);
+                    imageView.setImageBitmap(null);
+
+                } else {
+
+                    viewSet.get(SB1_BTN_LOAD_IMAGE).setVisibility(View.GONE);
+
+                    ImageView imageView = (ImageView)viewSet.get(SB1_IMAGE);
+                    imageView.setVisibility(View.VISIBLE);
+                    imageView.setImageBitmap(null);
+                    AsyncImageLoader.setImageToImageView(sb1.getImage(), imageView,
+                            imageView.getWidth(), imageView.getHeight());
+
+                }
 
             }
         } else {
@@ -416,17 +341,30 @@ public class DetailViewActivityEdit extends AppCompatActivity {
                 String subtitle = sb2.getSubtitle();
                 EditText subtitleView = (EditText) viewSet.get(SB2_SUBTITLE);
                 if (subtitle != null && !subtitle.equals("")) {
-                    subtitleView.setVisibility(View.VISIBLE);
                     subtitleView.setText(subtitle);
                 } else {
-                    subtitleView.setVisibility(View.GONE);
+                    subtitleView.setText("");
                 }
 
-                ImageView imageView = (ImageView)viewSet.get(SB2_IMAGE);
-                imageView.setVisibility(View.VISIBLE);
-                imageView.setImageBitmap(null);
-                AsyncImageLoader.setImageToImageView(sb2.getImage(), imageView,
-                        imageView.getWidth(), imageView.getHeight());
+                if (sb2.getImage() == null || sb2.getImage().equals("")) {
+
+                    viewSet.get(SB2_BTN_LOAD_IMAGE).setVisibility(View.VISIBLE);
+
+                    ImageView imageView = (ImageView)viewSet.get(SB2_IMAGE);
+                    imageView.setVisibility(View.GONE);
+                    imageView.setImageBitmap(null);
+
+                } else {
+
+                    viewSet.get(SB2_BTN_LOAD_IMAGE).setVisibility(View.GONE);
+
+                    ImageView imageView = (ImageView)viewSet.get(SB2_IMAGE);
+                    imageView.setVisibility(View.VISIBLE);
+                    imageView.setImageBitmap(null);
+                    AsyncImageLoader.setImageToImageView(sb2.getImage(), imageView,
+                            imageView.getWidth(), imageView.getHeight());
+
+                }
 
             }
         } else {
@@ -546,6 +484,61 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         } else {
             buttonRight.setVisibility(View.INVISIBLE);
         }
+
+    }
+
+    public void onBtnImageLoadClick(View v) {
+
+        if (v.getTag() == null)
+            return;
+
+        currentTag = (String)v.getTag();
+
+        new FileChooser(this).setFileListener(new FileChooser.FileSelectedListener() {
+            @Override
+            public void fileSelected(File file) {
+                DetailViewActivityEdit.this.applyImageFile(file);
+            }
+        }).showDialog();
+
+    }
+
+    private void applyImageFile(File file) {
+
+        //copy image to project directory
+        String filename = file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("/"));
+        File fileInProjectDir = new File(model.getDirectory(), filename);
+
+        try {
+            InputStream in = new FileInputStream(file);
+            OutputStream out = new FileOutputStream(fileInProjectDir);
+
+            // Transfer bytes from in to out
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+
+            in.close();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Konnte Bild nicht kopieren", Toast.LENGTH_LONG).show();
+        }
+
+        switch (currentTag) {
+            case "block1_sb1":
+                model.getBlocks().get(leftBlockIndex).getSubBlock1().setImage(fileInProjectDir.getAbsolutePath());
+            case "block1_sb2":
+                model.getBlocks().get(leftBlockIndex).getSubBlock2().setImage(fileInProjectDir.getAbsolutePath());
+            case "block2_sb1":
+                model.getBlocks().get(leftBlockIndex + 1).getSubBlock1().setImage(fileInProjectDir.getAbsolutePath());
+            case "block2_sb2":
+                model.getBlocks().get(leftBlockIndex + 1).getSubBlock2().setImage(fileInProjectDir.getAbsolutePath());
+        }
+
+        updateBlocks();
 
     }
 

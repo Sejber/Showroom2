@@ -8,4 +8,12 @@
     <string name="passwort">test123</string>
     <string name="title_activity_screensaver">screensaver</string>
     <string name="screensaver_delay">10</string>
+    <string name="newBlock_upperSubblock">Oberer Teil</string>
+    <string name="newBlock_lowerSubblock">Unterer Teil</string>
+    <string name="image">Bild</string>
+    <string name="text">Text</string>
+    <string name="dialog_btnAdd">Hinzufügen</string>
+    <string name="dialog_btnCancel">Abbrechen</string>
+    <string name="dialog_title">Teilblocktypen auswählen</string>
+    <string name="chooseImageFile">Bild laden</string>
 </resources>

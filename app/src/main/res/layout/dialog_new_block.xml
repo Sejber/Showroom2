@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacingDetailViewSmall"
+        android:text="@string/newBlock_upperSubblock"/>
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacingDetailViewSmall"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rbUpperText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/text"/>
+
+        <RadioButton
+            android:id="@+id/rbUpperImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacingDetailViewSmall"
+            android:text="@string/image"/>
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacingDetailViewLarge"
+        android:layout_marginBottom="@dimen/spacingDetailViewSmall"
+        android:layout_marginStart="@dimen/spacingDetailViewSmall"
+        android:text="@string/newBlock_lowerSubblock"/>
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacingDetailViewSmall"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rbLowerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/text"/>
+
+        <RadioButton
+            android:id="@+id/rbLowerImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacingDetailViewSmall"
+            android:text="@string/image"/>
+    </RadioGroup>
+
+</LinearLayout>

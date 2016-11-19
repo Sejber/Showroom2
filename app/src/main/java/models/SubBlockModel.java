@@ -53,4 +53,6 @@ public class SubBlockModel implements Serializable {
         this.subtitle = subtitle;
     }
 
+    public void setImage(String image) { this.image = image; }
+
 }
