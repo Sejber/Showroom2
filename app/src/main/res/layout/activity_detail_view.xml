@@ -32,7 +32,18 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/rlToolbar">
+            <TextView
+                android:id="@+id/tvProjectTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:textColor="@android:color/white"
+                android:gravity="bottom"
+                android:textAlignment="center"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:layout_alignBottom="@+id/imageView" />
 
             <ImageButton
                 android:id="@+id/main_screen_top_toolbar_settings"
@@ -61,18 +72,11 @@
         android:layout_below="@id/my_toolbar"
         android:layout_margin="@dimen/spacingDetailViewLarge" >
 
-        <TextView
-            android:id="@+id/tvProjectTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
-            android:layout_marginBottom="@dimen/spacingDetailViewLarge"/>
+
 
         <!-- BLOCKS -->
         <LinearLayout
-            android:layout_below="@id/tvProjectTitle"
+
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
