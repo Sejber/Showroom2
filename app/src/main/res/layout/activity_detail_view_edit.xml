@@ -74,6 +74,7 @@
         android:layout_below="@id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="@string/projectName"
         android:textAlignment="center"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline" />
 
@@ -83,11 +84,12 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:paddingStart="@dimen/spacingDetailViewLarge"
+        android:paddingEnd="@dimen/spacingDetailViewLarge">
 
         <ImageView
             android:id="@+id/imageButtonLeft_edit"
-            android:paddingLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_keyboard_arrow_left_black_24dp"
@@ -110,14 +112,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"/>
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:hint="@string/blockTitle"/>
 
             <!-- Upper Subblock -->
             <EditText
                 android:id="@+id/block1_sb1_text_edit"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="0dp" />
+                android:layout_height="0dp"
+                android:hint="@string/text"/>
             <LinearLayout
                 android:id="@+id/block1_sb1_imageLayout_edit"
                 android:layout_weight="1"
@@ -128,16 +132,27 @@
                 <ImageView
                     android:id="@+id/block1_sb1_image_edit"
                     android:scaleType="centerInside"
+                    android:tag="block1_sb1"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="0dp" />
+
+                <Button
+                    android:id="@+id/block1_sb1_btnLoadImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:tag="block1_sb1"
+                    android:onClick="onBtnImageLoadClick"
+                    android:text="@string/chooseImageFile"/>
 
                 <EditText
                     android:id="@+id/block1_sb1_subtitle_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="bottom"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:hint="@string/subtitle"/>
 
             </LinearLayout>
 
@@ -146,7 +161,8 @@
                 android:id="@+id/block1_sb2_text_edit"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"/>
+                android:layout_height="0dp"
+                android:hint="@string/text"/>
             <LinearLayout
                 android:id="@+id/block1_sb2_imageLayout_edit"
                 android:layout_weight="1"
@@ -157,28 +173,29 @@
                 <ImageView
                     android:id="@+id/block1_sb2_image_edit"
                     android:scaleType="centerInside"
+                    android:tag="block1_sb2"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="0dp" />
+
+                <Button
+                    android:id="@+id/block1_sb2_btnLoadImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:tag="block1_sb2"
+                    android:onClick="onBtnImageLoadClick"
+                    android:text="@string/chooseImageFile"/>
 
                 <EditText
                     android:id="@+id/block1_sb2_subtitle_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="bottom"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:hint="@string/subtitle"/>
 
             </LinearLayout>
-
-            <!--   <ImageButton
-                  android:id="@+id/block1_button_add"
-                  android:layout_width="match_parent"
-                  android:layout_weight="1"
-                  android:layout_height="0dp"
-                  android:background="@android:color/transparent"
-                  app:srcCompat="@android:drawable/ic_menu_add" /> -->
-
-
 
           </LinearLayout>
 
@@ -196,14 +213,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"/>
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:hint="@string/blockTitle"/>
 
             <!-- Upper Subblock -->
             <EditText
                 android:id="@+id/block2_sb1_text_edit"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"/>
+                android:layout_height="0dp"
+                android:hint="@string/text"/>
             <LinearLayout
                 android:id="@+id/block2_sb1_imageLayout_edit"
                 android:layout_weight="1"
@@ -214,16 +233,27 @@
                 <ImageView
                     android:id="@+id/block2_sb1_image_edit"
                     android:scaleType="centerInside"
+                    android:tag="block2_sb1"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="0dp" />
+
+                <Button
+                    android:id="@+id/block2_sb1_btnLoadImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:tag="block2_sb1"
+                    android:onClick="onBtnImageLoadClick"
+                    android:text="@string/chooseImageFile"/>
 
                 <EditText
                     android:id="@+id/block2_sb1_subtitle_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="bottom"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:hint="@string/subtitle"/>
 
             </LinearLayout>
 
@@ -232,7 +262,8 @@
                 android:id="@+id/block2_sb2_text_edit"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"/>
+                android:layout_height="0dp"
+                android:hint="@string/text"/>
             <LinearLayout
                 android:id="@+id/block2_sb2_imageLayout_edit"
                 android:layout_weight="1"
@@ -243,35 +274,34 @@
                 <ImageView
                     android:id="@+id/block2_sb2_image_edit"
                     android:scaleType="centerInside"
+                    android:tag="block2_sb2"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="0dp" />
+
+                <Button
+                    android:id="@+id/block2_sb2_btnLoadImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:tag="block2_sb2"
+                    android:onClick="onBtnImageLoadClick"
+                    android:text="@string/chooseImageFile"/>
 
                 <EditText
                     android:id="@+id/block2_sb2_subtitle_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="bottom"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:hint="@string/subtitle"/>
 
             </LinearLayout>
 
-            <!--    <ImageButton
-                  android:id="@+id/block2_button_add"
-                  android:layout_width="match_parent"
-                  android:layout_weight="1"
-                  android:layout_height="0dp"
-                  android:background="@android:color/transparent"
-                  app:srcCompat="@android:drawable/ic_menu_add" /> -->
-
           </LinearLayout>
-
-
-
 
           <ImageView
               android:id="@+id/imageButtonRight_edit"
-              android:paddingRight="10dp"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:src="@drawable/ic_keyboard_arrow_right_black_24dp"

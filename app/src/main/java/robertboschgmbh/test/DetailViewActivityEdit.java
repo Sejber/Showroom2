@@ -11,24 +11,32 @@ package robertboschgmbh.test;
 /**                                                                 **/
 /*********************************************************************/
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.content.DialogInterface;
-import android.app.AlertDialog;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+
+import java.io.File;
 
 import dataloading.AsyncImageLoader;
+import dataloading.ImageFileHelper;
 import dataloading.XmlDataManager;
+import filechooser.FileChooser;
 import models.*;
-
 
 public class DetailViewActivityEdit extends AppCompatActivity {
 
@@ -39,15 +47,24 @@ public class DetailViewActivityEdit extends AppCompatActivity {
     private static final int SB1_IMAGE_LAYOUT = 3;
     private static final int SB1_IMAGE = 4;
     private static final int SB1_SUBTITLE = 5;
-    private static final int SB2_TEXT = 6;
-    private static final int SB2_IMAGE_LAYOUT = 7;
-    private static final int SB2_IMAGE = 8;
-    private static final int SB2_SUBTITLE = 9;
+    private static final int SB1_BTN_LOAD_IMAGE = 6;
+    private static final int SB2_TEXT = 7;
+    private static final int SB2_IMAGE_LAYOUT = 8;
+    private static final int SB2_IMAGE = 9;
+    private static final int SB2_SUBTITLE = 10;
+    private static final int SB2_BTN_LOAD_IMAGE = 11;
+
+    private TimerThread timerThread;
+    private static boolean foreground = true;
 
     private ImageView buttonLeft, buttonRight;//Scrollbuttons
 
     private int leftBlockIndex = 0; //Index des linken Blocks
     private int blockCount = 0; //Anzahl der Blöcke im aktuellen Projekt
+
+    private RadioButton rbSb1Text;
+    private RadioButton rbSb2Text;
+    private String currentTag = "";
 
     private ProjectModel model; //Aktuelles Projekt
 
@@ -88,7 +105,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         imageButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                android.app.AlertDialog.Builder builder = new AlertDialog.Builder(DetailViewActivityEdit.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetailViewActivityEdit.this);
                 builder.setTitle("Achtung");
                 builder.setMessage("Möchten sie das Projekt schließen ohne zu speichern?");
 
@@ -111,7 +128,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
                         dialog.dismiss();
             }});
 
-                android.app.AlertDialog alert = builder.create();
+                AlertDialog alert = builder.create();
                 alert.show();
         }});
 
@@ -131,6 +148,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         title.setText(model.getTitle());
 
         fillViewSets();
+        setOnLongClickListeners();
 
         updateBlocks();
         checkButtonVisibility();
@@ -154,24 +172,78 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings4){
 
-			//adding new Block
+            //adding new Block
+            addNewBlock();
 
-            BlockModel newBlock = new BlockModel("Titel(optional)", new SubBlockModel("subtext1"), new SubBlockModel("subtext2"));
-            model.addBlock(newBlock);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-            blockCount = model.getBlocks().size();
+    private void addNewBlock() {
 
-            //Move view so the new block is visible
-            leftBlockIndex = blockCount - 2;
-            updateBlocks();
-            checkButtonVisibility();
-			
-		}
-            return super.onOptionsItemSelected(item);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+
+        View v = inflater.inflate(R.layout.dialog_new_block, null);
+        rbSb1Text = (RadioButton)v.findViewById(R.id.rbUpperText);
+        rbSb2Text = (RadioButton)v.findViewById(R.id.rbLowerText);
+
+        builder.setView(v);
+        builder.setTitle(R.string.dialog_title);
+
+        builder.setPositiveButton(R.string.dialog_btnAdd, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                DetailViewActivityEdit.this.onDialogResult(
+                        rbSb1Text.isChecked() ? SubBlockType.TEXT : SubBlockType.IMAGE,
+                        rbSb2Text.isChecked() ? SubBlockType.TEXT : SubBlockType.IMAGE
+                );
+            }
+        });
+
+        builder.setNegativeButton(R.string.dialog_btnCancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        builder.create().show();
+
+    }
+
+    public void onDialogResult(SubBlockType sb1Type, SubBlockType sb2Type) {
+
+        SubBlockModel sb1, sb2 = null;
+
+        sb1 = createEmptySubblock(sb1Type);
+
+        if (sb1Type != sb2Type) {
+            sb2 = createEmptySubblock(sb2Type);
+        }
+
+        BlockModel b = new BlockModel("", sb1, sb2);
+        model.addBlock(b);
+
+        blockCount = model.getBlocks().size();
+
+        //Move view so the new block is visible
+        leftBlockIndex = blockCount - 2;
+        updateBlocks();
+        checkButtonVisibility();
+
+    }
+
+    private SubBlockModel createEmptySubblock(SubBlockType type) {
+        if (type == SubBlockType.TEXT)
+            return new SubBlockModel("");
+        else
+            return new SubBlockModel("", "");
     }
 
     //Füllt alle Views in die SparseArrays
     private void fillViewSets() {
+
         //Fill view set for block 1
         block1ViewSet.put(BLOCK_LAYOUT, findViewById(R.id.block1_layout_edit));
         block1ViewSet.put(BLOCK_TITLE, findViewById(R.id.block1_title_edit));
@@ -179,10 +251,12 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         block1ViewSet.put(SB1_IMAGE_LAYOUT, findViewById(R.id.block1_sb1_imageLayout_edit));
         block1ViewSet.put(SB1_IMAGE, findViewById(R.id.block1_sb1_image_edit));
         block1ViewSet.put(SB1_SUBTITLE, findViewById(R.id.block1_sb1_subtitle_edit));
+        block1ViewSet.put(SB1_BTN_LOAD_IMAGE, findViewById(R.id.block1_sb1_btnLoadImage));
         block1ViewSet.put(SB2_TEXT, findViewById(R.id.block1_sb2_text_edit));
         block1ViewSet.put(SB2_IMAGE_LAYOUT, findViewById(R.id.block1_sb2_imageLayout_edit));
         block1ViewSet.put(SB2_IMAGE, findViewById(R.id.block1_sb2_image_edit));
         block1ViewSet.put(SB2_SUBTITLE, findViewById(R.id.block1_sb2_subtitle_edit));
+        block1ViewSet.put(SB2_BTN_LOAD_IMAGE, findViewById(R.id.block1_sb2_btnLoadImage));
 
         //Fill view set for block 2
         block2ViewSet.put(BLOCK_LAYOUT, findViewById(R.id.block2_layout_edit));
@@ -191,15 +265,35 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         block2ViewSet.put(SB1_IMAGE_LAYOUT, findViewById(R.id.block2_sb1_imageLayout_edit));
         block2ViewSet.put(SB1_IMAGE, findViewById(R.id.block2_sb1_image_edit));
         block2ViewSet.put(SB1_SUBTITLE, findViewById(R.id.block2_sb1_subtitle_edit));
+        block2ViewSet.put(SB1_BTN_LOAD_IMAGE, findViewById(R.id.block2_sb1_btnLoadImage));
         block2ViewSet.put(SB2_TEXT, findViewById(R.id.block2_sb2_text_edit));
         block2ViewSet.put(SB2_IMAGE_LAYOUT, findViewById(R.id.block2_sb2_imageLayout_edit));
         block2ViewSet.put(SB2_IMAGE, findViewById(R.id.block2_sb2_image_edit));
         block2ViewSet.put(SB2_SUBTITLE, findViewById(R.id.block2_sb2_subtitle_edit));
+        block2ViewSet.put(SB2_BTN_LOAD_IMAGE, findViewById(R.id.block2_sb2_btnLoadImage));
+
+    }
+
+    private void setOnLongClickListeners() {
+        //Setup the onLongClickListeners for the ImageViews
+        View.OnLongClickListener listener = new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                DetailViewActivityEdit.this.onBtnImageLoadClick(view);
+                return true;
+            }
+        };
+
+        block1ViewSet.get(SB1_IMAGE).setOnLongClickListener(listener);
+        block1ViewSet.get(SB2_IMAGE).setOnLongClickListener(listener);
+        block2ViewSet.get(SB1_IMAGE).setOnLongClickListener(listener);
+        block2ViewSet.get(SB2_IMAGE).setOnLongClickListener(listener);
 
     }
 
     //Füllt Blöcke mit Daten
     private void updateBlocks() {
+
         //load left block
         loadDataFromModel(model.getBlocks().get(leftBlockIndex), block1ViewSet);
 
@@ -208,10 +302,7 @@ public class DetailViewActivityEdit extends AppCompatActivity {
             //so make the other block 'gone'
             block2ViewSet.get(BLOCK_LAYOUT).setVisibility(View.GONE);
         } else {
-
             loadDataFromModel(model.getBlocks().get(leftBlockIndex + 1), block2ViewSet);
-
-
         }
 
     }
@@ -225,10 +316,9 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
         EditText blockTitleView = (EditText)viewSet.get(BLOCK_TITLE);
         if (blockTitle != null && !blockTitle.equals("")) {
-            blockTitleView.setVisibility(View.VISIBLE);
             blockTitleView.setText(blockTitle);
         } else {
-            blockTitleView.setVisibility(View.GONE);
+            blockTitleView.setText("");
         }
 
         if (sb1 != null) {
@@ -252,17 +342,30 @@ public class DetailViewActivityEdit extends AppCompatActivity {
                 String subtitle = sb1.getSubtitle();
                 EditText subtitleView = (EditText) viewSet.get(SB1_SUBTITLE);
                 if (subtitle != null && !subtitle.equals("")) {
-                    subtitleView.setVisibility(View.VISIBLE);
                     subtitleView.setText(subtitle);
                 } else {
-                    subtitleView.setVisibility(View.GONE);
+                    subtitleView.setText("");
                 }
 
-                ImageView imageView = (ImageView)viewSet.get(SB1_IMAGE);
-                imageView.setVisibility(View.VISIBLE);
-                imageView.setImageBitmap(null);
-                AsyncImageLoader.setImageToImageView(sb1.getImage(), imageView,
-                        imageView.getWidth(), imageView.getHeight());
+                if (sb1.getImage() == null || sb1.getImage().equals("")) {
+
+                    viewSet.get(SB1_BTN_LOAD_IMAGE).setVisibility(View.VISIBLE);
+
+                    ImageView imageView = (ImageView)viewSet.get(SB1_IMAGE);
+                    imageView.setVisibility(View.GONE);
+                    imageView.setImageBitmap(null);
+
+                } else {
+
+                    viewSet.get(SB1_BTN_LOAD_IMAGE).setVisibility(View.GONE);
+
+                    ImageView imageView = (ImageView)viewSet.get(SB1_IMAGE);
+                    imageView.setVisibility(View.VISIBLE);
+                    imageView.setImageBitmap(null);
+                    AsyncImageLoader.setImageToImageView(sb1.getImage(), imageView,
+                            imageView.getWidth(), imageView.getHeight());
+
+                }
 
             }
         } else {
@@ -296,17 +399,30 @@ public class DetailViewActivityEdit extends AppCompatActivity {
                 String subtitle = sb2.getSubtitle();
                 EditText subtitleView = (EditText) viewSet.get(SB2_SUBTITLE);
                 if (subtitle != null && !subtitle.equals("")) {
-                    subtitleView.setVisibility(View.VISIBLE);
                     subtitleView.setText(subtitle);
                 } else {
-                    subtitleView.setVisibility(View.GONE);
+                    subtitleView.setText("");
                 }
 
-                ImageView imageView = (ImageView)viewSet.get(SB2_IMAGE);
-                imageView.setVisibility(View.VISIBLE);
-                imageView.setImageBitmap(null);
-                AsyncImageLoader.setImageToImageView(sb2.getImage(), imageView,
-                        imageView.getWidth(), imageView.getHeight());
+                if (sb2.getImage() == null || sb2.getImage().equals("")) {
+
+                    viewSet.get(SB2_BTN_LOAD_IMAGE).setVisibility(View.VISIBLE);
+
+                    ImageView imageView = (ImageView)viewSet.get(SB2_IMAGE);
+                    imageView.setVisibility(View.GONE);
+                    imageView.setImageBitmap(null);
+
+                } else {
+
+                    viewSet.get(SB2_BTN_LOAD_IMAGE).setVisibility(View.GONE);
+
+                    ImageView imageView = (ImageView)viewSet.get(SB2_IMAGE);
+                    imageView.setVisibility(View.VISIBLE);
+                    imageView.setImageBitmap(null);
+                    AsyncImageLoader.setImageToImageView(sb2.getImage(), imageView,
+                            imageView.getWidth(), imageView.getHeight());
+
+                }
 
             }
         } else {
@@ -438,4 +554,102 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
     }
 
+    public void onBtnImageLoadClick(View v) {
+
+        if (v.getTag() == null)
+            return;
+
+        currentTag = (String)v.getTag();
+
+        new FileChooser(this).setFileListener(new FileChooser.FileSelectedListener() {
+            @Override
+            public void fileSelected(File file) {
+                DetailViewActivityEdit.this.applyImageFile(file);
+            }
+        }).showDialog();
+
+    }
+
+    private void applyImageFile(File file) {
+
+        File f = ImageFileHelper.copyFileToDirectory(this, file, model.getDirectory());
+
+        if (f != null) {
+
+            switch (currentTag) {
+                case "block1_sb1":
+                    model.getBlocks().get(leftBlockIndex).getSubBlock1().setImage(f.getAbsolutePath());
+                case "block1_sb2":
+                    model.getBlocks().get(leftBlockIndex).getSubBlock2().setImage(f.getAbsolutePath());
+                case "block2_sb1":
+                    model.getBlocks().get(leftBlockIndex + 1).getSubBlock1().setImage(f.getAbsolutePath());
+                case "block2_sb2":
+                    model.getBlocks().get(leftBlockIndex + 1).getSubBlock2().setImage(f.getAbsolutePath());
+            }
+
+            updateBlocks();
+
+        }
+
+    }
+
+
+    Handler hander = new Handler(){
+        public void handleMessage(Message m){
+            Intent intent = new Intent (DetailViewActivityEdit.this, screensaver.class);
+            startActivity(intent);
+            timerThread.interrupt();
+        }
+    };
+
+    private View.OnTouchListener touchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            timerThread.reset();
+            return false;
+        }
+    };
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        foreground = false;
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        foreground = true;
+        timerThread = new TimerThread();
+        timerThread.setDelay(Integer.parseInt(getResources().getString(R.string.screensaver_delay)) * 60000  );
+        timerThread.setContext(this);
+        timerThread.start();
+    }
+
+    public class TimerThread extends Thread{
+        long delay = 0;
+        long endTime;
+        DetailViewActivityEdit context;
+        public void run(){
+            endTime = System.currentTimeMillis()+delay;
+            boolean b = false;
+            while(System.currentTimeMillis()<endTime&&!b){
+                if(context.isDestroyed()||!foreground){
+                    b = true;
+                }
+            }
+            if (!b) {
+                hander.sendMessage(new Message());
+            }
+        }
+        public void reset(){
+            endTime = System.currentTimeMillis()+delay;
+        }
+        public void setDelay(long delay){
+            this.delay = delay;
+        }
+        public void setContext(DetailViewActivityEdit context){
+            this.context = context;
+        }
+    }
 }
