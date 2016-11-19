@@ -55,11 +55,12 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.grid_column,parent,false);
         }
 
-        TextView noteTitle = (TextView) convertView.findViewById(R.id.listItemNoteTitle); //ProjektTitel
+        TextView noteTitle = (TextView) convertView.findViewById(R.id.listItemNoteTitle); //Projekttitel
         TextView noteText = (TextView) convertView.findViewById(R.id.listItemNoteBody); //Projektfachrichtung
         ImageView noteIcon = (ImageView) convertView.findViewById(R.id.listItemNoteImg); //ProjektBild
         ImageView deleteIcon = (ImageView) convertView.findViewById(R.id.listItemNoteDelete); //DeleteButton
         ImageView editIcon = (ImageView) convertView.findViewById(R.id.listItemNoteEdit); //EditButton
+        TextView noteDate = (TextView) convertView.findViewById(R.id.listItemNoteDate); //Projektdatum
 
         //Layout , dass Adminfunktionen beinhaltet gegebenenfalls deaktivieren
         if(!admin){
@@ -132,6 +133,7 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
         });
 
 
+        noteDate.setText(projectModel.getDate().toString().substring(projectModel.getDate().toString().length()-4)); //Setzt Datum
         noteTitle.setText(projectModel.getTitle()); //Setzt Titel
         noteText.setText(DepartmentToStringConverter.convertToString(projectModel.getDepartment())); //Setzt Fachrichtung
         noteIcon.setImageBitmap(null); //Nötig aus Designgründen, falls recycled wird
