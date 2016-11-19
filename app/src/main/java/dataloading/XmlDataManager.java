@@ -81,7 +81,7 @@ public class XmlDataManager {
             String path = pm.getTitleImage();
             printTag(serializer, "titleimage", path.substring(path.lastIndexOf("/") + 1));
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy", Locale.GERMAN);
             printTag(serializer, "date", sdf.format(pm.getDate()));
 
             serializer.startTag(null, "members");
