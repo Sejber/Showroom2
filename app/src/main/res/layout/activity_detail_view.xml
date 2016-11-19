@@ -52,14 +52,22 @@
                 android:layout_gravity="start"
                 android:background="@drawable/ic_home_black_24dp" />
 
+            <ImageButton
+                android:id="@+id/imageViewInfo"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/ic_info_outline_black_24dp"
+                android:layout_toEndOf="@id/main_screen_top_toolbar_settings"
+                android:onClick="onInfoButtonClicked"/>
+
             <ImageView
                 android:id="@+id/imageView"
                 android:src="@drawable/logo"
                 android:scaleType="centerInside"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="6dp"
-                android:layout_width="135dp"
-                android:layout_height="50dp"
+                android:layout_width="165dp"
+                android:layout_height="60dp"
                 android:layout_marginEnd="10dp" />
 
         </RelativeLayout>
@@ -115,6 +123,7 @@
                 <!-- Upper Subblock -->
                 <ScrollView
                     android:id="@+id/block1_sb1_scrollViewer"
+                    android:scrollbarFadeDuration="0"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -156,6 +165,7 @@
                 <!-- Lower Subblock -->
                 <ScrollView
                     android:id="@+id/block1_sb2_scrollViewer"
+                    android:scrollbarFadeDuration="0"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -218,6 +228,7 @@
                 <!-- Upper Subblock -->
                 <ScrollView
                     android:id="@+id/block2_sb1_scrollViewer"
+                    android:scrollbarFadeDuration="0"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -259,6 +270,7 @@
                 <!-- Lower Subblock -->
                 <ScrollView
                     android:id="@+id/block2_sb2_scrollViewer"
+                    android:scrollbarFadeDuration="0"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
