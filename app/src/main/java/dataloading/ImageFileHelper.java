@@ -14,6 +14,7 @@ import java.io.OutputStream;
 
 /**
  * Created by Freddy on 19.11.2016.
+ *
  */
 
 public class ImageFileHelper {
@@ -23,7 +24,7 @@ public class ImageFileHelper {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         Bitmap bmp = BitmapFactory.decodeFile(image.getAbsolutePath(), options);
-        if (bmp == null || bmp.getWidth() == -1 || bmp.getHeight() == -1) {
+        if (options.outWidth <= 0 || options.outHeight <= 0) {
             Toast.makeText(c, "Die Datei hat ein ungültiges Bildformat.", Toast.LENGTH_LONG).show();
             return null;
         }

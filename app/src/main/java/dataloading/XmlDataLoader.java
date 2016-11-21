@@ -29,6 +29,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import models.BlockModel;
 import models.Department;
@@ -118,6 +119,8 @@ public class XmlDataLoader implements DataLoader {
                         break;
                 }
             }
+
+            is.close();
 
             return new ProjectModel(currentProjectDirectory,
                     members, title, department, titleImage, date, tags, blocks);
@@ -257,7 +260,7 @@ public class XmlDataLoader implements DataLoader {
     }
 
     public static Date parseDate(String s) {
-        DateFormat df = SimpleDateFormat.getDateInstance();
+        DateFormat df = new SimpleDateFormat("yyyy", Locale.GERMAN);
 
         try {
             return df.parse(s);

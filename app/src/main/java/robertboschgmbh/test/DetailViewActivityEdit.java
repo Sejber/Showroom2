@@ -14,6 +14,7 @@ package robertboschgmbh.test;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
@@ -29,6 +30,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 
@@ -65,6 +68,8 @@ public class DetailViewActivityEdit extends AppCompatActivity {
     private RadioButton rbSb1Text;
     private RadioButton rbSb2Text;
     private String currentTag = "";
+
+    private boolean isNewProject = false;
 
     private ProjectModel model; //Aktuelles Projekt
 
@@ -124,7 +129,6 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         dialog.dismiss();
             }});
 
@@ -134,24 +138,44 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
         //Get the corresponding model for this activity
         Bundle extras = getIntent().getExtras();
-        model = (ProjectModel)extras.get("model");
+        if (extras == null) {
+            model = null;
+        } else {
+            model = (ProjectModel)extras.get("model");
+        }
 
         //Put the image views into variables so we save on findViewById-calls
         buttonLeft = (ImageView) findViewById(R.id.imageButtonLeft_edit);
         buttonRight = (ImageView) findViewById(R.id.imageButtonRight_edit);
 
-        //Get total block counts
-        blockCount = model.getBlocks().size();
-
-        //Set the project title
-        EditText title = (EditText)findViewById(R.id.tvProjectTitle_edit);
-        title.setText(model.getTitle());
-
         fillViewSets();
         setOnLongClickListeners();
 
-        updateBlocks();
-        checkButtonVisibility();
+        if (model == null) {
+            //create a new project
+            isNewProject = true;
+            model = XmlDataManager.initializeProject(Environment.getExternalStorageDirectory());
+            if (model == null) {
+                //failed to create project folder
+                Toast.makeText(this, "Konnte Projektordner nicht erstellen", Toast.LENGTH_LONG).show();
+                Intent i = new Intent(DetailViewActivityEdit.this, MainActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(i);
+                finish();
+            } else {
+                new ProjectSettingsDialog(this, model).show();
+            }
+        } else {
+            //Get total block counts
+            blockCount = model.getBlocks().size();
+
+            //Set the project title
+            TextView title = (TextView) findViewById(R.id.tvProjectTitle);
+            title.setText(model.getTitle());
+
+            updateBlocks();
+            checkButtonVisibility();
+        }
 
     }
 
@@ -441,9 +465,6 @@ public class DetailViewActivityEdit extends AppCompatActivity {
     //write textchanges in ProjectModel
     public void saveBlocks() {
 
-        EditText projectTitle = (EditText)findViewById(R.id.tvProjectTitle_edit);
-        model.setTitle(projectTitle.getText().toString());
-
         EditText blockTitleView1 = (EditText)block1ViewSet.get(BLOCK_TITLE);
         model.getBlocks().get(leftBlockIndex).setTitle( blockTitleView1.getText().toString());
 
@@ -593,6 +614,27 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
     }
 
+    public void onInfoButtonClicked(View v) {
+
+        new ProjectSettingsDialog(this, model).show();
+
+    }
+
+    public void onProjectSettingsDialogFinish(boolean dialogResult, ProjectModel updatedModel) {
+        if (dialogResult) {
+            model = updatedModel;
+            isNewProject = false;
+
+            //Set the project title
+            TextView title = (TextView) findViewById(R.id.tvProjectTitle);
+            title.setText(model.getTitle());
+        } else if (isNewProject) {
+            Intent i = new Intent(DetailViewActivityEdit.this, MainActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(i);
+            finish();
+        }
+    }
 
     Handler hander = new Handler(){
         public void handleMessage(Message m){

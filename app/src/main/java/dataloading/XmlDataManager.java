@@ -18,9 +18,11 @@ import org.xmlpull.v1.XmlSerializer;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
@@ -65,7 +67,17 @@ public class XmlDataManager {
 
         try {
 
-            //TODO: Delete old txt files in the project directory
+            String[] textFiles = pm.getDirectory().list(new FilenameFilter() {
+                @Override
+                public boolean accept(File file, String s) {
+                    return s.endsWith(".txt");
+                }
+            });
+
+            for (String s : textFiles) {
+                new File(pm.getDirectory(), s).delete();
+            }
+
 
             FileOutputStream fos = new FileOutputStream(new File(pm.getDirectory(), "project.xml"));
 
@@ -192,32 +204,27 @@ public class XmlDataManager {
         }
     }
 
-    public static boolean createProject(ProjectModel pm, File directory) {
+    public static ProjectModel initializeProject(File directory) {
+
+        ProjectModel pm = new ProjectModel(null, null, "Neues Projekt", Department.OTHER, null, null, null, null);
 
         //check if there is a 'projects' folder in the specified directory
         File projectsDirectory = new File(directory, "projects");
         if (!projectsDirectory.exists() || !projectsDirectory.isDirectory()) {
-            return false;
+            return null;
         }
 
-        //if the project does not have a project folder yet (which should
-        //be the case when this method is called, but just making sure)
-        //then create one
-        if (pm.getDirectory() == null) {
+        File newProjectDir;
 
-            File newProjectDir;
+        //create random directory names until we find one that
+        //doesnt exist yet.
+        do {
+            newProjectDir = new File(projectsDirectory, createRandomFilename(12));
+        } while (newProjectDir.exists());
 
-            //create random directory names until we find one that
-            //doesnt exist yet.
-            do {
-                newProjectDir = new File(projectsDirectory, createRandomFilename(12));
-            } while (newProjectDir.exists());
+        pm.setDirectory(newProjectDir);
 
-            pm.setDirectory(newProjectDir);
-
-        }
-
-        return changeProject(pm);
+        return pm;
 
     }
 

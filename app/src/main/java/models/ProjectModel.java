@@ -42,44 +42,46 @@ public class ProjectModel implements Serializable {
 
     }
 
+    public void setMembers(ArrayList<String> members) { this.members = members; }
     public ArrayList<String> getMembers() {
         return members;
     }
 
+    public void setTitle(String title) { this.title=title; }
     public String getTitle() {
         return title;
     }
 
+    public void setDepartment(Department d) { this.department = d; }
     public Department getDepartment() {
         return department;
     }
 
+    public void setTitleImage(String s) { this.titleImage = s; }
     public String getTitleImage() {
         return titleImage;
     }
 
+    public void setDate(Date d) { this.date = d; }
     public Date getDate() {
         return date;
     }
 
+    public void setTags(ArrayList<String> tags) { this.tags = tags; }
     public ArrayList<String> getTags() {
         return tags;
-    }
-
-    public ArrayList<BlockModel> getBlocks() {
-        return blocks;
-    }
-
-    public File getDirectory() { return directory; }
-
-    public void setDirectory(File f) {
-        directory = f;
     }
 
     public void addBlock(BlockModel newBlock) {
         this.blocks.add(newBlock);
     }
+    public ArrayList<BlockModel> getBlocks() {
+        return blocks;
+    }
 
-    public void setTitle(String title) { this.title=title; }
+    public void setDirectory(File f) {
+        directory = f;
+    }
+    public File getDirectory() { return directory; }
 
 }

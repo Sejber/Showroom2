@@ -52,8 +52,10 @@ class InfoView {
         title.setText(model.getTitle());
         department.setText(DepartmentToStringConverter.convertToString(model.getDepartment()));
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy", Locale.GERMAN);
-        date.setText(sdf.format(model.getDate()));
+        if (model.getDate() != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy", Locale.GERMAN);
+            date.setText(sdf.format(model.getDate()));
+        }
 
         members.setAdapter(
                 new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1,
@@ -65,6 +67,7 @@ class InfoView {
                         android.R.id.text1, model.getTags())
         );
 
+        dialog.setTitle(model.getTitle());
         dialog.setContentView(v);
         dialog.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 

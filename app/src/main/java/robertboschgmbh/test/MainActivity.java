@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
             System.exit(0);
         }else if (id == R.id.new_button){
-            Intent i = new Intent(this,NewProjectActivity.class);
+            Intent i = new Intent(this,DetailViewActivityEdit.class);
             startActivity(i);
             timerThread.interrupt();
         }
