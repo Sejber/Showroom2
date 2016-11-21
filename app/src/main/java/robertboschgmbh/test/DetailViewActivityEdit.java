@@ -319,7 +319,11 @@ public class DetailViewActivityEdit extends AppCompatActivity {
     private void updateBlocks() {
 
         //load left block
-        loadDataFromModel(model.getBlocks().get(leftBlockIndex), block1ViewSet);
+        if (blockCount == 0) {
+            block1ViewSet.get(BLOCK_LAYOUT).setVisibility(View.GONE);
+        } else {
+            loadDataFromModel(model.getBlocks().get(leftBlockIndex), block1ViewSet);
+        }
 
         if (blockCount == 1) {
             //only display one block, stretched to the full display width,
@@ -629,6 +633,11 @@ public class DetailViewActivityEdit extends AppCompatActivity {
             TextView title = (TextView) findViewById(R.id.tvProjectTitle);
             title.setText(model.getTitle());
         } else if (isNewProject) {
+            //user pressed cancel, but this is a new project, so delete the newly created
+            //project folder and go back to the main activity
+            if (model.getDirectory() != null)
+                model.getDirectory().delete();
+
             Intent i = new Intent(DetailViewActivityEdit.this, MainActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(i);

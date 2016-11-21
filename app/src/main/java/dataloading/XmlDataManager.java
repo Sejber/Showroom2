@@ -222,9 +222,12 @@ public class XmlDataManager {
             newProjectDir = new File(projectsDirectory, createRandomFilename(12));
         } while (newProjectDir.exists());
 
-        pm.setDirectory(newProjectDir);
-
-        return pm;
+        if (newProjectDir.mkdir()) {
+            pm.setDirectory(newProjectDir);
+            return pm;
+        } else {
+            return null;
+        }
 
     }
 

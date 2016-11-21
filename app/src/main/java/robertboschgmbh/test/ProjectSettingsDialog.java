@@ -154,16 +154,23 @@ public class ProjectSettingsDialog {
     private void applyImage(File f) {
         if (f != null) {
             File inProjectDir = ImageFileHelper.copyFileToDirectory(activity, f, model.getDirectory());
+
+            ImageView imageView = (ImageView)view.findViewById(R.id.newImageView);
+            Button loadImage = (Button)view.findViewById(R.id.newBtnLoadImage);
+
             if (inProjectDir != null) {
+
+                imageView.setVisibility(View.VISIBLE);
+                loadImage.setVisibility(View.GONE);
+
                 model.setTitleImage(inProjectDir.getAbsolutePath());
                 AsyncImageLoader.setImageToImageView(model.getTitleImage(),
                         (ImageView) view.findViewById(R.id.newImageView),
                         (int) activity.getResources().getDimension(R.dimen.tileWidth),
                         (int) activity.getResources().getDimension(R.dimen.tileHeight));
+
             } else {
-                ImageView imageView = (ImageView)view.findViewById(R.id.newImageView);
                 imageView.setVisibility(View.GONE);
-                Button loadImage = (Button)view.findViewById(R.id.newBtnLoadImage);
                 loadImage.setVisibility(View.VISIBLE);
             }
         }
