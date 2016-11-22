@@ -1,11 +1,23 @@
 <resources>
     <string name="app_name">DH-Showroom</string>
+    <string name="app_version">1.0</string>
+    <string-array name="credits">
+        <item>Merlin Baudert</item>
+        <item>Rino Grupp</item>
+        <item>Leunar Kalludra</item>
+        <item>Hannes Kececi</item>
+        <item>Jonathan Lessing</item>
+        <item>Leopold Ormos</item>
+        <item>Lukas Schult</item>
+        <item>Marcel Vetter</item>
+        <item>Frederik Wagner</item>
+    </string-array>
     <string name="action_settings">Administrator-Modus</string>
     <string name="action_settings2">User-Modus</string>
     <string name="action_settings3">Beenden</string>
     <string name="action_settings4">Neuer Block</string>
     <string name="title_activity_login">Sign in</string>
-    <string name="passwort">test123</string>
+    <string name="passwort">3199823091</string>
     <string name="title_activity_screensaver">screensaver</string>
     <string name="screensaver_delay">600000</string>
     <string name="newBlock_upperSubblock">Oberer Teil</string>
@@ -19,6 +31,7 @@
     <string name="chooseImageFile">Bild laden</string>
     <string name="projectName">Projektname</string>
     <string name="blockTitle">Blocktitel</string>
+    <string name="about">Über</string>
     <string-array name="planets_array">
         <item>Elektrotechnik</item>
         <item>Informatik</item>

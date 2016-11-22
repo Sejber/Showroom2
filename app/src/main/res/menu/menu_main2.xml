@@ -9,11 +9,15 @@
         app:showAsAction="never" />
     <item android:id="@+id/user_button"
         android:title="@string/action_settings2"
-        android:orderInCategory="100"
+        android:orderInCategory="200"
+        app:showAsAction="never" />
+    <item android:id="@+id/menu_item_about"
+        android:title="@string/about"
+        android:orderInCategory="300"
         app:showAsAction="never" />
     <item android:id="@+id/end_button"
         android:title="@string/action_settings3"
-        android:orderInCategory="100"
+        android:orderInCategory="400"
         app:showAsAction="never" />
 
 </menu>
