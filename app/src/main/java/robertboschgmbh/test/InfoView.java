@@ -2,6 +2,8 @@ package robertboschgmbh.test;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
@@ -30,26 +32,15 @@ class InfoView {
     InfoView(Activity activity, ProjectModel model) {
         this.model = model;
 
-        dialog = new Dialog(activity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         View v = activity.getLayoutInflater().inflate(R.layout.info_view, null);
 
-        ImageView close = (ImageView)v.findViewById(R.id.info_view_close);
-
-        TextView title = (TextView)v.findViewById(R.id.info_view_projectTitle);
         TextView department = (TextView)v.findViewById(R.id.info_view_department);
         TextView date = (TextView)v.findViewById(R.id.info_view_date);
 
         ListView members = (ListView)v.findViewById(R.id.info_view_members);
         ListView tags = (ListView)v.findViewById(R.id.info_view_tags);
 
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-
-        title.setText(model.getTitle());
         department.setText(DepartmentToStringConverter.convertToString(model.getDepartment()));
 
         if (model.getDate() != null) {
@@ -67,8 +58,16 @@ class InfoView {
                         android.R.id.text1, model.getTags())
         );
 
-        dialog.setTitle(model.getTitle());
-        dialog.setContentView(v);
+        builder.setView(v);
+        builder.setTitle(model.getTitle());
+        builder.setNeutralButton("Schließen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog = builder.create();
         dialog.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 
     }

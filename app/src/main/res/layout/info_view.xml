@@ -4,30 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-        android:id="@+id/info_view_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_close_black_24dp"
-        android:tint="#000000"/>
-
-    </RelativeLayout>
-
     <TextView
-        android:id="@+id/info_view_projectTitle"
-        android:textAppearance="@android:style/TextAppearance.Large"
-        android:textAlignment="center"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacingDetailViewLarge"/>
-
-    <TextView
+        android:layout_marginTop="@dimen/spacingDetailViewLarge"
         android:id="@+id/info_view_department"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,14 +23,22 @@
         android:baselineAligned="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacingDetailViewSmall"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_margin="@dimen/spacingDetailViewSmall"
             android:orientation="vertical">
+
+            <TextView
+                android:layout_margin="@dimen/spacingDetailViewSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:text="Mitglieder"/>
 
             <ListView
                 android:id="@+id/info_view_members"
@@ -64,7 +50,17 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_margin="@dimen/spacingDetailViewSmall"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_margin="@dimen/spacingDetailViewSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:text="Tags"/>
 
             <ListView
                 android:id="@+id/info_view_tags"

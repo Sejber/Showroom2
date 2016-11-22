@@ -20,6 +20,8 @@ import java.io.File;
 
 class ImageLoaderAsyncTask extends AsyncTask<String, Integer, Bitmap> {
 
+    private static final double TARGET_SIZE = 1024.0 * 1024.0; //2 MB
+
     private ImageView imageView;
     private int reqWidth = 0;
     private int reqHeight = 0;
@@ -55,21 +57,22 @@ class ImageLoaderAsyncTask extends AsyncTask<String, Integer, Bitmap> {
 
     private static Bitmap decodeSampledBitmapFromResource(String path, int reqWidth, int reqHeight) {
 
-        if (reqWidth != 0 && reqHeight != 0) {
-            // First decode with inJustDecodeBounds=true to check dimensions
-            final BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(path, options);
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
 
+        if (reqWidth != 0 && reqHeight != 0) {
             // Calculate inSampleSize
             options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-            // Decode bitmap with inSampleSize set
-            options.inJustDecodeBounds = false;
-            return BitmapFactory.decodeFile(path, options);
         } else {
-            return BitmapFactory.decodeFile(path);
+            //To minimize the risk of an OutOfMemoryException, scale the bitmaps down so that
+            //they will only need roughly 1 MB
+            options.inSampleSize = calcSampleSizeTo1Mb(options);
         }
+
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeFile(path, options);
     }
 
     private static int calculateInSampleSize(
@@ -93,6 +96,14 @@ class ImageLoaderAsyncTask extends AsyncTask<String, Integer, Bitmap> {
         }
 
         return inSampleSize;
+    }
+
+    private static int calcSampleSizeTo1Mb(BitmapFactory.Options options) {
+        int totalSize = options.outWidth * options.outHeight * 4;
+        int sampleSize = (int)Math.round(totalSize / TARGET_SIZE);
+        if (sampleSize < 1)
+            sampleSize = 1;
+        return sampleSize;
     }
 
 }
