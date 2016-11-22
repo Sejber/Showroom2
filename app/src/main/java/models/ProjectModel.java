@@ -73,6 +73,9 @@ public class ProjectModel implements Serializable {
     }
 
     public void addBlock(BlockModel newBlock) {
+        if (this.blocks == null)
+            this.blocks = new ArrayList<>();
+
         this.blocks.add(newBlock);
     }
     public ArrayList<BlockModel> getBlocks() {

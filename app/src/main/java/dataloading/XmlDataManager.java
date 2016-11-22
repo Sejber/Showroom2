@@ -52,7 +52,8 @@ public class XmlDataManager {
         return DeleteRecursive(dir);
 
     }
-    private static boolean DeleteRecursive(File Directory) {
+
+    public static boolean DeleteRecursive(File Directory) {
         if (Directory.isDirectory())
             for (File child : Directory.listFiles())
                 DeleteRecursive(child);

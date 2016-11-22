@@ -172,10 +172,10 @@ public class DetailViewActivityEdit extends AppCompatActivity {
             //Set the project title
             TextView title = (TextView) findViewById(R.id.tvProjectTitle);
             title.setText(model.getTitle());
-
-            updateBlocks();
-            checkButtonVisibility();
         }
+
+        updateBlocks();
+        checkButtonVisibility();
 
     }
 
@@ -253,6 +253,9 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
         //Move view so the new block is visible
         leftBlockIndex = blockCount - 2;
+        if (leftBlockIndex < 0)
+            leftBlockIndex = 0;
+
         updateBlocks();
         checkButtonVisibility();
 
@@ -322,14 +325,16 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         if (blockCount == 0) {
             block1ViewSet.get(BLOCK_LAYOUT).setVisibility(View.GONE);
         } else {
+            block1ViewSet.get(BLOCK_LAYOUT).setVisibility(View.VISIBLE);
             loadDataFromModel(model.getBlocks().get(leftBlockIndex), block1ViewSet);
         }
 
-        if (blockCount == 1) {
+        if (blockCount <= 1) {
             //only display one block, stretched to the full display width,
             //so make the other block 'gone'
             block2ViewSet.get(BLOCK_LAYOUT).setVisibility(View.GONE);
         } else {
+            block2ViewSet.get(BLOCK_LAYOUT).setVisibility(View.VISIBLE);
             loadDataFromModel(model.getBlocks().get(leftBlockIndex + 1), block2ViewSet);
         }
 
@@ -472,6 +477,9 @@ public class DetailViewActivityEdit extends AppCompatActivity {
         EditText blockTitleView1 = (EditText)block1ViewSet.get(BLOCK_TITLE);
         model.getBlocks().get(leftBlockIndex).setTitle( blockTitleView1.getText().toString());
 
+        if (blockCount == 0 || leftBlockIndex < 0)
+            return;
+
         if (model.getBlocks().get(leftBlockIndex).getSubBlock1() != null) {
             if (model.getBlocks().get(leftBlockIndex).getSubBlock1().getType() == SubBlockType.TEXT) {
 
@@ -604,12 +612,16 @@ public class DetailViewActivityEdit extends AppCompatActivity {
             switch (currentTag) {
                 case "block1_sb1":
                     model.getBlocks().get(leftBlockIndex).getSubBlock1().setImage(f.getAbsolutePath());
+                    break;
                 case "block1_sb2":
                     model.getBlocks().get(leftBlockIndex).getSubBlock2().setImage(f.getAbsolutePath());
+                    break;
                 case "block2_sb1":
                     model.getBlocks().get(leftBlockIndex + 1).getSubBlock1().setImage(f.getAbsolutePath());
+                    break;
                 case "block2_sb2":
                     model.getBlocks().get(leftBlockIndex + 1).getSubBlock2().setImage(f.getAbsolutePath());
+                    break;
             }
 
             updateBlocks();

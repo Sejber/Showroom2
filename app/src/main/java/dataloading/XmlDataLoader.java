@@ -61,6 +61,10 @@ public class XmlDataLoader implements DataLoader {
                 if (!xmlFile.isFile()) {
                     //XML-File doesn't exist, print to log and continue with next project
                     Log.e("XMLLoader", String.format("project.xml of %s doesn't exist.", f.getName()));
+                    if (XmlDataManager.DeleteRecursive(f))
+                        Log.i("XMLLoader", "Deleted project folder.");
+                    else
+                        Log.w("XMLLoader", "Failed to delete project folder.");
                     continue;
                 }
 
