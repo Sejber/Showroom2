@@ -41,25 +41,32 @@ class InfoView {
         ListView members = (ListView)v.findViewById(R.id.info_view_members);
         ListView tags = (ListView)v.findViewById(R.id.info_view_tags);
 
-        department.setText(DepartmentToStringConverter.convertToString(model.getDepartment()));
+        if (model.getDepartment() != null)
+            department.setText(DepartmentToStringConverter.convertToString(model.getDepartment()));
 
         if (model.getDate() != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy", Locale.GERMAN);
             date.setText(sdf.format(model.getDate()));
         }
 
-        members.setAdapter(
-                new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1,
-                        android.R.id.text1, model.getMembers())
-        );
+        if (model.getMembers() != null) {
+            members.setAdapter(
+                    new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1,
+                            android.R.id.text1, model.getMembers())
+            );
+        }
 
-        tags.setAdapter(
-                new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1,
-                        android.R.id.text1, model.getTags())
-        );
+        if (model.getTags() != null) {
+            tags.setAdapter(
+                    new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1,
+                            android.R.id.text1, model.getTags())
+            );
+        }
+
+        if (model.getTitle() != null)
+            builder.setTitle(model.getTitle());
 
         builder.setView(v);
-        builder.setTitle(model.getTitle());
         builder.setNeutralButton("Schließen", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

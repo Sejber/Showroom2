@@ -37,6 +37,10 @@ import models.DepartmentToStringConverter;
 import android.view.Window;
 import android.view.WindowManager;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+
 import dataloading.XmlDataManager;
 import models.ProjectModel;
 
@@ -44,7 +48,7 @@ import models.ProjectModel;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<ProjectModel> projects; //ArrayList aller Projekte
-    private boolean admin = true; //Admin Modus Umschalter
+    private boolean admin = false; //Admin Modus Umschalter
     private TimerThread timerThread; //Steuert den Bildschirmschoner
     private static boolean foreground = true;  //Variable zur Steuerung des Bildschirmschoners
 
@@ -148,6 +152,14 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent(this,DetailViewActivityEdit.class);
             startActivity(i);
             timerThread.interrupt();
+        }else if (id == R.id.menu_item_about){
+            Calendar c = Calendar.getInstance();
+            c.set(2016, 1, 1);
+            ProjectModel pm = new ProjectModel(null,
+                    new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.credits))),
+                    String.format("%s %s", getString(R.string.app_name), getString(R.string.app_version)),
+                    Department.IT, null, c.getTime(), null, null);
+            new InfoView(this, pm).show();
         }
 
         return super.onOptionsItemSelected(item);

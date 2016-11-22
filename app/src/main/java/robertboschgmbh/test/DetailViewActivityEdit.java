@@ -238,6 +238,8 @@ public class DetailViewActivityEdit extends AppCompatActivity {
 
     public void onDialogResult(SubBlockType sb1Type, SubBlockType sb2Type) {
 
+        saveBlocks();
+
         SubBlockModel sb1, sb2 = null;
 
         sb1 = createEmptySubblock(sb1Type);
