@@ -150,13 +150,19 @@ public class DetailViewActivity extends AppCompatActivity {
     //Füllt Blöcke mit Daten
     private void updateBlocks() {
         //load left block
-        loadDataFromModel(model.getBlocks().get(leftBlockIndex), block1ViewSet);
+        if (blockCount > 0) {
+            block1ViewSet.get(BLOCK_LAYOUT).setVisibility(View.VISIBLE);
+            loadDataFromModel(model.getBlocks().get(leftBlockIndex), block1ViewSet);
+        } else {
+            block1ViewSet.get(BLOCK_LAYOUT).setVisibility(View.GONE);
+        }
 
         if (blockCount == 1) {
             //only display one block, stretched to the full display width,
             //so make the other block 'gone'
             block2ViewSet.get(BLOCK_LAYOUT).setVisibility(View.GONE);
         } else {
+            block2ViewSet.get(BLOCK_LAYOUT).setVisibility(View.VISIBLE);
             loadDataFromModel(model.getBlocks().get(leftBlockIndex + 1), block2ViewSet);
         }
 

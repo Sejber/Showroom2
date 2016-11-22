@@ -15,6 +15,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,18 +38,19 @@ import models.ProjectModel;
 import static android.support.v4.content.ContextCompat.startActivity;
 
 
-public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
+class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
 
     static private boolean admin = false; //Admin Modus Umschalter
 
     //Kunstruktor
-    public ProjectModelAdapter(Context context, ArrayList<models.ProjectModel> projectModels,boolean admin){
+    ProjectModelAdapter(Context context, ArrayList<models.ProjectModel> projectModels, boolean admin){
         super(context,0,projectModels);
-        this.admin = admin;
+        ProjectModelAdapter.admin = admin;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(int position, View convertView, @NonNull ViewGroup parent){
 
         final ProjectModel projectModel = getItem(position); //Aktuelles ProjectModel
 
@@ -56,6 +58,9 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.grid_column,parent,false);
         }
+
+        if (projectModel == null)
+            return convertView;
 
         TextView noteTitle = (TextView) convertView.findViewById(R.id.listItemNoteTitle); //Projekttitel
         TextView noteText = (TextView) convertView.findViewById(R.id.listItemNoteBody); //Projektfachrichtung
@@ -136,7 +141,8 @@ public class ProjectModelAdapter extends ArrayAdapter<models.ProjectModel> {
 
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy", Locale.GERMAN);
-        noteDate.setText(sdf.format(projectModel.getDate())); //Setzt Datum
+        if (projectModel.getDate() != null)
+            noteDate.setText(sdf.format(projectModel.getDate())); //Setzt Datum
         noteTitle.setText(projectModel.getTitle()); //Setzt Titel
         noteText.setText(DepartmentToStringConverter.convertToString(projectModel.getDepartment())); //Setzt Fachrichtung
         noteIcon.setImageBitmap(null); //Nötig aus Designgründen, falls recycled wird

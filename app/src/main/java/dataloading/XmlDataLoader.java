@@ -29,6 +29,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import models.BlockModel;
 import models.Department;
@@ -60,6 +61,10 @@ public class XmlDataLoader implements DataLoader {
                 if (!xmlFile.isFile()) {
                     //XML-File doesn't exist, print to log and continue with next project
                     Log.e("XMLLoader", String.format("project.xml of %s doesn't exist.", f.getName()));
+                    if (XmlDataManager.DeleteRecursive(f))
+                        Log.i("XMLLoader", "Deleted project folder.");
+                    else
+                        Log.w("XMLLoader", "Failed to delete project folder.");
                     continue;
                 }
 
@@ -118,6 +123,8 @@ public class XmlDataLoader implements DataLoader {
                         break;
                 }
             }
+
+            is.close();
 
             return new ProjectModel(currentProjectDirectory,
                     members, title, department, titleImage, date, tags, blocks);
@@ -257,7 +264,7 @@ public class XmlDataLoader implements DataLoader {
     }
 
     public static Date parseDate(String s) {
-        DateFormat df = SimpleDateFormat.getDateInstance();
+        DateFormat df = new SimpleDateFormat("yyyy", Locale.GERMAN);
 
         try {
             return df.parse(s);

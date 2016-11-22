@@ -36,6 +36,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/tvProjectTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:textColor="@android:color/white"
+                android:gravity="bottom"
+                android:textAlignment="center"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                android:layout_alignBottom="@+id/imageView" />
+
             <ImageView
                 android:id="@+id/imageView"
                 android:src="@drawable/logo"
@@ -56,6 +67,14 @@
                 android:layout_toEndOf="@+id/imageEnd" />
 
             <ImageButton
+                android:id="@+id/imageViewInfo"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/ic_info_outline_black_24dp"
+                android:layout_toEndOf="@id/imageSave"
+                android:onClick="onInfoButtonClicked"/>
+
+            <ImageButton
                 android:id="@+id/imageEnd"
                 android:layout_height="60dp"
                 android:layout_width="60dp"
@@ -69,18 +88,9 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <EditText
-        android:id="@+id/tvProjectTitle_edit"
-        android:layout_below="@id/my_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/projectName"
-        android:textAlignment="center"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline" />
-
     <!-- BLOCKS -->
     <LinearLayout
-        android:layout_below="@id/tvProjectTitle_edit"
+        android:layout_below="@id/my_toolbar"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
