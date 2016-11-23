@@ -20,7 +20,7 @@ import java.io.File;
 
 class ImageLoaderAsyncTask extends AsyncTask<String, Integer, Bitmap> {
 
-    private static final double TARGET_SIZE = 1024.0 * 1024.0; //2 MB
+    private static final double TARGET_SIZE = 3 * 1024.0 * 1024.0; //2 MB
 
     private ImageView imageView;
     private int reqWidth = 0;

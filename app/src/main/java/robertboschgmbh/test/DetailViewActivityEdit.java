@@ -476,11 +476,11 @@ public class DetailViewActivityEdit extends AppCompatActivity {
     //write textchanges in ProjectModel
     public void saveBlocks() {
 
-        EditText blockTitleView1 = (EditText)block1ViewSet.get(BLOCK_TITLE);
-        model.getBlocks().get(leftBlockIndex).setTitle( blockTitleView1.getText().toString());
-
         if (blockCount == 0 || leftBlockIndex < 0)
             return;
+
+        EditText blockTitleView1 = (EditText)block1ViewSet.get(BLOCK_TITLE);
+        model.getBlocks().get(leftBlockIndex).setTitle( blockTitleView1.getText().toString());
 
         if (model.getBlocks().get(leftBlockIndex).getSubBlock1() != null) {
             if (model.getBlocks().get(leftBlockIndex).getSubBlock1().getType() == SubBlockType.TEXT) {
@@ -606,6 +606,8 @@ public class DetailViewActivityEdit extends AppCompatActivity {
     }
 
     private void applyImageFile(File file) {
+
+        saveBlocks();
 
         File f = ImageFileHelper.copyFileToDirectory(this, file, model.getDirectory());
 

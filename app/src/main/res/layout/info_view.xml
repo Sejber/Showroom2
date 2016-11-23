@@ -36,8 +36,6 @@
                 android:layout_margin="@dimen/spacingDetailViewSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:gravity="center"
                 android:text="Mitglieder"/>
 
             <ListView
@@ -58,8 +56,6 @@
                 android:layout_margin="@dimen/spacingDetailViewSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:gravity="center"
                 android:text="Tags"/>
 
             <ListView
